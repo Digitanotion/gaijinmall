@@ -1,0 +1,22 @@
+# Options +FollowSymLinks
+# RewriteEngine on
+# RewriteRule cspace/lid/(.*)/clid/(.*)/cat_focus/(.*)/cp/(.*)/push/(.*)/category/(.*)/ cspace.php?lid=$1&clid=$2&cat_focus=$3&cp=$4&push=$5&category=$6
+# RewriteRule cspace/lid/(.*)/clid/(.*)/cat_focus/(.*)/cp/(.*)/push/(.*)/category/(.*) cspace.php?lid=$1&clid=$2&cat_focus=$3&cp=$4&push=$5&category=$6
+
+# Apache Rewrite Rules
+ <IfModule mod_rewrite.c>
+  Options +FollowSymLinks
+  RewriteEngine On
+
+# Add trailing slash to url
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} (.+)/$ 
+  RewriteRule ^ %1 [L,R=301]
+
+# Remove .php-extension from url
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+  RewriteRule ^([^\.]+)/$ $1.php 
+
+# End of Apache Rewrite Rules
+ </IfModule>

@@ -1,0 +1,16 @@
+1. Create User Business page and Feedback link on sign up (new_user_account) [DONE]
+2. Create user parameters table on sign up, e.g defaultColID, mallUsrID,mallUsrNotifications,mallUsrChats
+3. Make sure all the fields in the options list of the category params is add to  the mallads table.[DONE]
+4. Check user logins again, ensure user status field must be active before successful login.[DONE]
+5. Check and compare if any change in username, user id, email.
+6. Avoid multiple submit on page refresh [DONE]
+7. Create business statis page for every new user [DONE]
+8. Create business row for every user on registration and fill fields with user personal details [DONE]
+9. Get online status of user when log in.[DONE]
+10. Forget Password
+11. Promote Ads
+
+new_user_account,endUserSession,auth_user
+Graphics, footer page, sign in page, sign up page
+
+This team is responsible for project branding, creating IEC and publicity materials design, Zoom backgrounds, creatives for social media, etc.
