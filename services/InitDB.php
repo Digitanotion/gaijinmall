@@ -13,12 +13,19 @@ if (strpos($url,'localhost')) {
     //USE services\configGlobal;
     require_once("configGlobal.php");
 }
+else if (strpos($url,'192.168')){
+    //require_once($_SERVER['DOCUMENT_ROOT']."/vendor/samayo/bulletproof/src/bulletproof.php");
+    require_once(__DIR__ . "\../vendor/autoload.php");
+    //USE services\configGlobal;
+require_once(__DIR__."./configGlobal.php");
+}
 else{
     //require_once($_SERVER['DOCUMENT_ROOT']."/vendor/samayo/bulletproof/src/bulletproof.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
     //USE services\configGlobal;
 require_once("configGlobal.php");
 }
+
 
 class InitDB{
     public $pdo;

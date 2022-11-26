@@ -8,6 +8,10 @@ if (strpos($url,'localhost')) {
     //require_once($_SERVER['DOCUMENT_ROOT']."/vendor/samayo/bulletproof/src/bulletproof.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
 }
+else if (strpos($url,'192.168')) {
+    //require_once(__DIR__ ."\../../vendor/samayo/bulletproof/src/bulletproof.php");
+    require_once(__DIR__ . "\../vendor/autoload.php");
+}
 else{
     //require_once($_SERVER['DOCUMENT_ROOT']."/vendor/samayo/bulletproof/src/bulletproof.php");
     require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
