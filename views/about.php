@@ -73,7 +73,11 @@ $adID="";
                     <a href="#howToBuy" class="text-dark"><p class="bg-white w-100 fw-bold p-2">How to buy on Gaijinmall?</p></a>
                     <div id="howToSell"></div>
                     <a href="#safety" class="text-dark"><p class="bg-white w-100 fw-bold p-2">Safety</p></a>
+<<<<<<< HEAD
                     <a href="#sellLikePro" class="text-dark"><p class="bg-white w-100 fw-bold p-2">Sell like a pro!</p></a>
+=======
+                    <a href="#sellLikePro" class="text-dark"><p class="bg-white w-100 fw-bold p-2">sell like a professional!</p></a>
+>>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                 </div><br><br>
                 <div class="mb-5">
                     <img src="./assets/images/001.svg" alt="" class="w-100 my-5 pb-5">
@@ -105,7 +109,11 @@ $adID="";
                     <img src="./assets/images/003.svg" alt="" width="100%" class="my-5 pt-5">
                 </div>
                 <div class="my-4">
+<<<<<<< HEAD
                     <h3 class="fw-bold" id="sellLikePro">Sell like a pro!</h3>
+=======
+                    <h3 class="fw-bold" id="sellLikePro">Sell like a professional!</h3>
+>>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                     <ol>
                         <li>
                             <p class="fw-bold">Pay attention to the details.</p>
@@ -116,11 +124,19 @@ $adID="";
                             <p>Don’t make your buyer wait for your message for days. Be online or get SMS notifications on your messages.</p>
                         </li>
                         <li>
+<<<<<<< HEAD
                             <p class="fw-bold">Use Premium Services to get 15x more customers!</p>
                             <p>Your adverts will appear at the top of the page and you will sell faster! How does it work?</p>
                         </li>
                     </ol>
                     <button class="btn bg-primary p-2 w-auto text-white fw-bolder ms-4" >GO PREMIUM</button>
+=======
+                            <p class="fw-bold">Use our Promote Ads services to get Plus 10X or more customers!</p>
+                            <p>Your adverts will appear at the top of the page and you will sell faster! How does it work?</p>
+                        </li>
+                    </ol>
+                    <button class="btn bg-primary p-2 w-auto text-white fw-bolder ms-4" >Promote Ads</button>
+>>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                 </div>
             </div>
             <div class="col-md-5 col-lg-5 col-sm-11">
@@ -145,7 +161,11 @@ $adID="";
                         <li>
                             <p class="fw-bold">Answer the messages and calls from your clients!</p>
                             <div id="howToBuy"></div>
+<<<<<<< HEAD
                             <p>If everything is ok with your advert, it’ll be on  Gaijinmall in a couple of hours after sending to moderation. We’ll send you a letter and notification when your advert goes live. Check your messages and be ready to earn money! Do you want to sell like a pro? Check out our Premium Services .</p>
+=======
+                            <p>If everything is ok with your advert, it’ll be on  Gaijinmall in a couple of hours after sending to moderation. We’ll send you a letter and notification when your advert goes live. Check your messages and be ready to earn money! Do you want to sell like a professional? Check out our Premium Services .</p>
+>>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                         </li>
                     </ol>
                     <button class="btn bg-primary p-2 w-25 text-white fw-bolder ms-4" >SELL</button>
