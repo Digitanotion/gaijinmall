@@ -20,8 +20,7 @@ use services\SecS\SecurityManager;
 $security_ob = new SecurityManager();
 $accManager_ob = new AccountManager();
 $pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "none";
-$_email_phone=$_POST['email_phone'];
-$_password=$_POST['_password'];
-echo json_encode($security_ob->auth__user($_email_phone,$_password));
+$_email_=$_POST['user_email'];
+echo json_encode($security_ob->forgot_password($_email_));
 ?>
   

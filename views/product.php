@@ -189,11 +189,8 @@ $newToken = $securityManager_ob->setCSRF();
                 <span class="ha-card__counter"><i class="fa fa-eye m-0 me-1"></i><span class="ha-views__count"><?php echo $adManager_ob->getAdView($adID)['message']; ?></span> views</span>
                 <form method="post">
                   <button <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "disabled" : "type='submit' formaction=''"; ?> class="ha-card-content-icon <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "bg-primary text-white" : ""; ?> fw-bolder shadow-sm d-flex justify-content-center align-items-center" name="saveAd__btn">
-<<<<<<< HEAD
                     <i class="fa fa-bookmark-o mx-auto fa-bounce"></i>
-=======
                     <i class="fa fa-suitcase mx-auto fa-bounce"></i>
->>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                   </button>
                   <input type="hidden" name="saveAd__adID" value="<?php echo $_GET['adID'] ?>">
                 </form>
@@ -543,10 +540,7 @@ $newToken = $securityManager_ob->setCSRF();
         switch ($sys_msg['msg_type']) {
             
             case '1':
-<<<<<<< HEAD
-=======
               $sys_msg['msg'] = "Your message has been sent";
->>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
                 echo '
                 cuteAlert({
                     type: "success",
@@ -556,10 +550,7 @@ $newToken = $securityManager_ob->setCSRF();
                   })';
                 break;
             default:
-<<<<<<< HEAD
-=======
             $sys_msg['msg'] = "Oops! Please, Try again";
->>>>>>> a571a2d (replaced boost & use premium 15x words, bookmark & list icons and also added a customized success and error message)
             echo '
             cuteAlert({
               type: "error",
