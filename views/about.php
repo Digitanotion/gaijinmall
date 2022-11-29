@@ -73,7 +73,6 @@ $adID="";
                     <a href="#howToBuy" class="text-dark"><p class="bg-white w-100 fw-bold p-2">How to buy on Gaijinmall?</p></a>
                     <div id="howToSell"></div>
                     <a href="#safety" class="text-dark"><p class="bg-white w-100 fw-bold p-2">Safety</p></a>
-                    <a href="#sellLikePro" class="text-dark"><p class="bg-white w-100 fw-bold p-2">Sell like a pro!</p></a>
                     <a href="#sellLikePro" class="text-dark"><p class="bg-white w-100 fw-bold p-2">sell like a professional!</p></a>
                 </div><br><br>
                 <div class="mb-5">
