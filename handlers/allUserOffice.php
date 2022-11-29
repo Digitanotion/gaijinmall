@@ -64,7 +64,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" >Boost Ad</a></li>
+                                <li><a class="dropdown-item" >Promote Ad</a></li>
                             </ul>
                         </span> -->
                         <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
@@ -89,7 +89,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <span class="fs-sm-1 text-left mt-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
                                                                                                             echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                 <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</span>
+                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
                                     <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
                                     <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
@@ -150,7 +150,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</a></li>
+                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</a></li>
                             </ul>
                         </span> -->
                         <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
@@ -174,7 +174,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <span class="badge bg-info fs-md mt-2 mt-md-3 mt-lg-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
                                                                                                                         echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                                                                                                         <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</span>
+                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
                                     <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
                                     <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
@@ -230,7 +230,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</a></li>
+                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</a></li>
                             </ul>
                         </span> -->
                         <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
@@ -254,7 +254,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <span class="badge bg-info fs-md mt-2 mt-md-3 mt-lg-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
                                                                                                                             echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                                                                                                             <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</span>
+                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
                                     <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
                                     <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
@@ -310,7 +310,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</a></li>
+                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</a></li>
                             </ul>
                         </span> -->
                         <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
@@ -334,7 +334,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <span class="badge bg-info fs-md mt-2 mt-md-3 mt-lg-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
                                                                                                                             echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                                                                                                             <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Boost Ad</span>
+                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
                                     <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
                                     <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>

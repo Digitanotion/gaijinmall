@@ -274,14 +274,7 @@ $newToken = $securityManager_ob->setCSRF();
             }
             ?>
         });
-        //GET FORM SAVE VALUE DYNAMICALLY
-        $('input[type="text"], input[type="email"],input[type="number"]').each(function(){
-    var value = getValue($(this));
-    if(value != "" ) {
-        $(this).val(value);
-    }
-    
-})
+       
     </script>
 
 </body>

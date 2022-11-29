@@ -827,8 +827,8 @@ function getValue(input) {
 
 function saveFormValue(){
   $('input[type="text"], input[type="email"],input[type="number"]').each(function(){
-    var value = getValue($(this));
-    $(this).val(value);
+    // var value = getValue($(this));
+    // $(this).val(value);
 }).on('blur', function(){
     if($(this).val() != '' ) {
         saveValue($(this));

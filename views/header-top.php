@@ -44,7 +44,6 @@ if (isset($_SESSION['gaijinmall_user_'])){
                     <li><a class="active ha-nav__item" href="saved.php" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="My Saved Ads"><i class="fa fa-suitcase mx-auto"></i></a></li>
                     <li><a href="messages.php" class="ha-nav__item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="My Messages"><i class="fa fa-envelope mx-auto"></i></a></li>
                     <li><a href="notifications.php" class="ha-nav__item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Notifications"><i class="fa fa-bell mx-auto"></i></a></li>
-                    <li><a href="adverts.php" class="ha-nav__item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="My Adverts"><i class="fa fa-list mx-auto"></i></a></li>
                     <li><a href="adverts.php" class="ha-nav__item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="My Adverts"><i class="fa fa-bullhorn mx-auto"></i></a></li>
                     <li><a href="New_Ad.php" class="ha-nav__item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="New Advert">SELL</a></li>
                     <!-- <li><a href="New_Ad.php" class="ha-nav__item">PROMOTE AD</a></li> -->
