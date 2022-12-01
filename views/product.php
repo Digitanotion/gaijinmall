@@ -75,7 +75,7 @@ $adManager_ob->updateAdView($adID);
 $pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "null";
 if (isset($_POST['makeOffer__btn'])) {
   if ($pageUsrID__ == "null") {
-    $sys_msg['msg_type'] = 500;
+    $sys_msg['msg_type'] = 400;
     $sys_msg['msg'] = "Login to make an offer";
   } else {
     $makeOffer_response = $adManager_ob->usrMakeOffer($pageUsrID__, $adID, $_POST['makeOfferPrice__txt'], $_POST['makeOfferReceiverID']);
@@ -85,7 +85,7 @@ if (isset($_POST['makeOffer__btn'])) {
 }
 if (isset($_POST['sendChat__btn'])) {
   if ($pageUsrID__ == "null") {
-    $sys_msg['msg_type'] = 500;
+    $sys_msg['msg_type'] = 401;
     $sys_msg['msg'] = "Login to chat with seller";
   } else {
     $sendChat_response = $messaging_ob->sendMsgUsrToUsr($pageUsrID__, $adID, $getUsrInfo['mallUsrID'], $_POST['sendChatMsg__txt'], "usr_to_usr");
@@ -101,10 +101,17 @@ if ($favImageName['status'] == 1) {
   $favImageName = "";
 }
 if (isset($_POST['saveAd__btn'])) {
-  $getAdIDSaved = $_POST['saveAd__adID'];
-  $saveAdResponse = $adManager_ob->saveAd($pageUsrID__, $getAdIDSaved);
-  $sys_msg['msg_type'] = $saveAdResponse['status'];
-  $sys_msg['msg'] = $saveAdResponse['message'];
+  if ($pageUsrID__ == "null") {
+    $sys_msg['msg_type'] = 402;
+    $sys_msg['msg'] = "Login to save Ad";
+  } else {
+    $getAdIDSaved = $_POST['saveAd__adID'];
+    $saveAdResponse = $adManager_ob->saveAd($pageUsrID__, $getAdIDSaved);
+    $sys_msg['msg_type'] = $saveAdResponse['status'];
+    $sys_msg['msg'] = $saveAdResponse['message'];
+  }
+  
+  
 }
 
 $productRating=$feedback_ob->getProductTotalRating($adID)['message'];
@@ -188,7 +195,7 @@ $newToken = $securityManager_ob->setCSRF();
 
                 <span class="ha-card__counter"><i class="fa fa-eye m-0 me-1"></i><span class="ha-views__count"><?php echo $adManager_ob->getAdView($adID)['message']; ?></span> views</span>
                 <form method="post">
-                  <button <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "disabled" : "type='submit' formaction=''"; ?> class="ha-card-content-icon <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "bg-primary text-white" : ""; ?> fw-bolder shadow-sm d-flex justify-content-center align-items-center" name="saveAd__btn">
+                  <button <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "disabled" : "type='submit' formaction=''"; ?> class="ha-card-content-icon  <?php echo ($adManager_ob->checkSaveAd($pageUsrID__, $_GET['adID'])['status']) ? "bg-primary text-white" : ""; ?> fw-bolder shadow-sm d-flex justify-content-center align-items-center" name="saveAd__btn">
                     <i class="fa fa-save mx-auto fa-bounce"></i>
                   </button>
                   <input type="hidden" name="saveAd__adID" value="<?php echo $_GET['adID'] ?>">
@@ -544,6 +551,33 @@ $newToken = $securityManager_ob->setCSRF();
                 cuteAlert({
                     type: "success",
                     title: "Operation Successful",
+                    message: "' . $sys_msg['msg'] . '",
+                    buttonText: "Ok",
+                  })';
+                break;
+              case '400':
+                echo '
+                cuteAlert({
+                    type: "error",
+                    title: "Operation Failed",
+                    message: "' . $sys_msg['msg'] . '",
+                    buttonText: "Ok",
+                  })';
+                break;
+              case '401':
+                echo '
+                cuteAlert({
+                    type: "error",
+                    title: "Operation Failed",
+                    message: "' . $sys_msg['msg'] . '",
+                    buttonText: "Ok",
+                  })';
+                break;
+              case '402':
+                echo '
+                cuteAlert({
+                    type: "error",
+                    title: "Operation Failed",
                     message: "' . $sys_msg['msg'] . '",
                     buttonText: "Ok",
                   })';

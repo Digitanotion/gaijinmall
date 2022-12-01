@@ -27,21 +27,33 @@ $("#promoteAd_btn").attr("disabled", true);
 $(".make_offer_btn").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to make an offer. Thanks.");
+    return showAlert("So sorry, kindly login to make an offer. Thanks.");
   }
 });
 $(".sendDM").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to send message to the seller. Thanks.");
+      return showAlert("So sorry, kindly login to send message to the seller. Thanks.");
   }
 });
 $(".reportAd__btn").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to report this Ad. Thanks.");
+      return showAlert("So sorry, kindly login to report this Ad. Thanks.");
   }
 });
+
+/******************this function call cutealert********by Promise*********************/
+function showAlert($msg) {
+  cuteAlert({
+    type: "error",
+    title: "Operation Failed",
+    message: $msg,
+    buttonText: "Ok",
+  })
+}
+
+
 $("[name|='mallAdPromoID']").on("click", function () {
   $("#promoteAd_btn").removeAttr("disabled", true);
   promoAdSelected = $(this).attr("promocost");
