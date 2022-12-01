@@ -507,6 +507,7 @@ class AdManager
 	function searchAds($searchString)
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+		$searchString = htmlspecialchars($searchString);
 		$keywords = explode(' ', $searchString);
 		$inputValidator = new InputValidator();
 		$searchString = $inputValidator->sanitizeItem($searchString, "string");

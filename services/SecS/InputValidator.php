@@ -161,7 +161,10 @@ class InputValidator
             case 'tel':
                 $filter = FILTER_SANITIZE_NUMBER_INT;
                 $flags = "" ;
-                $output = preg_replace('/[^0-9]/', '', $var);
+                // $output = preg_replace('/[^0-9]/', '', $var);
+
+                //makes sure that phone numbers with only zeros or 1 less than 1 non-zero numbers are not submitted
+                $output = preg_replace('/[^0-9]$/', '', $var);
         break;
             default: 
              

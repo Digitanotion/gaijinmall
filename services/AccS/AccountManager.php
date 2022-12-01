@@ -159,7 +159,8 @@ class AccountManager
             $mallUsrfirstName = $inputValidator->sanitizeItem($mallUsrfirstName, "string");
             $mallUsrlastName = $inputValidator->sanitizeItem($mallUsrlastName, "string");
             $mallUsrEmail = $inputValidator->sanitizeItem($mallUsrEmail, "email");
-            $mallUsrPhone = $inputValidator->sanitizeItem($mallUsrPhone, "string");
+            $mallUsrPhone = $inputValidator->sanitizeItem($mallUsrPhone, "tel");        
+            
             $mallUsrPassword = $inputValidator->sanitizeItem($mallUsrPassword, "string");
             $mallUsrPassword = $securityManagerOb->generateHashBcrypt($mallUsrPassword); //Encrpt and hash password
             //Get DB Info
@@ -174,12 +175,19 @@ class AccountManager
             $mallBizSlug = trim($mallBizSlug, ".");
             $emailphone_exist = $this->is_emailphone_exist($mallUsrPhone, $mallUsrEmail);
             $dateRegistered = time();
+
+            // checks if the number has only zeros
+            $mallUsrPhone = substr($mallUsrPhone, 0,3);
+
             if ($emailphone_exist['email'] === 1) {
                 //both email has phone has been used on an existing account
                 $this->message("500", "Email already registered with us");
             } else if ($emailphone_exist['phone'] === 1) {  //only the email has been used on an existing account
                 $this->message("500", "Phone number already registered with us");
-            } else {
+            } else if ($mallUsrPhone == 0) {
+                $this->message("500", "Phone number cannot be zeros");
+            }    
+             else {
                 $sql = "INSERT INTO mallusrs (  mallUsrID,
                                                        mallUsrFirstName,
                                                        mallUsrLastName,
