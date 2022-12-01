@@ -20,8 +20,20 @@ use services\SecS\SecurityManager;
 $security_ob = new SecurityManager();
 $accManager_ob = new AccountManager();
 $pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "none";
-$_email_phone=$_POST['email_phone'];
+
+if (isset($_POST['_command_mobile']) && $_POST['_command_mobile']=="login_it_"){
+    $_email_phone=$_POST['email_phone'];
 $_password=$_POST['_password'];
 echo json_encode($security_ob->auth__user($_email_phone,$_password));
+}
+
+if (isset($_POST['_command_mobile']) && $_POST['_command_mobile']=="register_it_"){
+    $_phonenumber=$_POST['_phone_number'];
+$_password=$_POST['_password'];
+$_fname=$_POST['_f_name'];
+$_lname=$_POST['_l_name'];
+$_email=$_POST['_email'];//echo "password $_password | fname=$_fname | lname=$_lname | email=$_email | phone=$_phonenumber";
+echo json_encode($accManager_ob->new_user_account ($_fname,$_lname,$_email,$_phonenumber,$_password));
+}
 ?>
   

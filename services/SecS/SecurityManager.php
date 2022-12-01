@@ -318,7 +318,7 @@ class SecurityManager extends InputValidator
                             //SET USER ONLINE PARAMETER IN DB
                             $sqlUsrLastSeen = "UPDATE mallusrs SET mallUsrLatestTime=? WHERE mallUsrID=?";
                             $stmtUsrLastSeen = $dbHandler->run($sqlUsrLastSeen, [$time_login, $user_info_details['mallUsrID']]);
-                            $this->message(1, "Success");
+                            $this->message(1, $user_info_details);
                             header("location: " . MALL_ROOT);
                         } else {
                             $this->message(500, "User session does not exist");
