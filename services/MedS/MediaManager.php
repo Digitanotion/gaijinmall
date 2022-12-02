@@ -17,6 +17,7 @@ else if (strpos($url,'192.168')){
 }
 USE services\SecS\SecurityManager;
 USE services\SecS\GetUserIP;
+use services\SecS\InputValidator;
 USE services\InitDB;
 USE Bulletproof\Image;
 use service\SecS\GetUserIP as SecSGetUserIP;
@@ -73,7 +74,12 @@ class MediaManager{
     private $securityManager_ob;
     private $remoteIP;
     private $thumbImageAd;
+    private $inputValidatorOb;
     private $msg = [];
+    function __construct()
+    {
+        $this->inputValidatorOb = new InputValidator();
+    }
     function uploadOptiImage($imageFile,$imageName,$fileLocation,$usrID,$adID){
         /* 
         This function is suppose to create thumbmail size out the uploaded image
@@ -82,8 +88,17 @@ class MediaManager{
             then substract their difference from the current dimension
         3. Set image params
         4. Upload image, save to DB*/
+        
             $this->dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
             $this->securityManager_ob=new SecurityManager();
+
+            $inputValidator = $this->inputValidatorOb;
+
+            $imageFile = $inputValidator->sanitizeInput($imageFile, "string");
+            $imageName = $inputValidator->sanitizeInput($imageName, "string");
+            $fileLocation = $inputValidator->sanitizeInput($fileLocation, "string");
+            $usrID = $inputValidator->sanitizeInput($usrID, "string");
+            $adID = $inputValidator->sanitizeInput($adID, "string");
             $this->remoteIP=new GetUserIP();
             for($i = 0; $i < count($imageFile['name']); $i++) {
   
@@ -156,6 +171,11 @@ class MediaManager{
                 return $this->imgResponse;
             }
             function getThumbImage($adID){
+
+                $inputValidator = $this->inputValidatorOb;
+
+                $adID = $inputValidator->sanitizeInput($adID, "string");
+
                 $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
                 $stmt = "SELECT * FROM mallmedia WHERE mallAdID=? ORDER BY defaultColID DESC";
                 $stmt = $dbHandler->run($stmt,[$adID]);
@@ -167,6 +187,10 @@ class MediaManager{
                 return $this->msg;
             }
             function getUsrThumbImage($userID){
+                $inputValidator = $this->inputValidatorOb;
+
+                $usrID = $inputValidator->sanitizeInput($usrID, "string");
+
                 $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
                 $stmt = "SELECT * FROM mallusrs WHERE mallUsrID=?";
                 $stmt = $dbHandler->run($stmt,[$userID]);
@@ -178,6 +202,11 @@ class MediaManager{
                 return $this->msg;
             }
             function getAllAdImage($adID){
+
+                $inputValidator = $this->inputValidatorOb;
+
+                $usrID = $inputValidator->sanitizeInput($adID, "string");
+
                 $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
                 $stmt = "SELECT * FROM mallmedia WHERE mallAdID=? ORDER BY defaultColID DESC";
                 $stmt = $dbHandler->run($stmt,[$adID]);
@@ -190,6 +219,11 @@ class MediaManager{
             }
 
             function delMedia($mediaID){
+
+                $inputValidator = $this->inputValidatorOb;
+
+                $mediaID = $inputValidator->sanitizeInput($mediaID, "string");
+
                 $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
                 $sql = "DELETE FROM mallmedia WHERE mallMediaID = ?";
                 $value = [$mediaID];

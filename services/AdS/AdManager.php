@@ -29,12 +29,15 @@ class AdManager
 	private $col_names = [];
 	private $categOptions_cols = [];
 	public $dbHandler;
+	private $inputValidatorOb;
 	public const CURRENCY = "¥";
 
 	/*this constructor will return database connection which would be passed during the class initialization*/
 
 	function __construct()
 	{
+		$this->securityManagerOb = new SecurityManager();
+        $this->inputValidatorOb = new InputValidator();
 	}
 
 	/*
@@ -56,6 +59,13 @@ class AdManager
 	public function addCategory($mallUsrID, $mallCategName, $mallCategParent, $mallCategIcon)
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+
+		$inputValidator = $this->inputValidatorOb;
+
+		$mallUsrID= $inputValidator->validateItem($mallUsrID, "string");;
+		$mallCategParent = $inputValidator->sanitizeInput($mallCategParent, "string");
+		$mallCategName = $inputValidator->sanitizeInput($mallCategName, "string");
+
 		$mallCategAncestors = "";
 		if (empty($mallUsrID) ||  empty($mallCategName)) {
 			$this->message("404", "Fields cannot be empty");
@@ -90,6 +100,15 @@ class AdManager
 	public function updateCategory($mallUsrID, $mallCategID, $mallCategName, $mallCategParentID, $mallCategIcon)
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+
+		$inputValidator = $this->inputValidatorOb;
+
+		$mallUsrID= $inputValidator->validateItem($mallUsrID, "string");;
+		$mallCategID= $inputValidator->validateItem($mallCategID, "string");;
+		$mallCategParent = $inputValidator->sanitizeInput($mallCategParent, "string");
+		$mallCategName = $inputValidator->sanitizeInput($mallCategName, "string");
+
+
 		$mallCategAncestors = "";
 		if (empty($mallUsrID) ||  empty($mallCategID)) {
 			$this->message("404", "Fields cannot be empty");
@@ -134,6 +153,14 @@ class AdManager
 
 	public function addCategory_Params($usrID, $categID, $paramName, $paraType, $paraValues)
 	{
+
+		$inputValidator = $this->inputValidatorOb;
+
+		$mallUsrID= $inputValidator->validateItem($mallUsrID, "string");;
+		$categID= $inputValidator->validateItem($mallCategID, "string");;
+		$paramName = $inputValidator->sanitizeInput($mallCategParent, "string");
+		$paraType = $inputValidator->sanitizeInput($mallCategName, "string");
+
 		if (empty($usrID) || empty($categID) || empty($paramName) || empty($paraType)) {
 			$this->message("404", "Fields cannot be empty");
 		} else {
@@ -167,6 +194,11 @@ class AdManager
 
 	public function getCategOptionsByID(int $categID)
 	{
+
+		$inputValidator = $this->inputValidatorOb;
+		$categID= $inputValidator->validateItem($mallCategID, "string");;
+
+
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$sql = "SELECT * FROM malldefaultcategoryparams WHERE mallCategID=?";
 		$stmt = $dbHandler->run($sql, [$categID]);
@@ -181,6 +213,7 @@ class AdManager
 	public function getAllLocation()
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+
 		$sql = "SELECT DISTINCT * FROM malllocations ORDER BY mallLocState";
 		$stmt = $dbHandler->run($sql);
 		$row = $stmt->fetchAll();
@@ -207,6 +240,7 @@ class AdManager
 	public function getAllLocationCity($stateID)
 	{
 		$stateID = InputValidator::sanitizeInput($stateID, "string");
+
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$sql = "SELECT * FROM malllocations WHERE mallLocState=? ORDER BY mallLocCity";
 		$stmt = $dbHandler->run($sql, [$stateID]);
@@ -221,6 +255,10 @@ class AdManager
 
 	public function getLocationDetailsBySlug($slug)
 	{
+		$inputValidator = $this->inputValidatorOb;
+
+		$slug = $inputValidator->sanitizeInput($slug, "string");
+
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$sql = "SELECT * FROM malllocations WHERE mallLocSlug=?";
 		$stmt = $dbHandler->run($sql, [$slug]);
@@ -239,6 +277,10 @@ class AdManager
 			2. Get mallAd tables columns that match the fetched category options
 			3. Return none empty fields with their values  
 		*/
+		$inputValidator = $this->inputValidatorOb;
+
+		$adID = $inputValidator->sanitizeInput($adID, "string");
+
 		$fieldNamesValues = array();
 		$fieldValues = array();
 		$this->getCategOptions(); //Get all categories
@@ -264,6 +306,11 @@ class AdManager
 	}
 	public function getAdDetailsOptionByCategID($categID)
 	{
+		$inputValidator = $this->inputValidatorOb;
+
+		$categID= $inputValidator->validateItem($categID, "string");;
+		$categID = $inputValidator->sanitizeInput($categID, "string");
+
 		/* Get all none empty ad category options 
 			1. Get all category options inserted by admin
 			2. Get mallAd tables columns that match the fetched category options
@@ -306,6 +353,11 @@ class AdManager
 
 	public function removeCategory($categID)
 	{
+		$inputValidator = $this->inputValidatorOb;
+
+		$categID= $inputValidator->validateItem($categID, "string");;
+		$categID = $inputValidator->sanitizeInput($categID, "string");
+
 		//$this->CAT_ID = $categID;
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$sql = "DELETE FROM malladcategory WHERE mallCategID = ?";
@@ -492,6 +544,9 @@ class AdManager
 	}
 	function getAdByCategID(string $categID)
 	{
+		$inputValidator = $this->inputValidatorOb;
+		$categID = $inputValidator->sanitizeInput($categID, "string");
+
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$stmt = "SELECT * FROM mallads WHERE mallCategID = ? AND mallAdStatus=? ORDER BY defaultColID DESC";
 		$stmt = $dbHandler->run($stmt, [$categID, "1"]);
@@ -1252,6 +1307,7 @@ class AdManager
 	}
 	function checkPromotedAd($adID, $promoID)
 	{
+		
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$inputValidator = new InputValidator();
 		$adID = $inputValidator->sanitizeItem($adID, "string");
@@ -1267,6 +1323,8 @@ class AdManager
 	}
 	static function displayPromoted($adID, $promoID)
 	{
+		$inputValidator = $this->inputValidatorOb;
+		$adID = $inputValidator->sanitizeInput($adID, "string");
 		$classOb = new self();
 		if ($classOb->checkPromotedAd($adID, $promoID)['status']) {
 			echo '<span class="ha-card-content-icon-1 fw-bolder fs-sm-1 d-flex justify-content-center align-items-center" href="#">
