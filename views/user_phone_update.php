@@ -81,6 +81,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
     <link rel="stylesheet" href="./assets/css/vertical-menu.css">
     <link rel="stylesheet" href="./assets/css/adverts.css">
     <link rel="stylesheet" href="./assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/cute-alert.css">
     <link rel="stylesheet" href="./assets/fonts/fontawesome-free-6.0.0-web/css/all.css">
 </head>
 
@@ -147,7 +148,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                                 </a>
                             </div>
                             <div class="w-75 call_0" id="call0">
-                                <span><input type="number" required id="" placeholder="New phone number" class="form-control m-1 mb-3 btn btn-outline-primary bg-white"></span>
+                                <span><input type="number" id="" placeholder="New phone number" class="form-control m-1 mb-3 btn btn-outline-primary bg-white"></span>
                                 <span><button class="btn bg-secondary m-1 w-100 p-2">Next</button></span>
                             </div>
                         <?php //} ?>
@@ -163,25 +164,25 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                             <option value="digital">Digital ID</option>
                         </select>
                         <span>
-                            <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number *" class="form-control btn-outline-secondary bg-white my-4 text-dark">
+                            <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number" class="form-control btn-outline-secondary bg-white my-4 text-dark">
                         </span>
                         <span>
                             <input type="text" name="usrIDFirstName__txt" id="usrIDFirstName__txt" placeholder="First Name*" class="form-control btn-outline-secondary bg-white mb-4 text-dark">
                         </span>
                         <span>
-                            <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark">
+                            <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" >
                         </span>
                     </div> 
                     <div class="col-lg-6 col-md-6 col-sm-12 text-start  info_0" id="info1">
                         <span>
                            
-                                <input type="text" id="phoneUpdateChangeToDate__txt" name="datusrIDDOB__txt" placeholder="Date of birth *" class="form-control btn-outline-secondary bg-white mb-4 text-dark" onfocus="phoneUpdateChangeTDate()">
+                                <input type="text" id="phoneUpdateChangeToDate__txt" name="datusrIDDOB__txt" placeholder="Date of birth" class="form-control btn-outline-secondary bg-white mb-4 text-dark" onfocus="phoneUpdateChangeTDate()">
                             
                         </span>
                         <span class="d-flex">
                             <a href="javascript:void" onclick="phoneUpdateSelectFile()" id="addNewfile__phoneupdate"><i id="addNewfileIcon__phoneupdate" class="fa fa-plus fs-title-4 m-1 me-4 text-primary bg-light-blue p-3 add_0" ></i></a>
                             <span>
-                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID *</p>
+                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID</p>
                                 <p class="fs-md m-1 mb-4" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
                             </span>
                         </span>
@@ -189,7 +190,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                             <input type="file" name="usrIDFile__file[]" id="usrIDFile__file" class="w-100 mb-5 form-control click_0">
                         </span>
                         <span>
-                            <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" required placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onkeypress="myEnable()">
+                            <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onchange="myEnable()">
                         </span>
                         <span>
                             <button class="btn bg-primary p-2 w-100 text-white fw-bolder" disabled id="enable0" type="submit" name="usrIDSubmit__btn">APPLY</button>
@@ -206,6 +207,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
     <script src="../dependencies/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../dependencies/node_modules/toastr/build/toastr.min.js"></script>
     <script src="./assets/js/vertical-menu.js"></script>
+    <script src="assets/js/cute-alert.js"></script>
     <script src="./assets/js/userAdmin.js"></script>
     <script src="./assets/js/jquery-ui.js"></script>
     <script src="./assets/js/settings.js"></script>
@@ -231,10 +233,20 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
             if (isset($sys_msg) && !empty($sys_msg)) {
                 switch ($sys_msg['msg_type']) {
                     case '1':
-                        echo 'toastr.success("' . $sys_msg['msg'] . '");';
+                        echo 'cuteAlert({
+                            type: "success",
+                            message: "",
+                            title: "' . $sys_msg['msg'] . '",
+                            buttonText: "Ok",
+                          })';
                         break;
                     default:
-                        echo 'toastr.error("' . $sys_msg['msg'] . '");';
+                        echo 'cuteAlert({
+                        type: "error",
+                        message: "",
+                        title: "' . $sys_msg['msg'] . '",
+                        buttonText: "Ok",
+                      })';
                         break;
                 }
             }

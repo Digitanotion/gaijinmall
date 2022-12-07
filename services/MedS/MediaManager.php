@@ -94,7 +94,7 @@ class MediaManager{
 
             $inputValidator = $this->inputValidatorOb;
 
-            $imageFile = $inputValidator->sanitizeInput($imageFile, "string");
+            // $imageFile = $inputValidator->sanitizeInput($imageFile, "string");
             $imageName = $inputValidator->sanitizeInput($imageName, "string");
             $fileLocation = $inputValidator->sanitizeInput($fileLocation, "string");
             $usrID = $inputValidator->sanitizeInput($usrID, "string");
