@@ -16,9 +16,14 @@ use services\SecS\SecurityManager;
 use services\AdS\AdManager;
 use services\AccS\AccountManager;
 
+
+
 $securityManager_ob = new SecurityManager();
 $adsManager_ob = new AdManager();
 $usrAccManager_ob = new AccountManager();
+
+
+
 $sys_msg = []; //Hold data for the toasts
 /* 
 PHP2Toast Send system message to toast listener
@@ -42,7 +47,10 @@ $isUsrIDUploaded = $usrAccManager_ob->usrIDUploadedStatusByID($pageUsrID__);
 $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message'];
 $getUsrPhoneVerified=$usrAccManager_ob->getUserVerifiedNumberByIDandPhone($pageUsrID__,$getUsrInfo['mallUsrPhoneNo']);
 if (isset($_POST['usrIDSubmit__btn'])) {
+    // $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+
     $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+
     $sys_msg['msg_type'] = $editBizResponse['status'];
     if ($editBizResponse['status']==1){
         $securityManager_ob->generatePhoneVerifyToken($pageUsrID__,$_POST['usrIDPhone__txt']);
@@ -52,6 +60,9 @@ if (isset($_POST['usrIDSubmit__btn'])) {
     else{
         $sys_msg['msg'] = $editBizResponse['message'];
     }
+
+       
+
 }
 if (isset($_POST['edit_phone__btn'])){
     //$editPhoneResponse=$usrAccManager_ob->updateUsrPhoneByID($pageUsrID__,$_POST['edit_phone__txt']);
@@ -59,6 +70,8 @@ if (isset($_POST['edit_phone__btn'])){
     $sys_msg['msg'] = $editPhoneResponse['message'];
 }
 $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; //
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +99,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
 </head>
 
 <body>
-    <?php include "header-top.php"; ?>
+    <?php //include "header-top.php"; ?>
     <section class="container-fluid m-0 p-0">
         <div class="row m-0 mx-sm-5 mx-md-5 mx-lg-5 mt-2 gx-0 gx-md-5 gx-lg-5 justify-content-between">
             <?php include "settings_side__bar.php";?>
@@ -137,6 +150,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                             </a> -->
                                 <a href="javascript:void">
                                     <div class="text-dark p-2 border m-2">
+
                                         <span class="d-flex fs-sm" onclick="myInfo()">
                                             <i class="fa fa-list text-success fs-title-4 m-3 me-5"></i>
                                             <span>
@@ -183,7 +197,8 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                             <a href="javascript:void" onclick="phoneUpdateSelectFile()" id="addNewfile__phoneupdate"><i id="addNewfileIcon__phoneupdate" class="fa fa-plus fs-title-4 m-1 me-4 text-primary bg-light-blue p-3 add_0" ></i></a>
                             <span>
                                 <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID</p>
-                                <p class="fs-md m-1 mb-4" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
+                                <p class="fs-md m-1" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
+                                <p class="fs-sm text-danger">Only PDF file is required</p>   
                             </span>
                         </span>
                         <span>
@@ -230,9 +245,10 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                 //   "hideMethod": "fadeOut"
             }
             <?php
+
             if (isset($sys_msg) && !empty($sys_msg)) {
                 switch ($sys_msg['msg_type']) {
-                    case '1':
+                    case "1":
                         echo 'cuteAlert({
                             type: "success",
                             message: "",

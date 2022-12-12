@@ -22,6 +22,7 @@ USE services\InitDB;
 USE Bulletproof\Image;
 use service\SecS\GetUserIP as SecSGetUserIP;
 
+
 /*
 
 // Pass a custom name, or it will be auto-generated
@@ -109,7 +110,7 @@ class MediaManager{
                 "error" => $imageFile['error'][$i],
                 "size" => $imageFile['size'][$i],
                 );
-            
+
                 $image = new Image($arr_file);
                 
                 //Get current image dimensions
@@ -169,6 +170,27 @@ class MediaManager{
                 }
                 }
                 return $this->imgResponse;
+            }
+
+            public function updatePhoneMedia($adID,$usrID,$imageFileName) {
+
+                 $this->dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+                 $this->securityManager_ob=new SecurityManager();
+                 $this->remoteIP=new GetUserIP();
+
+                $mediaID=$this->securityManager_ob->generateOtherID();
+                $timeUploaded=time();
+                $userAgent=$_SERVER['HTTP_USER_AGENT'];
+                $userIP=$this->remoteIP->getIpAddress();
+                $values=[$mediaID,$adID,$usrID,$imageFileName,1,$timeUploaded,$userAgent,$userIP];
+                $sql="INSERT INTO mallmedia (mallMediaID,mallAdID,mallUsrID,mallMediaName,mallMediaStatus,mallMediaUploadTime,mallUserAgent,mallUsrIP) VALUES (?,?,?,?,?,?,?,?)";
+                $stmt = $this->dbHandler->run($sql, $values);
+                if ($stmt->rowCount() > 0) {
+                        return 1;
+                    } else {
+                       return 2;
+                    }
+                    return $this->imgResponse;
             }
             function getThumbImage($adID){
 
@@ -239,8 +261,14 @@ class MediaManager{
                 $this->msg["status"] = $key;
                 $this->msg["message"] = $value;
             }
-       
+
+
+
+        
     }
+
+
+
 
    
 
