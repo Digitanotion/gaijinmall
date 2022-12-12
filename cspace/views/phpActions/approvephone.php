@@ -2,7 +2,7 @@
     //Confirm if file is local or Public and add the right path
 $url = 'http://' . $_SERVER['SERVER_NAME'];
 if (strpos($url,'localhost')) {
-    require_once(__DIR__ . "\../../vendor/autoload.php");
+    require_once("../../../vendor/autoload.php");
 } else if (strpos($url,'gaijinmall')) {
     require_once($_SERVER['DOCUMENT_ROOT']."/vendor/autoload.php");
 }
@@ -11,7 +11,7 @@ if (strpos($url,'localhost')) {
 
 
     $accManage = new AccountManager();
-    $response = $accManage->updatePhoneStatus($_POST["userID"], $_POST['adminID'], 1 );
+    $response = $accManage->updatePhoneStatus($_POST["userID"], 1);
 
 
     echo $response['status'];
@@ -21,5 +21,6 @@ if (strpos($url,'localhost')) {
         $messenger = new messagingManager();
         $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], "Your phone number has been verified");
     }
+
 
     

@@ -684,38 +684,39 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                 if($kycs['status'] == 1){
           
                   //fetch the image
-                  $frontSrc = "../../media_store/idFiles/uploads/optimized/".$kycs['message'][0]['mallIDDocFile'] ;
-                  $backSrc = "../../media_store/idFiles/uploads/optimized/".$kycs['message'][1]['mallIDDocFile'] ;;
+                  $frontSrc = "../../media_store/idFiles/uploads/".$kycs['message'][0]['mallIDDocFile'] ;
+                  // $backSrc = "../../media_store/idFiles/uploads/optimized/".$kycs['message'][1]['mallIDDocFile'] ;;
+                  echo "
+                  <div class='row justify-content-center'>
+                      <div class='col-12 col-sm-6 col-md-3'>
+                        <p class='text-center'>Front view</p>  
 
-                  echo '
-                  <div class="row justify-content-center">
-                      <div class="col-12 col-sm-6 col-md-3">
-                          <p class="text-center">Front view</p>
-                        <div class="info-box">
-                          
-                              <img class="img-fluid" src='.$frontSrc.'>
-                          
+                        <div class=\"embed-responsive embed-responsive-1by1\">
+                          <iframe class=\"embed-responsive-item\" src=\"".$frontSrc ."\"\></iframe> 
+                        </div>
+
+                        <div class='text-center mt-2'>
+                          <a href=\"".$frontSrc ."\" class='btn btn-info px-4'>View</a>
                         </div>
                         <!-- /.info-box -->
                       </div>
                       <!-- /.col -->
-                      <div class="col-12 col-sm-6 col-md-3">
-                          <p class="text-center">Back view</p>
-                        <div class="info-box mb-3">
-      
-                          <img class="img-fluid" src='.$backSrc.'>
-      
-                        </div>
-                        <!-- /.info-box -->
-                      </div>
+                      
                       <!-- /.col -->
             
-                     
-                      <div class="clearfix hidden-md-up"></div>
-                  </div>';
+                      <div class='clearfix hidden-md-up'></div>
+                  </div>";
 
-
-          
+                      /*-------for backview which was removed----*/
+                      // <div class="col-12 col-sm-6 col-md-3">
+                      //               <p class="text-center">Back view</p>
+                      //             <div class="info-box mb-3">
+                
+                      //               <img class="img-fluid" src='.$backSrc.'>
+                
+                      //             </div>
+                      //             <!-- /.info-box -->
+                      // </div>
                 }else{
                     echo '<div class="row justify-content-center">
                               <div class="col-12 col-sm-6 col-md-3">

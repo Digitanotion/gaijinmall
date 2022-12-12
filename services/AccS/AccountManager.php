@@ -805,7 +805,7 @@ class AccountManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = $this->inputValidatorOb;
         $securityManager = new SecurityManager();
-        $usrID = $inputValidator->sanitizeItem($usrID, "int");
+        $usrID = $inputValidator->sanitizeItem($usrID, "string");
         $newPhone = $inputValidator->sanitizeItem($newPhone, "string");
         $oldPhone = $inputValidator->sanitizeItem($oldPhone, "string");
         $isTokenMatch = $securityManager->verifyPhoneToken($usrID, $newPhone, $token)['status'];
