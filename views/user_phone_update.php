@@ -49,21 +49,23 @@ $getUsrPhoneVerified=$usrAccManager_ob->getUserVerifiedNumberByIDandPhone($pageU
 if (isset($_POST['usrIDSubmit__btn'])) {
     // $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
 
-    $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+    $editBizResponse = $usrAccManager_ob->updateUsrIDPhone($pageUsrID__,$_POST['usrIDPhone__txt']);
+
+   /*------------old ------------*/
+    // $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
 
     $sys_msg['msg_type'] = $editBizResponse['status'];
-    if ($editBizResponse['status']==1){
-        $securityManager_ob->generatePhoneVerifyToken($pageUsrID__,$_POST['usrIDPhone__txt']);
-        $sys_msg['msg'] = "You'll be redirected shortly";
-        header("location: verify_phone?phone=".$_POST['usrIDPhone__txt']."&for=".$pageUsrID__."&request=".$editBizResponse['message']);
-    }
-    else{
-        $sys_msg['msg'] = $editBizResponse['message'];
-    }
-
-       
-
+    // if ($editBizResponse['status']==1){
+    //     $securityManager_ob->generatePhoneVerifyToken($pageUsrID__,$_POST['usrIDPhone__txt']);
+    //     $sys_msg['msg'] = "You'll be redirected shortly";
+    //     header("location: verify_phone?phone=".$_POST['usrIDPhone__txt']."&for=".$pageUsrID__."&request=".$editBizResponse['message']);
+    // }
+    // else{
+    //     $sys_msg['msg'] = $editBizResponse['message'];
+    // }
+   $sys_msg['msg'] = $editBizResponse['message'];
 }
+
 if (isset($_POST['edit_phone__btn'])){
     //$editPhoneResponse=$usrAccManager_ob->updateUsrPhoneByID($pageUsrID__,$_POST['edit_phone__txt']);
     $sys_msg['msg_type'] = $editPhoneResponse['status'];
@@ -99,7 +101,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
 </head>
 
 <body>
-    <?php //include "header-top.php"; ?>
+    <?php include "header-top.php"; ?>
     <section class="container-fluid m-0 p-0">
         <div class="row m-0 mx-sm-5 mx-md-5 mx-lg-5 mt-2 gx-0 gx-md-5 gx-lg-5 justify-content-between">
             <?php include "settings_side__bar.php";?>
@@ -134,9 +136,9 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                         //if (($isUsrIDUploaded['status'] == 0)) {
                         ?>
                             <div class="phone_0" id="phone0">
-                                <div class="fs-md fw-bolder p-3 m-2 bg-light">
+                                <!-- <div class="fs-md fw-bolder p-3 m-2 bg-light">
                                     To change your passord<br> we need your ID card:
-                                </div>
+                                </div> -->
                                 <!-- <a href="#">
                                 <div class="text-dark p-2 border m-2">
                                     <span class="d-flex fs-sm" onclick="myCall()">
@@ -149,42 +151,50 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                                </div>
                             </a> -->
                                 <a href="javascript:void">
-                                    <div class="text-dark p-2 border m-2">
+                                    <div class="text-dark p-2  m-2">
+                                        <form class="row m-2 mt-4" action="" method="POST">
+                                            <span>
+                                                <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onchange="myEnable()">
+                                            </span>
+                                            <span>
+                                            <button class="btn bg-primary p-2 w-100 text-white fw-bolder" disabled id="enable0" type="submit" name="usrIDSubmit__btn">APPLY</button>
+                                        </span>
 
-                                        <span class="d-flex fs-sm" onclick="myInfo()">
+                                        <!-- uploading and verifying user's number -->
+                                        <!-- <span class="d-flex fs-sm" onclick="myInfo()">
                                             <i class="fa fa-list text-success fs-title-4 m-3 me-5"></i>
                                             <span>
                                                 <p class="fs-title-2 fw-bold m-1">Attach your ID</p>
                                                 <p class="fs-md m-1">If you lost your old number</p>
                                             </span>
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </a>
                             </div>
-                            <div class="w-75 call_0" id="call0">
+                            <!-- <div class="w-75 call_0" id="call0">
                                 <span><input type="number" id="" placeholder="New phone number" class="form-control m-1 mb-3 btn btn-outline-primary bg-white"></span>
                                 <span><button class="btn bg-secondary m-1 w-100 p-2">Next</button></span>
-                            </div>
+                            </div> -->
                         <?php //} ?>
                     </div>
                 </div>
-                <form class="row m-2 mt-4" action="" method="POST" enctype="multipart/form-data">
+               <!--  <form class="row m-2 mt-4" action="" method="POST" enctype="multipart/form-data">
                     <div class="col-lg-6 col-md-6 col-sm-12 text-start  info_0" id="info0">
                         <select id="usrIDType__select" class="form-select mb-4" name="usrIDType__select">
                             <option value="passport">Passport</option>
                             <option value="drivers">Drivers Licence</option>
                             <option value="national">National ID</option>
-                            <!-- <option>NIN (National Identity Number)</option> -->
+                            <option>NIN (National Identity Number)</option>
                             <option value="digital">Digital ID</option>
-                        </select>
-                        <span>
+                        </select> -->
+                        <!-- <span>
                             <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number" class="form-control btn-outline-secondary bg-white my-4 text-dark">
                         </span>
                         <span>
                             <input type="text" name="usrIDFirstName__txt" id="usrIDFirstName__txt" placeholder="First Name*" class="form-control btn-outline-secondary bg-white mb-4 text-dark">
                         </span>
-                        <span>
-                            <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" >
+                        <span> -->
+                           <!--  <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" >
                         </span>
                     </div> 
                     <div class="col-lg-6 col-md-6 col-sm-12 text-start  info_0" id="info1">
@@ -212,9 +222,9 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                             <p class="fs-sm fw-bold opacity-50 mb-4">Please note,by submitting any information and document to our customer support you <Span class="text-primary">consent</Span> to the processing of such data for use in identification and authentication and you acknowledge that such processing is also required to continue providing our services to you.</p>
                         </span>
                     </div>
-                </form>
-            </div>
+                </form> -->
 
+            </div> 
         </div>
     </section>
     <?php include "footer.php";?>

@@ -697,91 +697,127 @@ class AccountManager
         }
         return $this->system_message;
     }
-    function updateUsrIDByID($usrID, $docType, $dob, $docID, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone)
+    function updateUsrIDPhone(string $usrID, string $docPhone)
     {
-        include_once "../services/AccS/MediaPdf.php";
 
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = $this->inputValidatorOb;
-        $usrID = $inputValidator->sanitizeItem($usrID, "int");
-        $docType = $inputValidator->sanitizeItem($docType, "string");
-        $dob = $inputValidator->sanitizeItem($dob, "string");
-        $docID = $inputValidator->sanitizeItem($docID, "string");
-        $docFirstname = $inputValidator->sanitizeItem($docFirstname, "string");
-        $docLastname = $inputValidator->sanitizeItem($docLastname, "string");
+        $usrID = $inputValidator->sanitizeItem($usrID, "string");
         $docPhone = $inputValidator->sanitizeItem($docPhone, "string");
-        //Upload ID Card
-        $mediA = new MediaManager();
-        $usrFirstLastName = $docFirstname . " " . $docLastname;
-        $removeSpaceInFileName = explode(" ", $usrFirstLastName);
-        $removeSpaceInFileName = "id_file_" . implode("_", $removeSpaceInFileName);
-        $idToken = md5(mt_rand(1, 10000000000000) . mt_rand(2000, 9999999999999));  
 
         $docPhone = preg_replace('/[^0-9]/', '', $docPhone);
 
+        if (!empty($docPhone)) {
 
+                if ($docPhone == 0) {
+                    $this->message(500, "Invalid number");
+                } else {
+                    $sql = "UPDATE mallusrs SET mallUsrPhoneNo = ?, mallUsrPhoneNoStatus = ? WHERE mallUsrID = ?";
+                    $stmt = $dbHandler->run($sql, [$docPhone, 1, $usrID]);
+                    $check_status = $stmt->rowCount();
 
-        // $imageResponse = $mediA->uploadOptiImage($docFile, $removeSpaceInFileName, $this->paramsOb::MEDIA_STORE . "/idFiles/uploads", $usrID, "101");
-
-            
-
-        //$sql = "UPDATE mallusrs SET mallUsrPhoto=? WHERE mallUsrID=?";
-
-        $check = 1; // monitors the status of file;
-
-        if (!empty($docFirstname) && !empty($docPhone)) {
-            // check if file is selected
-            if (!empty($docFile["name"][0])) {
-                $uploader   =   new Uploader();
-                $uploader->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
-                $uploader->setExtensions(array('pdf'));  //allowed extensions list//
-                $uploader->setMaxSize(.7);                          //set max file size to be allowed in MB//
-
-                if($uploader->uploadFile($docFile, $removeSpaceInFileName)) {   //txtFile is the filebrowse element name //     
-                    // $image  =   $uploader->getUploadName(); //get uploaded file name, renames on upload//
-                    // echo $image;
-
-                }else{//upload failed
-                    $imageResponse = ($uploader->getMessage()); //get upload error message
-                    if ($imageResponse['status'] == 0) {
-                        $check = 0;
-                        $this->message(500, $imageResponse['message']);   
-
-                    }  
+                    if ($check_status > 0) {
+                        $sql2 = "UPDATE mallusridrec SET mallIDPhone = ? WHERE mallUsrID = ?";
+                        $stmt2 = $dbHandler->run($sql2, [$docPhone, $usrID]);
+                        $this->message(1, "Successful");
+                    }  else {
+                        $this->message(500, "Number already in use!");
+                    }
                 }
-
-            } else {
-                $removeSpaceInFileName ="";
-            }
-
-            if (!empty($removeSpaceInFileName)) {
-                //populate
-                    $mediA->updatePhoneMedia("101",$usrID,$removeSpaceInFileName.".pdf");
-            }
-            // Insert into DB
-
-            if ($check === 1) {
-                 $removeSpaceInFileName = $removeSpaceInFileName.".pdf";
-                $sql2 = "INSERT INTO mallusridrec (mallUsrID,mallIDDocType,mallIDDOB,mallIDDocNum,mallIDDocFile,mallIDFirstname,mallIDLastname,mallIDRequiredBy,mallIDPhone,mallIDEmail,mallIDToken) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-                $stmt2 = $dbHandler->run($sql2, [$usrID, $docType, $dob, $docID, $removeSpaceInFileName, $docFirstname, $docLastname, $docRequiredBy, $docPhone, $docPhone, $idToken]);
-                $check_status2 = $stmt2->rowCount();
-
-                if ($check_status2 > 0) {
-                    $this->message(1, $idToken);
-                }  else {
-                    $this->message(500, "Something Went Wrong!");
-                }
-            }
-
-            
-
-            
         } else {
-            $this->message(500, "First name and Phone number are required");
+            $this->message(500, "Field is required");
         }
 
         return $this->system_message;
     }
+
+    /*----------OLD----------*/
+
+    //  function updateUsrIDByID($usrID, $docType, $dob, $docID, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone)
+    // {
+    //     include_once "../services/AccS/MediaPdf.php";
+
+    //     $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+    //     $inputValidator = $this->inputValidatorOb;
+    //     $usrID = $inputValidator->sanitizeItem($usrID, "int");
+    //     $docType = $inputValidator->sanitizeItem($docType, "string");
+    //     $dob = $inputValidator->sanitizeItem($dob, "string");
+    //     $docID = $inputValidator->sanitizeItem($docID, "string");
+    //     $docFirstname = $inputValidator->sanitizeItem($docFirstname, "string");
+    //     $docLastname = $inputValidator->sanitizeItem($docLastname, "string");
+    //     $docPhone = $inputValidator->sanitizeItem($docPhone, "string");
+    //     //Upload ID Card
+    //     $mediA = new MediaManager();
+    //     $usrFirstLastName = $docFirstname . " " . $docLastname;
+    //     $removeSpaceInFileName = explode(" ", $usrFirstLastName);
+    //     $removeSpaceInFileName = "id_file_" . implode("_", $removeSpaceInFileName);
+    //     $idToken = md5(mt_rand(1, 10000000000000) . mt_rand(2000, 9999999999999));  
+
+    //     $docPhone = preg_replace('/[^0-9]/', '', $docPhone);
+
+
+
+    //     // $imageResponse = $mediA->uploadOptiImage($docFile, $removeSpaceInFileName, $this->paramsOb::MEDIA_STORE . "/idFiles/uploads", $usrID, "101");
+
+            
+
+    //     //$sql = "UPDATE mallusrs SET mallUsrPhoto=? WHERE mallUsrID=?";
+
+    //     $check = 1; // monitors the status of file;
+
+    //     if (!empty($docFirstname) && !empty($docPhone)) {
+    //         // check if file is selected
+    //         if (!empty($docFile["name"][0])) {
+    //             $uploader   =   new Uploader();
+    //             $uploader->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
+    //             $uploader->setExtensions(array('pdf'));  //allowed extensions list//
+    //             $uploader->setMaxSize(.7);                          //set max file size to be allowed in MB//
+
+    //             if($uploader->uploadFile($docFile, $removeSpaceInFileName)) {   //txtFile is the filebrowse element name //     
+    //                 // $image  =   $uploader->getUploadName(); //get uploaded file name, renames on upload//
+    //                 // echo $image;
+
+    //             }else{//upload failed
+    //                 $imageResponse = ($uploader->getMessage()); //get upload error message
+    //                 if ($imageResponse['status'] == 0) {
+    //                     $check = 0;
+    //                     $this->message(500, $imageResponse['message']);   
+
+    //                 }  
+    //             }
+
+    //         } else {
+    //             $removeSpaceInFileName ="";
+    //         }
+
+    //         if (!empty($removeSpaceInFileName)) {
+    //             //populate
+    //                 $mediA->updatePhoneMedia("101",$usrID,$removeSpaceInFileName.".pdf");
+    //         }
+    //         // Insert into DB
+
+    //         if ($check === 1) {
+    //              $removeSpaceInFileName = $removeSpaceInFileName.".pdf";
+    //             $sql2 = "INSERT INTO mallusridrec (mallUsrID,mallIDDocType,mallIDDOB,mallIDDocNum,mallIDDocFile,mallIDFirstname,mallIDLastname,mallIDRequiredBy,mallIDPhone,mallIDEmail,mallIDToken) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    //             $stmt2 = $dbHandler->run($sql2, [$usrID, $docType, $dob, $docID, $removeSpaceInFileName, $docFirstname, $docLastname, $docRequiredBy, $docPhone, $docPhone, $idToken]);
+    //             $check_status2 = $stmt2->rowCount();
+
+    //             if ($check_status2 > 0) {
+    //                 $this->message(1, $idToken);
+    //             }  else {
+    //                 $this->message(500, "Something Went Wrong!");
+    //             }
+    //         }
+
+            
+
+            
+    //     } else {
+    //         $this->message(500, "First name and Phone number are required");
+    //     }
+
+    //     return $this->system_message;
+    // }
 
 
     function usrIDUploadedStatusByID($usrID)
@@ -1185,26 +1221,45 @@ class AccountManager
         $sqlCheck = "SELECT * FROM mallusrs WHERE mallUsrID=?";
         $stmtCheck = $dbHandler->run($sqlCheck, [$mallUsrID]);
         $row = $stmtCheck->fetch();
+        $check = 0;
+        $phone = "";
         if ($stmtCheck->rowCount() > 0) {
             if ($row['mallUsrPhoneNoStatus'] == 1) {
+                $check = 1;
+                $phone = $row['mallUsrPhoneNoStatus'];
+                // $sql = "SELECT * FROM mallusridrec WHERE mallUsrID=? AND mallIDPhone=? ORDER BY defaultColID DESC";
+                // $stmt = $dbHandler->run($sql, [$mallUsrID,$phoneNo]);
+                // $check_status = $stmt->rowCount();
+                // $row = $stmt->fetch();
+                // if ($check_status > 0) {
+                //     if ($row['mallIDApproved'] == 1) {
+                //         $this->message(1, $row['mallIDPhone']);
+                //     } else {
+                //         $this->message(500, "not approved");
+                //     }
+                // } else {
+                //     $this->message(500, "ID not submitted");
+                // }
                 $sql = "SELECT * FROM mallusridrec WHERE mallUsrID=? AND mallIDPhone=? ORDER BY defaultColID DESC";
                 $stmt = $dbHandler->run($sql, [$mallUsrID,$phoneNo]);
                 $check_status = $stmt->rowCount();
                 $row = $stmt->fetch();
                 if ($check_status > 0) {
-                    if ($row['mallIDApproved'] == 1) {
-                        $this->message(1, $row['mallIDPhone']);
+                    if (!empty($row['mallIDPhone'])) {
+                        $check = 1;
                     } else {
                         $this->message(500, "not approved");
                     }
-                } else {
-                    $this->message(500, "ID not submitted");
-                }
+                } 
             } else {
                 $this->message(500, "not verified");
             }
         } else {
             $this->message(404, "do not exist");
+        }
+
+        if ($check == 1) {
+            $this->message(1, $phone);
         }
 
         return $this->system_message;
