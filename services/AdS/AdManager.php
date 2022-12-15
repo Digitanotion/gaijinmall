@@ -1323,8 +1323,8 @@ class AdManager
 	}
 	static function displayPromoted($adID, $promoID)
 	{
-		$inputValidator = $this->inputValidatorOb;
-		$adID = $inputValidator->sanitizeInput($adID, "string");
+		// $inputValidator = $this->inputValidatorOb;
+		// $adID = $inputValidator->sanitizeInput($adID, "string");
 		$classOb = new self();
 		if ($classOb->checkPromotedAd($adID, $promoID)['status']) {
 			echo '<span class="ha-card-content-icon-1 fw-bolder fs-sm-1 d-flex justify-content-center align-items-center" href="#">

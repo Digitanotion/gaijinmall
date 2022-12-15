@@ -1248,10 +1248,15 @@ class AccountManager
         $check_status = $stmt->rowCount();
         if ($check_status > 0) {
             $this->message(1, "Business Verified");
-
+            $sql2 = "UPDATE mallusrbiz SET mallBizStatus=? WHERE mallUsrID=?";
+            $stmt2 = $dbHandler->run($sql2, [$status, $mallUsrID]);
+            // $check_status2 = $stmt3->rowCount();
+            
         } else {
+            $check = 0;
             $this->message(0, "Error updating status");
         }
+
 
 
         return $this->system_message;
@@ -1274,6 +1279,8 @@ class AccountManager
         $stmt = $dbHandler->run($sql, [$status, $mallUsrID]);
         $check_status = $stmt->rowCount();
         if ($check_status > 0) {
+            $sql2 = "UPDATE mallusrbiz SET mallBizStatus=? WHERE mallUsrID=?";
+            $stmt2 = $dbHandler->run($sql2, [0, $mallUsrID]);
             $this->message(1, "Verification Denied!");
 
         } else {

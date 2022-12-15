@@ -28,16 +28,21 @@ $sys_msg['msg']="Sign Successfull"; */
 //Create an instance of security service to handle authentication
 $securityManager_ob = new SecurityManager();
 $adManager_ob = new AdManager();
+$usrAccManager_ob = new AccountManager();
 $mediaManager = new MediaManager();
 $audService_ob = new AuditManager();
 $messaging_ob = new messagingManager();
 $feedback_ob=new feedbackManager();
+
+
 
 /* if (!$securityManager_ob->is_user_auth__()){
   header("location: Signin.php");
 } */
 $adID = "";
 $pageUsrID__=$_SESSION['gaijinmall_user_'];
+
+$getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__);
 /*
 
 $getCurrentUserInfo=$securityManager_ob->getUserInfoByID($usrID);
@@ -316,6 +321,11 @@ $newToken = $securityManager_ob->setCSRF();
                 <div class="ha-seller__info">
                   <div class="ha-seller__name fs-title-1 ">
                   <a href="<?php echo ($getUsrBizInfo['mallBizSlug']=="" || $getUsrBizInfo['mallBizSlug']=="NULL")?"#" : "shop/".$getUsrBizInfo['mallBizSlug']; ?>"><?php echo $getUsrInfo['mallUsrFirstName'] . " " . $getUsrInfo['mallUsrLastName']; ?></a>
+                  <?php
+                      if ($getUsrBizInfo["mallBizStatus"] == 1) {?>
+                          <span class="badge bg-success">Verified <i class="fa fa-check-circle p-0"></i></span>
+                      <?php  }
+                  ?>
                     
                   </div>
                   <span class="badge bg-light text-dark fs-sm"><i class="fa fa-clock-o m-0"></i>&nbsp;<span class="badge bg-dark text-light"><?php echo $audService_ob->time_ago($getUsrInfo['mallUsrRegTime']); ?></span> in Gaijinmall</span>

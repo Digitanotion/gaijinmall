@@ -359,6 +359,13 @@ class messagingManager{
 
     }
 
+    public function sendNotification($mallUsrID, $mallAdminID, $mallMessage, $mallType) {
+        $inputValidatorOb=new InputValidator();
+        $mallUsrID=$inputValidatorOb->sanitizeItem($mallUsrID, "string");
+        $mallAdminID =$inputValidatorOb->validateItem($mallAdminID, "string");
+        $mallMessage =$inputValidatorOb->validateItem($mallMessage, "string");
+    }
+
     function usrTousrNotification($to, $from,$msg){
         //$securityManagerOb=new SecurityManager();
         $inputValidatorOb=new InputValidator();

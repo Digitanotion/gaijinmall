@@ -21,7 +21,7 @@
 
     if($response['status'] == 1){
         //to avoid sending notification when the same status is to be set
-        // $messenger = new messagingManager();
+        $messenger = new messagingManager();
         // $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], $_POST['message']);
     }
 

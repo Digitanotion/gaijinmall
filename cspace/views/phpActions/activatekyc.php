@@ -22,11 +22,11 @@
     //echo $_POST["userID"]."-".$_POST['approveStatus']."-".$_POST['usrPhone']."-".$_POST['kycID'];
 
 
-    // if($response['status'] == 1){
-    //     //to avoid sending notification when the same status is to be set
-    //     $messenger = new messagingManager();
-    //     $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], "Your Kyc documents has been approved");
-    // }
+    if($response['status'] == 1){
+        //to avoid sending notification when the same status is to be set
+        $messenger = new messagingManager();
+        // $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], "Your Kyc documents has been approved");
+    }
 
     
  
