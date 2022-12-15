@@ -733,7 +733,85 @@ class AccountManager
 
     /*----------OLD----------*/
 
-    //  function updateUsrIDByID($usrID, $docType, $dob, $docID, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone)
+     function updateUsrIDByID($usrID, $docBizID, $dob, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone, $usrEmail)
+    {
+        include_once "../services/AccS/MediaPdf.php";
+        $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+        $inputValidator = $this->inputValidatorOb;
+        $usrID = $inputValidator->sanitizeItem($usrID, "int");
+        $dob = $inputValidator->sanitizeItem($dob, "string");
+        $docFirstname = $inputValidator->sanitizeItem($docFirstname, "string");
+        $docLastname = $inputValidator->sanitizeItem($docLastname, "string");
+        $docPhone = $inputValidator->sanitizeItem($docPhone, "string");
+
+            //Upload ID Card
+        $mediA = new MediaManager();
+        $usrFirstLastName = $docFirstname . " " . $docLastname;
+        $removeSpaceInFileName = explode(" ", $usrFirstLastName);
+        $removeSpaceInFileName_ = explode(" ", $usrFirstLastName);
+        $removeSpaceInFileName = "biz_file_" . implode("_", $removeSpaceInFileName);
+        $removeSpaceInFileName_ = "id_file_" . implode("_", $removeSpaceInFileName_);
+        $idToken = md5(mt_rand(1, 10000000000000) . mt_rand(2000, 9999999999999));  
+
+        $docPhone = preg_replace('/[^0-9]/', '', $docPhone);
+
+             $check = 1; // monitors the status of file;
+
+        if (!empty($docBizID["name"][0]) && !empty($docFile["name"][0]) && !empty($docPhone)) {
+            $uploader   =   new Uploader();
+            $uploader_id   =   new Uploader();
+            $uploader->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
+            $uploader->setExtensions(array('pdf'));  //allowed extensions list//
+            $uploader->setMaxSize(.7);
+
+            $uploader_id->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
+            $uploader_id->setExtensions(array('pdf'));  //allowed extensions list//
+            $uploader_id->setMaxSize(.7);                          //set max file size to be allowed in MB//
+
+            if($uploader->uploadFile($docBizID, $removeSpaceInFileName) ) {   //txtFile is the filebrowse element name //   
+            } else { //upload failed
+                $imageResponse = ($uploader->getMessage()); //get upload error message
+                if ($imageResponse['status'] == 0) {
+                    $check = 0;
+                    $this->message(500, $imageResponse['message']);   
+                } 
+            } 
+
+            if($uploader_id->uploadFile($docFile, $removeSpaceInFileName_) ) {   //txtFile is the filebrowse element name   
+            } else { //upload failed
+                $imageResponse_id = ($uploader->getMessage()); //get upload error message
+                if ($imageResponse_id['status'] == 0) {
+                    $check = 0;
+                    $this->message(500, $imageResponse_id['message']);   
+                } 
+            }  
+
+            // Insert into DB
+
+            if ($check === 1) {
+                $removeSpaceInFileName = $removeSpaceInFileName.".pdf";
+                $removeSpaceInFileName_ = $removeSpaceInFileName_.".pdf";
+                $sql2 = "INSERT INTO mallusridrec (mallUsrID,mallIDDocType,mallIDDOB,mallIDDocFile,mallIDFirstname,mallIDLastname,mallIDRequiredBy,mallIDPhone,mallIDEmail,mallIDToken) VALUES (?,?,?,?,?,?,?,?,?,?)";
+                $stmt2 = $dbHandler->run($sql2, [$usrID, $removeSpaceInFileName, $dob,  $removeSpaceInFileName_, $docFirstname, $docLastname, $docRequiredBy, $docPhone, $usrEmail, $idToken]);
+                $check_status2 = $stmt2->rowCount();
+
+                if ($check_status2 > 0) {
+                    $this->message(1, "Thanks, We'll review your request and revert as soon as possible");
+                }  else {
+                    $this->message(500, "Something Went Wrong!");
+                }
+            } 
+
+        } else {
+            $this->message(500, "All fields are required");
+        }
+
+        
+
+        return $this->system_message;
+    } 
+        /*---------------OLD------------------*/
+    // function updateUsrIDByID($usrID, $docType, $dob, $docID, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone)
     // {
     //     include_once "../services/AccS/MediaPdf.php";
 

@@ -782,6 +782,14 @@ $('.delAccReason').on('change', function(e){
 })
 
 //Change add icon to file icon when user selects file in user_phone_update page
+function updateSelectFile(){
+  $("#usrBizFile__file").click();
+}
+$('#usrBizFile__file').on("change", function (e) {
+  $("#addNewfileIconB__phoneupdate").removeClass("fa-plus");
+  $("#addNewfileIconB__phoneupdate").addClass("fa-file");
+})
+
 function phoneUpdateSelectFile(){
   $("#usrIDFile__file").click();
 }
@@ -789,6 +797,13 @@ $('#usrIDFile__file').on("change", function (e) {
   $("#addNewfileIcon__phoneupdate").removeClass("fa-plus");
   $("#addNewfileIcon__phoneupdate").addClass("fa-file");
 })
+
+
+// $('#usrBizFile__file').on("change", function (e) {
+//   $("#addNewfileIconB__phoneupdate").removeClass("fa-plus");
+//   $("#addNewfileIconB__phoneupdate").addClass("fa-file");
+// })
+
 
 //Change text to date type in phone update page
 // function phoneUpdateChangeToDate(){
