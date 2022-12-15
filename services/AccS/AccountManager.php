@@ -1228,7 +1228,7 @@ class AccountManager
         return $this->system_message;
     }
 
-    public function updateKycStatus($mallUsrID, $status,$usrPhone,$kycID=null)
+    public function verifyBiz($mallUsrID, $status,$usrPhone="",$kycID=null)
     {
 
         $dbHandler = $this->dbHandler;
@@ -1247,9 +1247,7 @@ class AccountManager
         $stmt = $dbHandler->run($sql, [$status, $kycID]);
         $check_status = $stmt->rowCount();
         if ($check_status > 0) {
-            $sql = "UPDATE mallusrs SET mallUsrPhoneNoStatus=?, mallUsrPhoneNo=? WHERE mallUsrID=?";
-            $stmt = $dbHandler->run($sql, [$status, $usrPhone,$mallUsrID]);
-            $this->message(1, "Status updated successfully");
+            $this->message(1, "Business Verified");
 
         } else {
             $this->message(0, "Error updating status");
@@ -1258,6 +1256,63 @@ class AccountManager
 
         return $this->system_message;
     }
+
+    public function declineBiz($mallUsrID, $status) {
+        $dbHandler = $this->dbHandler;
+
+        // check for existing status
+        $sqlCheck = "SELECT * FROM mallusridrec WHERE mallUsrID=?";
+        $stmtCheck = $dbHandler->run($sqlCheck, [$mallUsrID]);
+        $row = $stmtCheck->fetch();
+        if ($row['mallIDApproved'] == $status) {
+            $this->message(400, "Status already set");
+            return $this->system_message;
+            exit;
+        }
+
+        $sql = "UPDATE mallusridrec SET mallIDApproved=? WHERE mallUsrID=?";
+        $stmt = $dbHandler->run($sql, [$status, $mallUsrID]);
+        $check_status = $stmt->rowCount();
+        if ($check_status > 0) {
+            $this->message(1, "Verification Denied!");
+
+        } else {
+            $this->message(0, "Error updating status");
+        }
+
+        return $this->system_message;
+    }
+
+    // public function updateKycStatus($mallUsrID, $status,$usrPhone,$kycID=null)
+    // {
+
+    //     $dbHandler = $this->dbHandler;
+
+    //     //check for existing status
+    //     $sqlCheck = "SELECT * FROM mallusridrec WHERE mallIDToken=?";
+    //     $stmtCheck = $dbHandler->run($sqlCheck, [$kycID]);
+    //     $row = $stmtCheck->fetch();
+    //     if ($row['mallIDApproved'] == $status) {
+    //         $this->message(400, "Status already set");
+    //         return $this->system_message;
+    //         exit;
+    //     }
+
+    //     $sql = "UPDATE mallusridrec SET mallIDApproved=? WHERE mallIDToken=?";
+    //     $stmt = $dbHandler->run($sql, [$status, $kycID]);
+    //     $check_status = $stmt->rowCount();
+    //     if ($check_status > 0) {
+    //         $sql = "UPDATE mallusrs SET mallUsrPhoneNoStatus=?, mallUsrPhoneNo=? WHERE mallUsrID=?";
+    //         $stmt = $dbHandler->run($sql, [$status, $usrPhone,$mallUsrID]);
+    //         $this->message(1, "Status updated successfully");
+
+    //     } else {
+    //         $this->message(0, "Error updating status");
+    //     }
+
+
+    //     return $this->system_message;
+    // }
 
     public function getUserVerifiedNumberByID($mallUsrID)
     {

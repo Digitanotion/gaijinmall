@@ -14,10 +14,13 @@
 
 
     $accManage = new AccountManager();
-    $response = $accManage->updateKycStatus($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
+    $response = $accManage->verifyBiz($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
+    echo $response['status'];
+
+    
+    // $response = $accManage->updateKycStatus($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
     //echo $_POST["userID"]."-".$_POST['approveStatus']."-".$_POST['usrPhone']."-".$_POST['kycID'];
 
-    echo $response['status'];
 
     // if($response['status'] == 1){
     //     //to avoid sending notification when the same status is to be set
