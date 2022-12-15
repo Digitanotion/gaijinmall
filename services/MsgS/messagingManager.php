@@ -359,11 +359,20 @@ class messagingManager{
 
     }
 
-    public function sendNotification($mallUsrID, $mallAdminID, $mallMessage, $mallType) {
+    public function sendNotification($mallUsrID, $mallAdminID, $mallMessage) {
+        $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
         $inputValidatorOb=new InputValidator();
         $mallUsrID=$inputValidatorOb->sanitizeItem($mallUsrID, "string");
-        $mallAdminID =$inputValidatorOb->validateItem($mallAdminID, "string");
-        $mallMessage =$inputValidatorOb->validateItem($mallMessage, "string");
+        $mallAdminID =$inputValidatorOb->sanitizeItem($mallAdminID, "string");
+        $mallMessage =$inputValidatorOb->sanitizeItem($mallMessage, "string");
+        $notifyTime = time();
+            $sql = "INSERT INTO mallnotifications( mallNotifyTime, 
+                                                   mallNotifyAdminInitID, 
+                                                   mallNotifyToUserID,
+                                                   mallNotifyContent,
+                                                   mallNotifyReadStat,
+                                                   mallNotifyType ) VALUES (?,?,?,?,?,?)";
+            $stmt = $dbHandler->run($sql, [$notifyTime, $mallAdminID, $mallUsrID, $mallMessage, 0,"verification"]);
     }
 
     function usrTousrNotification($to, $from,$msg){

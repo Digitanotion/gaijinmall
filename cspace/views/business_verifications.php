@@ -578,6 +578,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                   <?php 
                   $allKycs = $accManager->getKycs();
                   $count = 0;
+                  $adminId = $_SESSION['gaijinmall_user_admin__'];
                     if ($allKycs['status']==1){
                         foreach ($allKycs['message'] as $id) {
                         
@@ -612,23 +613,23 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                             $kycStatMsg = '<span class="badge badge-danger">Rejected</span>';
                           }
                           $count++;
-
+                          ?>
                         
-                          echo '<tr>
+                              <tr>
                                 <td>'.$count.'</td>
                                 </td>
-                                <td><a href="user.php?id='.$defaultCol.'">'.$userName.'</a></td>
-                                <td>'.$docBiz.'<br>'. $docId . '</td>
+                                <td><a href="user.php?id='.$defaultCol.'"><?php echo $userName; ?></a></td>
+                                <td><?php echo $docBiz; ?><br><?php echo $docId; ?></td>
                                
-                                <td>'.$userAccMsg.'</td>
-                                <td>'.$kycStatMsg.'</td>
-                                <td><a href="verify_biz.php?id='.$defaultCol.'">click to view</a></td>
-                                <td> <a onclick="kycMessage('.$mallUsrID.')" class="text-danger mx-1" title="Reject biz"><i class="fas fa-thumbs-down"></i></a>  <a onclick="approveKyc('.$userID.','.$userPhone.','.$kycID.')" class="text-success
+                                <td><?php echo $userAccMsg; ?></td>
+                                <td><?php echo $kycStatMsg; ?></td>
+                                <td><a href="verify_biz.php?id=<?php echo $defaultCol ?>">click to view</a></td>
+                                <td> <a onclick="kycMessage(<?php echo $mallUsrID ;?>)" class="text-danger mx-1" title="Reject biz"><i class="fas fa-thumbs-down"></i></a>  <a onclick="approveKyc(<?php  echo $userID ?>, <?php  echo $adminId ?>, <?php  echo $userPhone ?>, <?php  echo $kycID ?>)" class="text-success
                                  mx-1" title="verify biz"><i class="fas fa-thumbs-up"></i></a></td>
                                
-                              </tr>';
+                              </tr>;
 
-                        }
+                        <?php }
                     }
                     else{
 
@@ -673,7 +674,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2022 <a href="https://Gaijinmall.com">Gaijin Mall</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2022 <a href="https://Gaijinmall.com">Gaijin Mall</a>.</strong> All rights reserved. 
   </footer>
 
   <!-- Control Sidebar -->
@@ -777,11 +778,12 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
 
 
    
-  function approveKyc(id,usrPhone,kycID){
+  function approveKyc(id,aId,usrPhone,kycID){
 
       var formData = {
 
         userID: id,
+        adminId: aId,
         approveStatus : 1,
         usrPhone: usrPhone,
         kycID:kycID,
@@ -839,6 +841,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
               }, 4000);
 
         });
+
 }
 
 
