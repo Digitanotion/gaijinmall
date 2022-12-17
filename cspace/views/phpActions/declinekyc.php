@@ -22,7 +22,13 @@
     if($response['status'] == 1){
         //to avoid sending notification when the same status is to be set
         $messenger = new messagingManager();
+        $userName = $_POST['userEmail'];
+        $msgBody = "Hello $userName,
+We regret to inform you that your business verification request did not was rejected, see reason below:
+ The address submitted does not exist, and the ID submitted is not clear.
+We advise you try again. Thank you for choosing <a href='gaijinmall.com'>gaijinmall.com</a>";
         $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], $_POST['message']);
+        $mailResp= $messenger->sendMail("noreply@gaijinmall.com",$_POST['userEmail'], "Business Verification Update", $msgBody);
     }
 
     
