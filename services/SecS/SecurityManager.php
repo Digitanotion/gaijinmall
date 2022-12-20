@@ -198,7 +198,7 @@ class SecurityManager extends InputValidator
             $check_status = $stmt->rowCount();
             if ($check_status > 0) {
                 $mailHandlerOb->sendMail("noreply@gaijinmall.com", $usrEmail, "Gaijinmall Email Verification", $newVerifyCode, "verify", null, $usrFirstName, null, $newToken);
-                $this->message(1, "We've sent a verification link to your email"); //success
+                $this->message(11, "We've sent a verification link to your email"); //success
             } else {
                 $this->message(500, "Verification failed");
             }
@@ -309,7 +309,7 @@ class SecurityManager extends InputValidator
                     if (password_verify($password__, $user_info_details['mallUsrPassword'])) {
                         $_SESSION['gaijinmall_user_'] = $user_info_details['mallUsrID'];
                         if (isset($_SESSION['gaijinmall_user_'])) {
-                            $this->message(1, "");
+                            //$this->message(1, "Success");
                             session_regenerate_id(); //Medigate session hijacking
                             //SET USER ONLINE PARAMETER IN DB
                             $sqlUsrOnline = "UPDATE mallusrs SET mallUsrOnline=? WHERE mallUsrID=?";
@@ -319,7 +319,7 @@ class SecurityManager extends InputValidator
                             $sqlUsrLastSeen = "UPDATE mallusrs SET mallUsrLatestTime=? WHERE mallUsrID=?";
                             $stmtUsrLastSeen = $dbHandler->run($sqlUsrLastSeen, [$time_login, $user_info_details['mallUsrID']]);
                             $this->message(1, $user_info_details);
-                            header("location: " . MALL_ROOT);
+                            header("location: ./" );
                         } else {
                             $this->message(500, "User session does not exist");
                         }
