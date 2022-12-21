@@ -21,6 +21,13 @@
                             </div>
                         </div>
                     </a>
+                    <a href="verify_business.php" class="text-dark">
+                        <div class="px-3 my-1 bg-white">
+                            <div class="ha-profile-menu__items">
+                                <span class="fs-md">Verify your business</span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
                 <div class="bg-light-blue w-100 pt-3">

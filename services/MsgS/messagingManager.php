@@ -108,7 +108,8 @@ class messagingManager{
         $userAgent=$_SERVER['HTTP_USER_AGENT'];
         $userIP=$remoteIP->getIpAddress();
         $usrID=$inputValidator->sanitizeItem($usrID, "int");
-        $recieverUsrID=$inputValidator->sanitizeItem($recieverUsrID, "int");
+        $usrID=$inputValidator->validateItem($usrID, "int");
+
         //////////CHECK IF CONVERATION HAS BEEN CREATED BEFORE
         $sql = "SELECT * FROM mallmsggroups WHERE mallMsgSenderID=? AND mallMsgReceiverID=?";
 		$stmt = $dbHandler->run($sql, [$usrID,$recieverUsrID]);
@@ -141,6 +142,7 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $usrID=$inputValidator->sanitizeItem($usrID, "int");
+        $usrID=$inputValidator->validateItem($usrID, "int");
         //Check if conversation was created
         $sql = "SELECT * FROM mallmsggroups WHERE mallMsgSenderID=? OR mallMsgReceiverID=?";
 		$stmt = $dbHandler->run($sql, [$usrID,$usrID]);
@@ -159,6 +161,7 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $msgID=$inputValidator->sanitizeItem($usrID, "string");
+        $msgID=$inputValidator->validateItem($usrID, "string");
         //Check if conversation was created
         $sql = "SELECT * FROM mallnotifications WHERE mallNotifyToUserID=? ORDER BY defaultColID DESC";
 		$stmt = $dbHandler->run($sql, [$usrID]);
@@ -175,7 +178,8 @@ class messagingManager{
     function getMsgGroupInfoByMsgID($msgID){
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
-        $usrID=$inputValidator->sanitizeItem($msgID, "int");
+        $usrID=$inputValidator->sanitizeItem($msgID, "string");
+        $usrID=$inputValidator->validateItem($msgID, "string");
         //Check if conversation was created
         $sql = "SELECT * FROM mallmsggroups WHERE mallMsgID=?";
 		$stmt = $dbHandler->run($sql, [$msgID]);
@@ -195,6 +199,7 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $msgID=$inputValidator->sanitizeItem($msgID, "string");
+        $msgID=$inputValidator->validateItem($msgID, "string");
         //Check if conversation was created
         $sql = "SELECT * FROM mallmsgs WHERE mallMsgID=?";
 		$stmt = $dbHandler->run($sql, [$msgID]);
@@ -270,9 +275,13 @@ class messagingManager{
         $security_ob=new SecurityManager();
 		$msgTime=time();
         $usrID=$inputValidator->sanitizeItem($usrID, "int");
+        $usrID=$inputValidator->validateItem($usrID, "int");
         $UsrMsg=$inputValidator->sanitizeItem($UsrMsg, "stringLite");
+        $UsrMsg=$inputValidator->validateItem($UsrMsg, "stringLite");
         $msgReason=$inputValidator->sanitizeItem($msgReason, "string");
+        $msgReason=$inputValidator->validateItem($msgReason, "string");
         $msgType=$inputValidator->sanitizeItem($msgType, "string");
+        $msgType=$inputValidator->validateItem($msgType, "string");
         $msg_id=$this->initMessageSender($usrID,$adID,"1029384756");
         //Check if conversation was created
         if ($msg_id['status']==1){
@@ -302,6 +311,7 @@ class messagingManager{
         $securityManagerOb=new SecurityManager();
         $inputValidatorOb=new InputValidator();
         $userID=$inputValidatorOb->sanitizeItem($userID,"string");
+        $userID=$inputValidatorOb->validateItem($userID,"string");
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
         $accManager_ob=new AccountManager();
         $msgData=new MessageData();
@@ -322,6 +332,7 @@ class messagingManager{
          }
          else{
             $msgBody = $inputValidatorOb->sanitizeItem($msgBody, "string");
+            $msgBody = $inputValidatorOb->validateItem($msgBody, "string");
             $notifyTime = time();
             $sql = "INSERT INTO mallnotifications( mallNotifyTime, 
                                                    mallNotifyAdminInitID, 
@@ -348,12 +359,31 @@ class messagingManager{
 
     }
 
+    public function sendNotification($mallUsrID, $mallAdminID, $mallMessage) {
+        $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+        $inputValidatorOb=new InputValidator();
+        $mallUsrID=$inputValidatorOb->sanitizeItem($mallUsrID, "string");
+        $mallAdminID =$inputValidatorOb->sanitizeItem($mallAdminID, "string");
+        $mallMessage =$inputValidatorOb->sanitizeItem($mallMessage, "string");
+        $notifyTime = time();
+            $sql = "INSERT INTO mallnotifications( mallNotifyTime, 
+                                                   mallNotifyAdminInitID, 
+                                                   mallNotifyToUserID,
+                                                   mallNotifyContent,
+                                                   mallNotifyReadStat,
+                                                   mallNotifyType ) VALUES (?,?,?,?,?,?)";
+            $stmt = $dbHandler->run($sql, [$notifyTime, $mallAdminID, $mallUsrID, $mallMessage, 0,"verification"]);
+    }
+
     function usrTousrNotification($to, $from,$msg){
         //$securityManagerOb=new SecurityManager();
         $inputValidatorOb=new InputValidator();
         $to=$inputValidatorOb->sanitizeItem($to, "string");
+        $to=$inputValidatorOb->validateItem($to, "string");
         $from=$inputValidatorOb->sanitizeItem($from, "string");
+        $from=$inputValidatorOb->validateItem($from, "string");
         $msg=$inputValidatorOb->sanitizeItem($msg, "string");
+        $msg=$inputValidatorOb->validateItem($msg, "string");
         //$extra=$inputValidatorOb->sanitizeItem($extra, "string");
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
         //$accManager_ob=new AccountManager();
@@ -383,6 +413,7 @@ class messagingManager{
     function sendSMS($to, $body) {
         $inputValidatorOb=new InputValidator();
         $to=$inputValidatorOb->sanitizeItem($to, "tel");
+        $to=$inputValidatorOb->validateItem($to, "tel");
         $username = 'gaijinmall';
         $password = '@AWS#freedomf88a';
         $messages = array(

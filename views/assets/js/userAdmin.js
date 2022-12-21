@@ -27,21 +27,33 @@ $("#promoteAd_btn").attr("disabled", true);
 $(".make_offer_btn").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to make an offer. Thanks.");
+    return showAlert("So sorry, kindly login to make an offer. Thanks.");
   }
 });
 $(".sendDM").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to send message to the seller. Thanks.");
+      return showAlert("So sorry, kindly login to send message to the seller. Thanks.");
   }
 });
 $(".reportAd__btn").on("click", function () {
   if ($(this)[0].hasAttribute("data-bs-toggle")) {
   } else {
-    alert("So sorry, kindly login to report this Ad. Thanks.");
+      return showAlert("So sorry, kindly login to report this Ad. Thanks.");
   }
 });
+
+/******************this function call cutealert********by Promise*********************/
+function showAlert($msg) {
+  cuteAlert({
+    type: "error",
+    title: "Operation Failed",
+    message: $msg,
+    buttonText: "Ok",
+  })
+}
+
+
 $("[name|='mallAdPromoID']").on("click", function () {
   $("#promoteAd_btn").removeAttr("disabled", true);
   promoAdSelected = $(this).attr("promocost");
@@ -770,6 +782,14 @@ $('.delAccReason').on('change', function(e){
 })
 
 //Change add icon to file icon when user selects file in user_phone_update page
+function updateSelectFile(){
+  $("#usrBizFile__file").click();
+}
+$('#usrBizFile__file').on("change", function (e) {
+  $("#addNewfileIconB__phoneupdate").removeClass("fa-plus");
+  $("#addNewfileIconB__phoneupdate").addClass("fa-file");
+})
+
 function phoneUpdateSelectFile(){
   $("#usrIDFile__file").click();
 }
@@ -777,6 +797,13 @@ $('#usrIDFile__file').on("change", function (e) {
   $("#addNewfileIcon__phoneupdate").removeClass("fa-plus");
   $("#addNewfileIcon__phoneupdate").addClass("fa-file");
 })
+
+
+// $('#usrBizFile__file').on("change", function (e) {
+//   $("#addNewfileIconB__phoneupdate").removeClass("fa-plus");
+//   $("#addNewfileIconB__phoneupdate").addClass("fa-file");
+// })
+
 
 //Change text to date type in phone update page
 // function phoneUpdateChangeToDate(){

@@ -605,6 +605,7 @@ class SecurityManager extends InputValidator
         $account_manager=new AccountManager();
         $usrID = $inputValidator->sanitizeItem($usrID, "string");
         $usrPhone = $inputValidator->sanitizeItem($usrPhone, "string");
+        $usrPhone = preg_replace('/[^0-9]/', '', $usrPhone);
         //Get DB Info
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         //Query DB

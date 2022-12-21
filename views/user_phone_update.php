@@ -16,9 +16,14 @@ use services\SecS\SecurityManager;
 use services\AdS\AdManager;
 use services\AccS\AccountManager;
 
+
+
 $securityManager_ob = new SecurityManager();
 $adsManager_ob = new AdManager();
 $usrAccManager_ob = new AccountManager();
+
+
+
 $sys_msg = []; //Hold data for the toasts
 /* 
 PHP2Toast Send system message to toast listener
@@ -42,23 +47,33 @@ $isUsrIDUploaded = $usrAccManager_ob->usrIDUploadedStatusByID($pageUsrID__);
 $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message'];
 $getUsrPhoneVerified=$usrAccManager_ob->getUserVerifiedNumberByIDandPhone($pageUsrID__,$getUsrInfo['mallUsrPhoneNo']);
 if (isset($_POST['usrIDSubmit__btn'])) {
-    $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+    // $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+
+    $editBizResponse = $usrAccManager_ob->updateUsrIDPhone($pageUsrID__,$_POST['usrIDPhone__txt']);
+
+   /*------------old ------------*/
+    // $editBizResponse = $usrAccManager_ob->updateUsrIDByID($pageUsrID__,$_POST['usrIDType__select'],$_POST['datusrIDDOB__txt'],$_POST['usrIDNo__txt'],$_FILES['usrIDFile__file'],$_POST['usrIDFirstName__txt'],$_POST['usrIDLastName__txt'],"phone",$_POST['usrIDPhone__txt']);
+
     $sys_msg['msg_type'] = $editBizResponse['status'];
-    if ($editBizResponse['status']==1){
-        $securityManager_ob->generatePhoneVerifyToken($pageUsrID__,$_POST['usrIDPhone__txt']);
-        $sys_msg['msg'] = "You'll be redirected shortly";
-        header("location: verify_phone?phone=".$_POST['usrIDPhone__txt']."&for=".$pageUsrID__."&request=".$editBizResponse['message']);
-    }
-    else{
-        $sys_msg['msg'] = $editBizResponse['message'];
-    }
+    // if ($editBizResponse['status']==1){
+    //     $securityManager_ob->generatePhoneVerifyToken($pageUsrID__,$_POST['usrIDPhone__txt']);
+    //     $sys_msg['msg'] = "You'll be redirected shortly";
+    //     header("location: verify_phone?phone=".$_POST['usrIDPhone__txt']."&for=".$pageUsrID__."&request=".$editBizResponse['message']);
+    // }
+    // else{
+    //     $sys_msg['msg'] = $editBizResponse['message'];
+    // }
+   $sys_msg['msg'] = $editBizResponse['message'];
 }
+
 if (isset($_POST['edit_phone__btn'])){
     //$editPhoneResponse=$usrAccManager_ob->updateUsrPhoneByID($pageUsrID__,$_POST['edit_phone__txt']);
     $sys_msg['msg_type'] = $editPhoneResponse['status'];
     $sys_msg['msg'] = $editPhoneResponse['message'];
 }
 $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; //
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +96,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
     <link rel="stylesheet" href="./assets/css/vertical-menu.css">
     <link rel="stylesheet" href="./assets/css/adverts.css">
     <link rel="stylesheet" href="./assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/cute-alert.css">
     <link rel="stylesheet" href="./assets/fonts/fontawesome-free-6.0.0-web/css/all.css">
 </head>
 
@@ -120,9 +136,9 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                         //if (($isUsrIDUploaded['status'] == 0)) {
                         ?>
                             <div class="phone_0" id="phone0">
-                                <div class="fs-md fw-bolder p-3 m-2 bg-light">
+                                <!-- <div class="fs-md fw-bolder p-3 m-2 bg-light">
                                     To change your passord<br> we need your ID card:
-                                </div>
+                                </div> -->
                                 <!-- <a href="#">
                                 <div class="text-dark p-2 border m-2">
                                     <span class="d-flex fs-sm" onclick="myCall()">
@@ -135,70 +151,80 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                                </div>
                             </a> -->
                                 <a href="javascript:void">
-                                    <div class="text-dark p-2 border m-2">
-                                        <span class="d-flex fs-sm" onclick="myInfo()">
+                                    <div class="text-dark p-2  m-2">
+                                        <form class="row m-2 mt-4" action="" method="POST">
+                                            <span>
+                                                <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onchange="myEnable()">
+                                            </span>
+                                            <span>
+                                            <button class="btn bg-primary p-2 w-100 text-white fw-bolder" disabled id="enable0" type="submit" name="usrIDSubmit__btn">APPLY</button>
+                                        </span>
+
+                                        <!-- uploading and verifying user's number -->
+                                        <!-- <span class="d-flex fs-sm" onclick="myInfo()">
                                             <i class="fa fa-list text-success fs-title-4 m-3 me-5"></i>
                                             <span>
                                                 <p class="fs-title-2 fw-bold m-1">Attach your ID</p>
                                                 <p class="fs-md m-1">If you lost your old number</p>
                                             </span>
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </a>
                             </div>
-                            <div class="w-75 call_0" id="call0">
-                                <span><input type="number" required id="" placeholder="New phone number" class="form-control m-1 mb-3 btn btn-outline-primary bg-white"></span>
+                            <!-- <div class="w-75 call_0" id="call0">
+                                <span><input type="number" id="" placeholder="New phone number" class="form-control m-1 mb-3 btn btn-outline-primary bg-white"></span>
                                 <span><button class="btn bg-secondary m-1 w-100 p-2">Next</button></span>
-                            </div>
+                            </div> -->
                         <?php //} ?>
                     </div>
                 </div>
-                <form class="row m-2 mt-4" action="" method="POST" enctype="multipart/form-data">
+               <!--  <form class="row m-2 mt-4" action="" method="POST" enctype="multipart/form-data">
                     <div class="col-lg-6 col-md-6 col-sm-12 text-start  info_0" id="info0">
                         <select id="usrIDType__select" class="form-select mb-4" name="usrIDType__select">
                             <option value="passport">Passport</option>
                             <option value="drivers">Drivers Licence</option>
                             <option value="national">National ID</option>
-                            <!-- <option>NIN (National Identity Number)</option> -->
+                            <option>NIN (National Identity Number)</option>
                             <option value="digital">Digital ID</option>
-                        </select>
-                        <span>
-                            <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number *" class="form-control btn-outline-secondary bg-white my-4 text-dark">
+                        </select> -->
+                        <!-- <span>
+                            <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number" class="form-control btn-outline-secondary bg-white my-4 text-dark">
                         </span>
                         <span>
                             <input type="text" name="usrIDFirstName__txt" id="usrIDFirstName__txt" placeholder="First Name*" class="form-control btn-outline-secondary bg-white mb-4 text-dark">
                         </span>
-                        <span>
-                            <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark">
+                        <span> -->
+                           <!--  <input type="text" name="usrIDLastName__txt" id="usrIDLastName__txt" placeholder="Last Name" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" >
                         </span>
                     </div> 
                     <div class="col-lg-6 col-md-6 col-sm-12 text-start  info_0" id="info1">
                         <span>
                            
-                                <input type="text" id="phoneUpdateChangeToDate__txt" name="datusrIDDOB__txt" placeholder="Date of birth *" class="form-control btn-outline-secondary bg-white mb-4 text-dark" onfocus="phoneUpdateChangeTDate()">
+                                <input type="text" id="phoneUpdateChangeToDate__txt" name="datusrIDDOB__txt" placeholder="Date of birth" class="form-control btn-outline-secondary bg-white mb-4 text-dark" onfocus="phoneUpdateChangeTDate()">
                             
                         </span>
                         <span class="d-flex">
                             <a href="javascript:void" onclick="phoneUpdateSelectFile()" id="addNewfile__phoneupdate"><i id="addNewfileIcon__phoneupdate" class="fa fa-plus fs-title-4 m-1 me-4 text-primary bg-light-blue p-3 add_0" ></i></a>
                             <span>
-                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID *</p>
-                                <p class="fs-md m-1 mb-4" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
+                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID</p>
+                                <p class="fs-md m-1" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
+                                <p class="fs-sm text-danger">Only PDF file is required</p>   
                             </span>
                         </span>
                         <span>
                             <input type="file" name="usrIDFile__file[]" id="usrIDFile__file" class="w-100 mb-5 form-control click_0">
                         </span>
                         <span>
-                            <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" required placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onkeypress="myEnable()">
+                            <input type="tel" name="usrIDPhone__txt" id="usrIDPhone__txt" placeholder="New phone number*" class="form-control btn-outline-secondary bg-white p-2 mb-4 text-dark" onchange="myEnable()">
                         </span>
                         <span>
                             <button class="btn bg-primary p-2 w-100 text-white fw-bolder" disabled id="enable0" type="submit" name="usrIDSubmit__btn">APPLY</button>
                             <p class="fs-sm fw-bold opacity-50 mb-4">Please note,by submitting any information and document to our customer support you <Span class="text-primary">consent</Span> to the processing of such data for use in identification and authentication and you acknowledge that such processing is also required to continue providing our services to you.</p>
                         </span>
                     </div>
-                </form>
-            </div>
+                </form> -->
 
+            </div> 
         </div>
     </section>
     <?php include "footer.php";?>
@@ -206,6 +232,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
     <script src="../dependencies/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../dependencies/node_modules/toastr/build/toastr.min.js"></script>
     <script src="./assets/js/vertical-menu.js"></script>
+    <script src="assets/js/cute-alert.js"></script>
     <script src="./assets/js/userAdmin.js"></script>
     <script src="./assets/js/jquery-ui.js"></script>
     <script src="./assets/js/settings.js"></script>
@@ -228,13 +255,24 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                 //   "hideMethod": "fadeOut"
             }
             <?php
+
             if (isset($sys_msg) && !empty($sys_msg)) {
                 switch ($sys_msg['msg_type']) {
-                    case '1':
-                        echo 'toastr.success("' . $sys_msg['msg'] . '");';
+                    case "1":
+                        echo 'cuteAlert({
+                            type: "success",
+                            message: "",
+                            title: "' . $sys_msg['msg'] . '",
+                            buttonText: "Ok",
+                          })';
                         break;
                     default:
-                        echo 'toastr.error("' . $sys_msg['msg'] . '");';
+                        echo 'cuteAlert({
+                        type: "error",
+                        message: "",
+                        title: "' . $sys_msg['msg'] . '",
+                        buttonText: "Ok",
+                      })';
                         break;
                 }
             }

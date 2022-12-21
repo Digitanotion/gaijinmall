@@ -102,9 +102,9 @@ echo '<aside class="main-sidebar sidebar-dark-primary elevation-4">
               </li>
 
               <li class="nav-item">
-                  <a href="./kycs.php" class="nav-link">
+                  <a href="./business_verifications.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>KYC verification</p>
+                    <p>Business verification</p>
                   </a>
               </li>
               

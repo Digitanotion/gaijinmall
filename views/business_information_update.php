@@ -97,6 +97,19 @@ $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__)['message'];
                 <hr class="m-0 bg-hr-light">
                 <div class="ha-none__display w-50 text-center m-5 mx-auto">
                     <form action="" method="post">
+                        <?php   
+                            if ($getUsrBizInfo['mallBizStatus'] == 0) { ?>
+                                <div class="alert bg-warning fs-6 text-light">
+                                    <i class="fa fa-exclamation-circle"></i>Not verified <a href="verify_business.php" class="text-primary text-underline">verify now</a>
+                                </div>
+                            <?php  } else { ?>
+                                <div class="alert bg-success fs-6 text-light">
+                                    Verified <i class="fa fa-check-circle"></i>
+                                </div>
+                           <?php }
+                            
+                        ?>
+                        
                         <div class="form-floating mb-3">
                             <input type="name" class="form-control" value="<?php echo $getUsrBizInfo['mallBizName'];?>" id="editBizBN_settings" name="editBizBN_settings" placeholder="Business name" onkeyup="changeTheColorOfButtonDemo4()">
                             <label for="editBizBN_settings">Business name</label>

@@ -14,16 +14,19 @@
 
 
     $accManage = new AccountManager();
-    $response = $accManage->updateKycStatus($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
-    //echo $_POST["userID"]."-".$_POST['approveStatus']."-".$_POST['usrPhone']."-".$_POST['kycID'];
-
+    $response = $accManage->verifyBiz($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
     echo $response['status'];
 
-    // if($response['status'] == 1){
-    //     //to avoid sending notification when the same status is to be set
-    //     $messenger = new messagingManager();
-    //     $response = $messenger->sendNotification($_POST['userID'], $_POST['adminID'], "Your Kyc documents has been approved");
-    // }
+
+    // $response = $accManage->updateKycStatus($_POST["userID"],$_POST['approveStatus'],$_POST['usrPhone'],$_POST['kycID']);
+    //echo $_POST["userID"]."-".$_POST['approveStatus']."-".$_POST['usrPhone']."-".$_POST['kycID'];
+
+
+    if($response['status'] == 1){
+        //to avoid sending notification when the same status is to be set
+        $messenger = new messagingManager();
+        $response = $messenger->sendNotification($_POST['userID'], $_POST['adminId'], "Your Business has been verified");
+    }
 
     
  
