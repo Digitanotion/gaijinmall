@@ -68,7 +68,7 @@ $getUsrChatStatus=$usrAccManager_ob->getUsrOptionsStatus($pageUsrID__);
         <?php include "settings_side__bar.php";?>
             <div class="col-md-8 col-lg-8 col-sm-12 p-0 shadow-sm bg-white rounded-3 p-0">
                 <div class="px-4 py-4 d-flex justify-content-between">
-                    <div class="">
+                    <div class=""> 
                         <span class="fs-title-3 fw-bolder" id="header01"><?php echo ($getUsrChatStatus['status']==1)? (($getUsrChatStatus['message']['mallUsrChats']==1)? "Disable":"Enable") : "Disable"; ?>  chats</span>
                         
                     </div>

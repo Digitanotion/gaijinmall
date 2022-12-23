@@ -208,14 +208,14 @@ class MediaManager{
                 }
                 return $this->msg;
             }
-            function getUsrThumbImage($userID){
+            function getUsrThumbImage($usrID){
                 $inputValidator = $this->inputValidatorOb;
 
                 $usrID = $inputValidator->sanitizeInput($usrID, "string");
 
                 $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
                 $stmt = "SELECT * FROM mallusrs WHERE mallUsrID=?";
-                $stmt = $dbHandler->run($stmt,[$userID]);
+                $stmt = $dbHandler->run($stmt,[$usrID]);
                 if ($stmt->rowCount() > 0) {
                     $this->message(1, $stmt->fetch());
                 } else {

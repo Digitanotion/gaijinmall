@@ -121,7 +121,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message'];
               $msgBizName = "";
               $msgAdName = "";
               $msgAdAmount = "";
-              ///$msgAdUserPhone=$getReceiverInfo['message']['mallUsrPhoneNo'];
+              $msgAdUserPhone=$getReceiverInfo['message']['mallUsrPhoneNo'];
               $msgInitTime = date("d/m/y", $messageEach['mallMsgStartTime']);
               if ($getReceiverInfo['status'] == 1) {
                 $msgRecieverName = $getReceiverInfo['message'];

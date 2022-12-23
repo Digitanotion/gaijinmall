@@ -14,7 +14,7 @@ if (strpos($url,'localhost')) {
 
 
     $accManage = new AccountManager();
-    $response = $accManage->updateEmailStatus($_POST["userID"], $_POST['adminID'], 1 );
+    $response = $accManage->updateEmailStatus($_POST["userID"],  1 );
 
 
     echo $response['status'];

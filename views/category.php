@@ -153,6 +153,7 @@ else{
                         </div>
                       </div>  
                     </div>
+
                     <?php foreach ($allAdCategOptions['message'] as $categOptionsEach) {
                       $categOptionName= explode("-",$categOptionsEach['mallCategParamName']);
                       $categOptionValues=explode(",",$categOptionsEach['mallCategParamValues']);
