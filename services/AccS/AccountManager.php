@@ -733,7 +733,7 @@ class AccountManager
 
      function updateUsrIDByID($usrID, $docBizID, $dob, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone, $usrEmail)
     {
-        include_once "../services/AccS/MediaPdf.php";
+        include_once (__DIR__ . "/MediaPdf.php");
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = $this->inputValidatorOb;
         $usrID = $inputValidator->sanitizeItem($usrID, "int");

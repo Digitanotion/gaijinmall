@@ -163,8 +163,11 @@ class SecurityManager extends InputValidator
                 $sqlUsrAccStatus = "UPDATE mallusrs SET mallUsrAccountStatus=? WHERE mallUsrID=?";
                 $stmtUsrAccStatus = $dbHandler->run($sqlUsrAccStatus, ["1", $tokenUsrID]);
                 // ACTIVATE USER BUSINESS INFORMATION
-                $sqlUsrBizStatus = "UPDATE mallusrbiz SET mallBizStatus=? WHERE mallUsrID=?";
-                $stmtUsrBizStatus = $dbHandler->run($sqlUsrBizStatus, ["1", $tokenUsrID]);
+
+                /*-------------commented out by by Promise**************/
+                // $sqlUsrBizStatus = "UPDATE mallusrbiz SET mallBizStatus=? WHERE mallUsrID=?";
+                // $stmtUsrBizStatus = $dbHandler->run($sqlUsrBizStatus, ["1", $tokenUsrID]);
+                
                 return true;
             }
         } else {
