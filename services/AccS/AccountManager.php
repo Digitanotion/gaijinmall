@@ -178,16 +178,14 @@ class AccountManager
             $mallBizSlug = trim($mallBizSlug, ".");
             $emailphone_exist = $this->is_emailphone_exist($mallUsrPhone, $mallUsrEmail);
             $dateRegistered = time();
-
-            // checks if the number has only zeros
-            $mallUsrPhone = substr($mallUsrPhone, 0,3);
+            
 
             if ($emailphone_exist['email'] === 1) {
                 //both email has phone has been used on an existing account
                 $this->message("500", "Email already registered with us");
             } else if ($emailphone_exist['phone'] === 1) {  //only the email has been used on an existing account
                 $this->message("500", "Phone number already registered with us");
-            } else if ($mallUsrPhone == 0) {
+            } else if (substr($mallUsrPhone, 0,3)  == 0) {
                 $this->message("500", "Phone number cannot be zeros");
             }    
              else {
@@ -735,7 +733,7 @@ class AccountManager
 
      function updateUsrIDByID($usrID, $docBizID, $dob, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone, $usrEmail)
     {
-        include_once "../services/AccS/MediaPdf.php";
+        include_once (__DIR__ . "/MediaPdf.php");
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = $this->inputValidatorOb;
         $usrID = $inputValidator->sanitizeItem($usrID, "int");
@@ -1490,6 +1488,8 @@ class AccountManager
         $row = $stmtCheck->fetch();
         if ($stmtCheck->rowCount() > 0) {
             $this->message(1, $row);
+        } else {
+            $this->message(0, "");
         }
         return $this->system_message;
     } 

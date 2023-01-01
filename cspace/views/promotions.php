@@ -616,9 +616,10 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                               $price = $adManager::CURRENCY.$ad['mallAdPromoCost'];
                               $duration = $ad['mallAdPromoDuration']." days";
                               $date = date("r", $ad['mallAdPromoCreated']);
-                              $admin = $ad['mallAdPromoCreatedBy'];
+                              $admin = $ad['mallAdPromoCreated'];
                               $details = $accManager->getAdminDetailsByID($admin)['message'];
-                              $fullName = $details['mallUsrFirstName']." ".$details['mallUsrLastName'];
+                              $fullName = empty($details['mallUsrFirstName']) ? "" : $details['mallUsrFirstName']." ".$details['mallUsrLastName'];
+                              // $fullName = $details['mallUsrFirstName']." ".$details['mallUsrLastName'];
                               $sum = $ad['defaultColID'];
        
                               echo '<tr>
@@ -633,13 +634,12 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                            
                              $count++;
                             }
+                            
                         }
                         else{
     
                         }
-                        
-    
-                        
+
                       ?>
     
                     </tbody>

@@ -30,11 +30,11 @@ $usrIDData = isset($_SESSION["gaijinmall_user_"]) ? $_SESSION["gaijinmall_user_"
 $pageUsrID__ = isset($_SESSION["gaijinmall_user_"]) ? $_SESSION["gaijinmall_user_"] : "1020201202";
 $adManagerVal = $adManager->getAllMallParentCategory();
 $categChild = $adManager->getCategChildByID(12345);
-$isUsrPhoneVerified = $usrAccManager_ob->getUserVerifiedNumberByID($pageUsrID__)['status'];
-if ($isUsrPhoneVerified != 1) {
-    $sys_msg['msg_type'] = 4;
-    $sys_msg['msg'] = "You can't proceed, your phone number is not verified yet";
-}
+// $isUsrPhoneVerified = $usrAccManager_ob->getUserVerifiedNumberByID($pageUsrID__)['status'];
+// if ($isUsrPhoneVerified != 1) {
+//     $sys_msg['msg_type'] = 4;
+//     $sys_msg['msg'] = "You can't proceed, your phone number is not verified yet";
+// }
 $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message'];
 $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__)['message'];
 if (isset($_POST["submit"])) {

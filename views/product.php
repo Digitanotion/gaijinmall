@@ -7,7 +7,10 @@ if (strpos($url, 'localhost')) {
   require_once(__DIR__ . "\../vendor/autoload.php");
 } else if (strpos($url, 'gaijinmall')) {
   require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
-} else {
+} else if (strpos($url,'192.168')){
+    require_once(__DIR__ . "\../vendor/autoload.php");
+}
+ else {
   require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
 }
 
@@ -490,7 +493,7 @@ $newToken = $securityManager_ob->setCSRF();
         <form method="POST" action="">
           <div class="modal-body">
             <div class="form-floating mb-3">
-            <select class="form-select select2" style="text-align: left;" name="reportAd__Select" id="reportAd__Select" >
+            <select class="form-select select2" style="text-align: left;" name="reportAd__Select" id="reportAd__Select" required>
                                 <option value="null"></option>
                                 <option value="Illegal/Fraudulent">Illegal/Fraudulent</option>
                                 <option value="Wrong price">Wrong price</option>
@@ -504,7 +507,7 @@ $newToken = $securityManager_ob->setCSRF();
                             <label for="reportAd__Select">Why do you report this Ad?</label>
             </div>
             <div class="form-floating">
-              <textarea class="form-control" name="reportAdMsg__txt" id="reportAdMsg__txt" placeholder="Leave a comment here"></textarea>
+              <textarea class="form-control" name="reportAdMsg__txt" id="reportAdMsg__txt" placeholder="Leave a comment here" required=""></textarea>
               <label for="reportAdMsg__txt">Tell us about this issue</label>
             </div>
           </div>

@@ -46,7 +46,7 @@
             
         </div>    
         <div class="text-center fs-sm-1 mt-4 pe-5">  
-            <p class="fs-md">© 2021 GaiijinMall.com, All rights reserved</p>
+            <p class="fs-md">© <?php echo date("Y") ?> GaiijinMall.com, All rights reserved</p>
         </div>
         <div class="area" >
             <ul class="circles">
