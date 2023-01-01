@@ -36,11 +36,11 @@ $feedback_ob=new feedbackManager();
 
 
 
-/* if (!$securityManager_ob->is_user_auth__()){
+if (!$securityManager_ob->is_user_auth__()){
   header("location: Signin.php");
-} */
+}
 $adID = "";
-$pageUsrID__=$_SESSION['gaijinmall_user_'];
+$pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "none";
 
 $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__);
 /*

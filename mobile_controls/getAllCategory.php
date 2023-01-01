@@ -35,10 +35,11 @@ $adManager_ob=new AdManager();
     //array_push($json["data"],$lists);
     $i=0;
     foreach ($responds['message'] as $value) {
+        $countAds=$adManager_ob->countCategoryHasChild($value['mallCategID'])['message'];
         # code...
         $icons[]= [
             "icon" => "views/assets/images/categoryicons/".$value['mallCategIcon']."-48.png", 
-            "text" => $value['mallCategName'],
+            "text" => $value['mallCategName']." ($countAds)",
             "catID" => $value['mallCategID'],
             "catChild" => $value['mallCategChild'], 
          ];

@@ -64,11 +64,11 @@ if (isset($_POST['user_comment__btn'])) {
         $sys_msg['msg_type'] = $userCommentResp['status'];
         $sys_msg['msg'] = $userCommentResp['message'];
         if ($userCommentResp['status'] == "404") {
-            echo "<script>
+            /* echo "<script>
             setTimeout(function (e) {
                 window.location='./';
             },5000); 
-        </script>";
+        </script>"; */
         }
     }
 }

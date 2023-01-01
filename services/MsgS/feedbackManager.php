@@ -40,15 +40,10 @@ class feedbackManager
         $timePosted = time();
         $commentID = md5("comm-" . $security_ob->generateOtherID() . time());
         $userID = $inputValidator->sanitizeItem($userID, "string");
-        $userID = $inputValidator->validateItem($userID, "string");
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         $msg = $inputValidator->sanitizeItem($msg, "string");
-        $msg = $inputValidator->validateItem($msg, "string");
         $rating = $inputValidator->sanitizeItem($rating, "int");
-        $rating = $inputValidator->validateItem($rating, "int");
         $commentParent = $inputValidator->sanitizeItem($commentParent, "string");
-        $commentParent = $inputValidator->validateItem($commentParent, "string");
         //Check if Ad Exist
         if ($adManagerResponse->getAdByID($adID)['status'] == 1) {
             $sql = "INSERT INTO mallfeedback (mallUsrID, mallAdID, mallFeedBackID, mallFeedParent, mallFeedLikes, mallFeedMessage, mallFeedTimePosted) VALUES (?,?,?,?,?,?,?)";
@@ -71,11 +66,8 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         $adRating = $inputValidator->sanitizeItem($adRating, "string");
-        $adRating = $inputValidator->validateItem($adRating, "string");
         $adUsrID = $inputValidator->sanitizeItem($adUsrID, "string");
-        $adUsrID = $inputValidator->validateItem($adUsrID, "string");
         //Check if Ad Rating already Exist, if not creating usrAd
         
             $sql = "SELECT * FROM mallproductrating WHERE mallAdID=? AND mallUsrID=? ";
@@ -106,7 +98,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallfeedback WHERE mallAdID=? ORDER BY defaultColID ASC";
@@ -124,7 +115,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallfeedback WHERE mallAdID=? AND mallFeedParent!=? ORDER BY defaultColID ASC";
@@ -142,7 +132,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT SUM(mallUsrRating) AS ratetotal FROM mallproductrating WHERE mallAdID=? ORDER BY defaultColID ASC";
@@ -162,7 +151,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $commentID = $inputValidator->sanitizeItem($commentID, "string");
-        $commentID = $inputValidator->validateItem($commentID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallfeedback WHERE mallFeedParent=?";
@@ -176,15 +164,15 @@ class feedbackManager
     function getAllUsrAdReviews($userID){
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
-        $userID = $inputValidator->validateItem($userID, "string");
+        $userID = $inputValidator->sanitizeItem($userID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallproductrating WHERE mallUsrID=? ORDER BY defaultColID ASC";
             $stmt = $dbHandler->run($sql, [$userID]);
             if ($stmt->rowCount() > 0) {
-                $this->message("1", $stmt);
+                $this->message(1, $stmt);
             } else {
-                $this->message("404", "No Ad reviewed yet.");
+                $this->message(404, "No Ad reviewed yet.");
             }
 
 
@@ -195,7 +183,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $parentCommentID = $inputValidator->sanitizeItem($parentCommentID, "string");
-        $parentCommentID = $inputValidator->validateItem($parentCommentID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallfeedback WHERE mallFeedParent=? ORDER BY defaultColID ASC";
@@ -214,7 +201,6 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $adID = $inputValidator->sanitizeItem($adID, "string");
-        $adID = $inputValidator->validateItem($adID, "string");
         //Check if Ad Exist
         
             $sql = "SELECT * FROM mallproductrating WHERE mallAdID=? ORDER BY defaultColID ASC";
@@ -235,11 +221,8 @@ class feedbackManager
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
         $inputValidator = new InputValidator();
         $userID = $inputValidator->sanitizeItem($userID, "string");
-        $userID = $inputValidator->validateItem($userID, "string");
         $reason= $inputValidator->sanitizeItem($reason, "string");
-        $reason= $inputValidator->validateItem($reason, "string");
         $reportMessage= $inputValidator->sanitizeItem($reportMessage, "string");
-        $reportMessage= $inputValidator->validateItem($reportMessage, "string");
         $reportTime=time();
         $sql = "INSERT INTO malladdispute (mallUsrID, mallAdReportReason, mallAdReportMsg, mallAdReportTime) VALUES (?,?,?,?)";
                 $stmt = $dbHandler->run($sql, [$userID, $reason, $reportMessage,$reportTime]);

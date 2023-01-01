@@ -47,11 +47,11 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     $thumbImageName = "";
                 }
 ?>
-                <div class="row ha-mpage-items__wrapper mb-3" style="">
+                <div class="row ha-mpage-items__wrapper mb-2" style="">
                     <div class="col-4 rounded-start ha-mpage-item__image ha-item-each__cardimg" datavalue="" datavalueTitle="" onclick="gotoProduct('<?php echo $fields['mallAdID']; ?>','<?php echo str_replace(' ', '-', $fields['mallAdTitle']); ?>')" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
                         <?php
                         if (!empty($fields['mallAdCondition'])) {
-                            echo '<span class="ha-mpage-item__title fs-6 text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
+                            echo '<span class="ha-mpage-item__title fs-md text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
                         }
                         ?>
                         <!-- <span class="ha-topright__comp dropdown " onclick="adMenuClicked()">
@@ -67,7 +67,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li><a class="dropdown-item" >Promote Ad</a></li>
                             </ul>
                         </span> -->
-                        <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
+                        <span class="ha-card__counter fs-sm"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
                         <?php
                         if ($adManager_ob->checkPromotedAd($fields['mallAdID'], $fields['mallAdPromoID'])['status']) { ?>
                             <span class="ha-card-content-icon-1 fw-bolder text-dark d-flex justify-content-center align-items-center" href="#">
@@ -79,31 +79,35 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     <div class="col-8 rounded-end bg-light-blue text-dark" style="position: relative;">
                         <div class="my-2 my-md-4">
                             <a class=" " href="product.php?adID=<?php echo $fields['mallAdID']; ?>">
-                                <span class="fs-title-1 fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
+                                <span class="fs-md fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
                             </a>
                             <div class="">
-                                <span class="ha-mpage-item__desc fs-md-1"><?php echo $fields['mallAdDesc'] ?></span>
+                                <span class="ha-mpage-item__desc fs-md"><?php echo $fields['mallAdDesc'] ?></span>
                             </div>
                             <div class="">
-                                <span class="badge bg-dark fs-md mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span><br>
-                                <span class="fs-sm-1 text-left mt-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
-                                                                                                            echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-dark fs-sm-1 mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span>
+                                    <div class="d-flex">
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 p-0 fs-sm"></i> <span class="me-1 text-dark"> <?php echo $adViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $chatRequests; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $phoneNoViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $socialShares; ?></span></div>
+                                    </div>
+
+                                </div>
+                                <span class="fs-sm-1 text-left "><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
+                                                                                                        echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                 <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
-                                    <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
-                                    <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
+                                    <span class="btn-mobile btn-primary-mobile text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="ha-mpage-item__metrics">
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 fs-md-2"></i> <span class="badge bg-dark"> <?php echo $adViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-md-2 m-0 "></i> <span class="badge bg-dark"> <?php echo $chatRequests; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-md-2 m-0"></i>&nbsp; <span class="badge bg-dark"> <?php echo $phoneNoViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-md-2 m-0"></i> <span class="badge bg-dark"> <?php echo $socialShares; ?></span></div>
-                        </div>
+
 
                     </div>
 
@@ -133,11 +137,11 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     $thumbImageName = "";
                 }
             ?>
-                <div class="row ha-mpage-items__wrapper mb-3" style="">
+                <div class="row ha-mpage-items__wrapper mb-2" style="">
                     <div class="col-4 rounded-start ha-mpage-item__image ha-item-each__cardimg" datavalue="" datavalueTitle="" onclick="gotoProduct('<?php echo $fields['mallAdID']; ?>','<?php echo str_replace(' ', '-', $fields['mallAdTitle']); ?>')" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
                         <?php
                         if (!empty($fields['mallAdCondition'])) {
-                            echo '<span class="ha-mpage-item__title fs-6 text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
+                            echo '<span class="ha-mpage-item__title fs-md text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
                         }
                         ?>
                         <!-- <span class="ha-topright__comp dropdown " onclick="adMenuClicked()">
@@ -153,7 +157,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li><a class="dropdown-item" >Promote Ad</a></li>
                             </ul>
                         </span> -->
-                        <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
+                        <span class="ha-card__counter fs-sm"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
                         <?php
                         if ($adManager_ob->checkPromotedAd($fields['mallAdID'], $fields['mallAdPromoID'])['status']) { ?>
                             <span class="ha-card-content-icon-1 fw-bolder text-dark d-flex justify-content-center align-items-center" href="#">
@@ -165,31 +169,35 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     <div class="col-8 rounded-end bg-light-blue text-dark" style="position: relative;">
                         <div class="my-2 my-md-4">
                             <a class=" " href="product.php?adID=<?php echo $fields['mallAdID']; ?>">
-                                <span class="fs-title-1 fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
+                                <span class="fs-md fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
                             </a>
                             <div class="">
-                                <span class="ha-mpage-item__desc fs-md-1"><?php echo $fields['mallAdDesc'] ?></span>
+                                <span class="ha-mpage-item__desc fs-md"><?php echo $fields['mallAdDesc'] ?></span>
                             </div>
                             <div class="">
-                                <span class="badge bg-dark fs-md mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span><br>
-                                <span class="fs-sm-1 text-left mt-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
-                                                                                                            echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-dark fs-sm-1 mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span>
+                                    <div class="d-flex">
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 p-0 fs-sm"></i> <span class="me-1 text-dark"> <?php echo $adViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $chatRequests; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $phoneNoViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $socialShares; ?></span></div>
+                                    </div>
+
+                                </div>
+                                <span class="fs-sm-1 text-left "><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
+                                                                                                        echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                 <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
-                                    <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
-                                    <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
+                                    <span class="btn-mobile btn-primary-mobile text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="ha-mpage-item__metrics">
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 fs-md-2"></i> <span class="badge bg-dark"> <?php echo $adViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-md-2 m-0 "></i> <span class="badge bg-dark"> <?php echo $chatRequests; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-md-2 m-0"></i>&nbsp; <span class="badge bg-dark"> <?php echo $phoneNoViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-md-2 m-0"></i> <span class="badge bg-dark"> <?php echo $socialShares; ?></span></div>
-                        </div>
+
 
                     </div>
 
@@ -219,11 +227,11 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     $thumbImageName = "";
                 }
             ?>
-                <div class="row ha-mpage-items__wrapper mb-3" style="">
+               <div class="row ha-mpage-items__wrapper mb-2 " style="">
                     <div class="col-4 rounded-start ha-mpage-item__image ha-item-each__cardimg" datavalue="" datavalueTitle="" onclick="gotoProduct('<?php echo $fields['mallAdID']; ?>','<?php echo str_replace(' ', '-', $fields['mallAdTitle']); ?>')" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
                         <?php
                         if (!empty($fields['mallAdCondition'])) {
-                            echo '<span class="ha-mpage-item__title fs-6 text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
+                            echo '<span class="ha-mpage-item__title fs-md text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
                         }
                         ?>
                         <!-- <span class="ha-topright__comp dropdown " onclick="adMenuClicked()">
@@ -239,7 +247,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                                 <li><a class="dropdown-item" >Promote Ad</a></li>
                             </ul>
                         </span> -->
-                        <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
+                        <span class="ha-card__counter fs-sm"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
                         <?php
                         if ($adManager_ob->checkPromotedAd($fields['mallAdID'], $fields['mallAdPromoID'])['status']) { ?>
                             <span class="ha-card-content-icon-1 fw-bolder text-dark d-flex justify-content-center align-items-center" href="#">
@@ -251,31 +259,35 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     <div class="col-8 rounded-end bg-light-blue text-dark" style="position: relative;">
                         <div class="my-2 my-md-4">
                             <a class=" " href="product.php?adID=<?php echo $fields['mallAdID']; ?>">
-                                <span class="fs-title-1 fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
+                                <span class="fs-md fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
                             </a>
                             <div class="">
-                                <span class="ha-mpage-item__desc fs-md-1"><?php echo $fields['mallAdDesc'] ?></span>
+                                <span class="ha-mpage-item__desc fs-md"><?php echo $fields['mallAdDesc'] ?></span>
                             </div>
                             <div class="">
-                                <span class="badge bg-dark fs-md mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span><br>
-                                <span class="fs-sm-1 text-left mt-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
-                                                                                                            echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-dark fs-sm-1 mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span>
+                                    <div class="d-flex">
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 p-0 fs-sm"></i> <span class="me-1 text-dark"> <?php echo $adViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $chatRequests; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $phoneNoViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $socialShares; ?></span></div>
+                                    </div>
+
+                                </div>
+                                <span class="fs-sm-1 text-left "><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
+                                                                                                        echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
                                 <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
-                                    <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
-                                    <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
+                                    <span class="btn-mobile btn-primary-mobile text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
                                 </div>
                                 <div>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="ha-mpage-item__metrics">
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 fs-md-2"></i> <span class="badge bg-dark"> <?php echo $adViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-md-2 m-0 "></i> <span class="badge bg-dark"> <?php echo $chatRequests; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-md-2 m-0"></i>&nbsp; <span class="badge bg-dark"> <?php echo $phoneNoViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-md-2 m-0"></i> <span class="badge bg-dark"> <?php echo $socialShares; ?></span></div>
-                        </div>
+
 
                     </div>
 
@@ -305,27 +317,27 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                     $thumbImageName = "";
                 }
             ?>
-                <div class="row ha-mpage-items__wrapper mb-3">
-                    <div class="col-4 rounded-start ha-mpage-item__image ha-item-each__cardimg" datavalue="<?php echo $fields['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $fields['mallAdTitle']); ?>" onclick="gotoProduct('<?php echo $fields['mallAdID']; ?>','<?php echo str_replace(' ', '-', $fields['mallAdTitle']); ?>')" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
+                <div class="row ha-mpage-items__wrapper mb-2 py-5" style="">
+                    <div class="col-4 rounded-start ha-mpage-item__image ha-item-each__cardimg" datavalue="" datavalueTitle="" onclick="gotoProduct('<?php echo $fields['mallAdID']; ?>','<?php echo str_replace(' ', '-', $fields['mallAdTitle']); ?>')" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
                         <?php
                         if (!empty($fields['mallAdCondition'])) {
-                            echo '<span class="ha-mpage-item__title fs-6 text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
+                            echo '<span class="ha-mpage-item__title fs-md text-light text-center fw-bold opacity-50">' . $fields['mallAdCondition'] . '</span>';
                         }
                         ?>
-                        <!-- <span class="ha-topright__comp" onclick="adMenuClicked()">
+                        <!-- <span class="ha-topright__comp dropdown " onclick="adMenuClicked()">
                             <button class="btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 Ad Menu
                             </button>
                             <ul class="dropdown-menu fs-sm" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></li>
-                                <li><a class="dropdown-item" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" class="" data-bs-toggle="modal">Delete Ad</a></li>
+                                <li><a class="dropdown-item" >Edit Ad</a></li>
+                                <li><a class="dropdown-item" >Delete Ad</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</a></li>
+                                <li><a class="dropdown-item" >Promote Ad</a></li>
                             </ul>
                         </span> -->
-                        <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
+                        <span class="ha-card__counter fs-sm"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1 me-0"></i></span>
                         <?php
                         if ($adManager_ob->checkPromotedAd($fields['mallAdID'], $fields['mallAdPromoID'])['status']) { ?>
                             <span class="ha-card-content-icon-1 fw-bolder text-dark d-flex justify-content-center align-items-center" href="#">
@@ -333,32 +345,42 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
                             </span>
                         <?php } ?>
                     </div>
-                    <a href="product.php?adID=<?php echo $fields['mallAdID']; ?>" class="col-8 rounded-end bg-light-blue text-dark" style="position: relative;">
-                        <div class="">
-                            <div class="my-2 ">
-                                <span class="fs-title-1 fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
+
+                    <div class="col-8 rounded-end bg-light-blue text-dark" style="position: relative;">
+                        <div class="my-2 my-md-4">
+                            <a class=" " href="product.php?adID=<?php echo $fields['mallAdID']; ?>">
+                                <span class="fs-md fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
+                            </a>
+                            <div class="">
+                                <span class="ha-mpage-item__desc fs-md"><?php echo $fields['mallAdDesc'] ?></span>
                             </div>
                             <div class="">
-                                <span class="ha-mpage-item__desc fs-md-1"><?php echo $fields['mallAdDesc'] ?></span>
-                            </div>
-                            <div class="mt-2 py-auto">
-                                <span class="badge bg-dark fs-6"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span><br>
-                                <span class="badge bg-info fs-md mt-2 mt-md-3 mt-lg-3"><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
-                                                                                                                            echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
-                                                                                                                            <div class="d-flex mt-1">
-                                    <span class="btn-sm border border-primary fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
-                                    <span class="btn-sm btn-primary border border-primary text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
-                                    <span class="btn-sm border border-primary fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-dark fs-sm-1 mb-2"><?php echo $adManager_ob::CURRENCY . number_format($fields['mallAdPrice']); ?></span>
+                                    <div class="d-flex">
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 p-0 fs-sm"></i> <span class="me-1 text-dark"> <?php echo $adViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $chatRequests; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $phoneNoViews; ?></span></div>
+                                        <div class="fs-sm-1 my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-sm m-0 p-0"></i> <span class="me-1 text-dark"> <?php echo $socialShares; ?></span></div>
+                                    </div>
+
+                                </div>
+                                <span class="fs-sm-1 text-left "><i class="fa fa-map-marker m-0"></i> <?php $getlocationCateg = explode(".", $fields['mallAdLoc']);
+                                                                                                        echo $getlocationCateg[0] . ", ", $getlocationCateg[1] ?>, Japan.</span><br>
+                                <div class="d-flex mt-1">
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" onclick="sendAdIDToAdPromoPage(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal" promoadid="<?php echo $fields['mallAdID']; ?>" data-bs-target="#promoteThisAd">Promote Ad</span>
+                                    <span class="btn-mobile btn-primary-mobile text-white me-1 ms-1 fs-sm"><a class="text-white" href="update_Ad?adUp=<?php echo $fields['mallAdID']; ?>">Edit Ad</a></span>
+                                    <span class="btn-sm btn-outline-primary-mobile fs-sm" href="#deleteAdModal" onclick="sendAdIDToAdPromoPageDel(<?php echo $fields['mallAdID']; ?>)" data-bs-toggle="modal">Delete Ad</span>
+                                </div>
+                                <div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="ha-mpage-item__metrics">
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-eye m-0 fs-md-2"></i> <span class="badge bg-dark"> <?php echo $adViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-comments-o fs-md-2 m-0 "></i> <span class="badge bg-dark"> <?php echo $chatRequests; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2 "><i class="fa fa-phone fs-md-2 m-0"></i>&nbsp; <span class="badge bg-dark"> <?php echo $phoneNoViews; ?></span></div>
-                            <div class="fs-md my-0 my-md-2 my-lg-2"><i class="fa fa-share fs-md-2 m-0"></i> <span class="badge bg-dark"> <?php echo $socialShares; ?></span></div>
-                        </div>
-                    </a>
+
+
+                    </div>
+
                 </div>
     <?php     }
         } else {

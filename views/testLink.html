@@ -17,15 +17,18 @@
     <input type="text" id="container">
     
     <script type="text/javascript">
-        //This function sends information to the App
-        function hello() {
+        //This function will send page title to APP
+        
+        function sendPageTitle() {
    //header.innerText = 'Hello';
-   sendToApp.postMessage("Hello from the other side");
+   var getDomTitle=document.getElementsByTagName("title").textContent;
+      sendToApp.postMessage("title:"+getDomTitle+", icon:icon1232");
 }
 //This function will be triggered by the APP
 function callFromApp(datIt){
     document.getElementById("container").value=datIt;
 }
+sendPageTitle();
     </script>
 </body>
 </html>

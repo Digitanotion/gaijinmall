@@ -2211,6 +2211,77 @@ class AdManager
 		
 	}
 
+	//New Ads, Mobile product search
+	function getProductByKeyword($serach, $limit)
+    {
+		$inputValidator = new InputValidator();
+		$serach = $inputValidator->sanitizeItem($serach, "string");
+		$limit = $inputValidator->sanitizeItem($limit, "int");
+		$dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+        $query = "SELECT * FROM mallads WHERE mallAdTitle like ? OR mallAdDesc like ? ORDER BY mallAdTitle LIMIT $limit";
+
+        $paramType = "ss";
+        $paramValue = array(
+            $serach,
+            $serach
+        );
+        $stmt = $dbHandler->run($query, $paramValue);
+        $num = $stmt->rowCount();
+		if ($num > 0) {
+			$this->message(1, $stmt->fetchAll());
+		}
+		else{
+			$this->message(404, "No record found");
+		}
+		return	$this->msg;
+    }
+
+	function getFeaturedProductByKeyword($serach, $featured, $limit)
+    {
+		$inputValidator = new InputValidator();
+		$serach = $inputValidator->sanitizeItem($serach, "string");
+		$limit = $inputValidator->sanitizeItem($limit, "int");
+		$dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+        $query = "SELECT * FROM tbl_product WHERE (name like ? OR description like ?) AND  (featured =?) ORDER BY name LIMIT $limit";
+        $paramType = "ssi";
+        $paramValue = array(
+            $serach,
+            $serach,
+            $featured
+        );
+        $stmt = $dbHandler->run($query, $paramValue);
+        $num = $stmt->rowCount();
+		if ($num > 0) {
+			$this->message(1, $stmt->fetchAll());
+		}
+		else{
+			$this->message(404, "No record found");
+		}
+		return	$this->msg;
+    }
+
+    function getProductCategoryByKeyword($serach, $limit)
+    {
+		$inputValidator = new InputValidator();
+		$serach = $inputValidator->sanitizeItem($serach, "string");
+		$limit = $inputValidator->sanitizeItem($limit, "int");
+		$dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+        $query = "SELECT * FROM malladcategory WHERE mallCategName like ?  ORDER BY mallCategName LIMIT $limit";
+        $paramType = "s";
+        $paramValue = array(
+            $serach
+        );
+        $stmt = $dbHandler->run($query, $paramValue);
+		$num = $stmt->rowCount();
+		if ($num > 0) {
+			$this->message(1, $stmt->fetchAll());
+		}
+		else{
+			$this->message(404, "No record found");
+		}
+		return	$this->msg;
+    }
+
 
 }
 
