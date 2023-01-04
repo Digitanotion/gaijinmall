@@ -402,6 +402,7 @@ if (isset($_GET['pointer'])) {
     $allChats = $message_ob->getLastUserMsgsByMsgID($msgID, $pointer);
     if ($allChats['status'] == 1) {
         $chatsEach = $allChats['message'];
+        //echo $chatsEach['mallMsgValue'];
     ?>
 
         <div class="mt-3 fs-md text-end d-flex <?php echo ($chatsEach['mallMsgSenderID'] == $pageUsrID__) ? "justify-content-end" : "justify-content-start"; ?>">

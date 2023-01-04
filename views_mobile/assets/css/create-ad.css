@@ -32,6 +32,8 @@
     --clr-primary:#0071C1;
     --clr-primary-light: rgba(0, 113, 193, 0.1);
     --clr-secondary: rgba(169, 169, 169, 1.0);
+    --clr-tab-default: #92d0ff;
+    --clr-tab-active: #d6edff;
     --clr-text-one: #323438;
     --clr-head-light: rgba(0, 113, 193, 0.05);
 
@@ -105,6 +107,12 @@
 
 .sell-clr-secondary {
     background-color: var(--clr-secondary);
+}
+.tab-clr-default {
+    background-color: var(--clr-tab-default);
+}
+.tab-clr-active {
+    background-color: var(--clr-tab-active);
 }
 
 .sell-text-color {
@@ -271,8 +279,8 @@
   /* second button design */
   .large-button{
       display: grid;
-      width: 7em;
-      height: 7em;
+      width: 60px;
+      height: 60px;
       place-items: center;
       border-radius: 50%;
       background-color: rgb(180, 180, 180);

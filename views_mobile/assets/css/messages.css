@@ -1,7 +1,6 @@
 .mainchat{
     overflow-y: auto;
-    max-height: 60%;
-    min-height: 300px;
+    margin-bottom: 4rem !important;
 }
 .chat-each{
 

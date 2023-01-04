@@ -108,11 +108,11 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                 <div class="ha-profile-url-data__body">
                     <div class="ha-none__display text-center mt-4 mx-auto">
                         <div class="number_0" id="number0">
-                            <span class="d-flex justify-content-center">
+                            <span class="d-flex justify-content-center align-items-baseline">
                                 <?php if ($getUsrPhoneVerified['status'] == 1) {
                                     echo '<i class="fa fa-check-circle text-success fs-title-2 m-1 me-2"></i>';
                                 } else {
-                                    echo '<i class="fa fa-times-circ;e text-danger fs-title-2 m-1 me-2"></i>';
+                                    echo '<i class="fa fa-times-circle text-danger fs-title-2 m-1 me-2"></i>';
                                 } ?>
 
                                 <p class="opacity-75 fs-md-1">Confirmed</p>

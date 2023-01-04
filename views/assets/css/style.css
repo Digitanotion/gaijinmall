@@ -1217,3 +1217,41 @@ a .premium00:hover{
   0% {opacity:0;}
   100% {opacity:1;}
 }
+
+.btn-outline-primary-mobile{
+  color: #0d6efd !important;
+  border-color: #0d6efd !important;
+}
+.btn-outline-danger-mobile{
+  color: #f70000 !important;
+  border-color: #f70000 !important;
+}
+.btn-outline-primary-mobile:active, .btn-outline-danger-mobile{
+  background-color: rgb(241, 241, 241);
+}
+.btn-primary-mobile{
+  color: #fff !important;
+  background-color:#0d6efd !important;
+}
+.btn-primary-mobile:active{
+background-color: #2077fac9 !important;
+}
+.btn-mobile{
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 0.8rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}

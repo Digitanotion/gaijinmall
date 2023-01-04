@@ -982,11 +982,11 @@ font-size: calc(0.8rem + 0.1vw)!important;
     background-position: center;
 }
   .ha-image-profile-small__holder{
-    width: 60px;
-    height: 60px;
-    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
     font-weight: bolder;
-    line-height: 60px;
+    line-height: 40px;
     text-align: center;
     background-size:contain;
     background-position: center;
@@ -1283,6 +1283,10 @@ border-radius: 50%;
 .btn-primary-mobile:active{
 background-color: #2077fac9 !important;
 }
+.btn-primary-mobile:disabled{
+  background-color: #70a9ff !important;
+  color: rgb(216, 216, 216);
+  }
 .card{
   width: 90%;
   margin-left: auto;
@@ -1314,7 +1318,8 @@ background-color: #2077fac9 !important;
   font-size: calc(1.5em + 1.2vh) !important;
 }
 .dropdown-toggle::after {
-  margin-right: 1 !important;
+  margin-right: 1px !important;
+  margin-left: 8px !important;
   color:#000;
 }
 .form-control{
@@ -1325,9 +1330,33 @@ background-color: #2077fac9 !important;
   border-color:rgba(0, 0, 0, 0.521) !important;
   box-shadow: none !important;
 }
+.form-select:focus{
+  border-color:rgba(0, 0, 0, 0.521) !important;
+  box-shadow: none !important;
+}
+
+.select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
+  border-color:rgba(0, 0, 0, 0.521) !important;
+  box-shadow: none !important;
+  font-size: 12px;
+}
 .ha-mpage-items__wrapper:active{
   background-color: rgb(248, 255, 255);
 }
 .row-button:active{
   background-color: rgb(250, 254, 255);
+}
+.button_click:active{
+  background-color: rgb(248, 255, 255);
+}
+.text-nowrap_{
+  max-width: 70px;
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow: ellipsis;
+}
+.text-nowrap_general{
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow: ellipsis;
 }

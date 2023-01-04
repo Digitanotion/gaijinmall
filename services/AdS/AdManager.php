@@ -201,7 +201,7 @@ class AdManager
 	{
 
 		$inputValidator = $this->inputValidatorOb;
-		$categID= $inputValidator->validateItem($mallCategID, "string");;
+		$categID= $inputValidator->validateItem($categID, "string");;
 
 
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);

@@ -89,16 +89,16 @@ if (isset($_POST['adIDForDelete_btn'])) {
                     <div class="app_header-adverts p-0">
                         <!-- <h6 class="fs-title-5 fw-bolder m-0" id="prof1">ADVERTS</h6> -->
                         <div class="dropdown">
-                        <button class="btn-mobile fs-md btn-outline-primary-mobile dropdown-toggle text-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="">
-                            <!-- <i class="fa fa-ellipsis-v ml-1" aria-hidden="true"></i> --><span class="py-4">Choose Advert</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-center dropdown-men" aria-labelledby="dropdownMenuButton1">
-                            <li class="d-flex justify-content-center"><span class="btn w-75  text-primary fs-md p-2 acts0" onclick="myActv()" id="actvs"> Active <span class="ha-count__Active badge bg-primary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "active")['message']; ?></span></span></li>
-                            <li class="d-flex justify-content-center"><span class="btn w-75 text-secondary fs-md p-2" onclick="myRev1()" id="revws"> In Review <span class="ha-count__Active badge bg-secondary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "inreview")['message']; ?></span></span></li>
-                            <li class="d-flex justify-content-center"><span class="btn w-75 text-danger fs-md p-2" onclick="myDecl()" id="decls"> Declined <span class="ha-count__Active badge bg-danger"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "declined")['message']; ?></span></span></li>
-                            <li class="d-flex justify-content-center"><span class="btn w-75 text-secondary fs-md p-2 feedsico" id="feedsicon0" onclick="myExpiredvd()"> Expired <span class="ha-count__Active badge bg-secondary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "expired")['message']; ?></span></span></li>
-                        </ul>
-                    </div>
+                            <button class="btn-mobile fs-md btn-outline-primary-mobile dropdown-toggle text-secondary " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="">
+                                <!-- <i class="fa fa-ellipsis-v ml-1" aria-hidden="true"></i> --><span class="py-4">Choose Advert</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-center dropdown-men" aria-labelledby="dropdownMenuButton1">
+                                <li class="d-flex justify-content-center"><span class="btn w-75  text-primary fs-md p-2 acts0" onclick="myActv()" id="actvs"> Active <span class="ha-count__Active badge bg-primary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "active")['message']; ?></span></span></li>
+                                <li class="d-flex justify-content-center"><span class="btn w-75 text-secondary fs-md p-2" onclick="myRev1()" id="revws"> In Review <span class="ha-count__Active badge bg-secondary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "inreview")['message']; ?></span></span></li>
+                                <li class="d-flex justify-content-center"><span class="btn w-75 text-danger fs-md p-2" onclick="myDecl()" id="decls"> Declined <span class="ha-count__Active badge bg-danger"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "declined")['message']; ?></span></span></li>
+                                <li class="d-flex justify-content-center"><span class="btn w-75 text-secondary fs-md p-2 feedsico" id="feedsicon0" onclick="myExpiredvd()"> Expired <span class="ha-count__Active badge bg-secondary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "expired")['message']; ?></span></span></li>
+                            </ul>
+                        </div>
                     </div>
                     <!-- <div class="text-center">
                         <span class="btn text-primary fs-md p-2 acts0" onclick="myActv()" id="actvs"> Active <span class="ha-count__Active badge bg-primary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "active")['message']; ?></span></span>
@@ -109,13 +109,13 @@ if (isset($_POST['adIDForDelete_btn'])) {
                         <span class="btn text-secondary fs-sm p-2 feedsico" id="feedsicon0" onclick="myExpiredvd()"> Expired <span class="ha-count__Active badge bg-secondary"><?php echo $adsManager_ob->getAllAdsCountByUsrID($pageUsrID__, "expired")['message']; ?></span></span>
                     </div> -->
 
-                 
+
                 </div>
 
                 <div class=" mx-0"></div>
                 <!-- <hr class="m-0 bg-hr-light"> -->
                 <input hidden value="<?php echo $pageUsrID__ ?>" id="ha-userID" name="ha-userID">
-                <div class="ha-profile-url-data__body mx-4 my-2">                </div>
+                <div class="ha-profile-url-data__body mx-4 my-2"> </div>
 
             </div>
 

@@ -91,7 +91,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                 <div class="ha-profile-url-data__body under_fixed-elemen">
                     <div class="ha-none__display  w-100 text-center mt-4 mx-auto">
                         <div class="number_0" id="number0">
-                        <span class="d-flex  justify-content-center">
+                        <span class="d-flex  justify-content-center align-items-baseline">
                                     <?php if ($getUsrInfo['mallUsrEmailStatus'] == 1) {
                                         echo '<i class="fa fa-check-circle text-success fs-title-2 m-1 me-2"></i>';
                                     } else {

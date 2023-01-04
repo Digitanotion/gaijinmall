@@ -27,15 +27,12 @@ setInterval(() => {
         success: function (data) {
             data=data.trim();
             if (data=="error"){
-                //pageLoadWrapperMsgs.append(data);
+                pageLoadWrapperMsgs.append(data);
             }else{
                 if (data!=currentData){
                     pageLoadWrapperMsgs.append(data);
                 //pageLoadWrapperMsgs = pageLoadWrapperMsgs.scrollHeight;
-                $("html, body").animate({
-                    scrollTop: $(
-                    'html, body').get(0).scrollHeight
-                    });
+                pageLoadWrapperMsgs[0].scrollTop = pageLoadWrapperMsgs[0].scrollHeight;
                 }
                 currentData=data;
                 

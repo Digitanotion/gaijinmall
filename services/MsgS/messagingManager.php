@@ -199,7 +199,6 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $msgID=$inputValidator->sanitizeItem($msgID, "string");
-        $msgID=$inputValidator->validateItem($msgID, "string");
         //Check if conversation was created
         $sql = "SELECT * FROM mallmsgs WHERE mallMsgID=?";
 		$stmt = $dbHandler->run($sql, [$msgID]);
@@ -218,7 +217,7 @@ class messagingManager{
 		$inputValidator=new InputValidator();
         $msgID=$inputValidator->sanitizeItem($msgID, "string");
         //Check if conversation was created
-        $sql = "SELECT * FROM mallmsgs WHERE mallMsgID=? ORDER BY defaultColID DESC";
+        $sql = "SELECT * FROM mallmsgs WHERE mallMsgID=? ORDER BY mallMsgTime DESC";
 		$stmt = $dbHandler->run($sql, [$msgID]);
         if ($stmt->rowCount() > 0) {
             $getMsgs=$stmt->fetch();
