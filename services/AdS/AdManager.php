@@ -1640,88 +1640,146 @@ class AdManager
 	{
 	}
 
-	function recievePromoPayment($paymentFor, $customerEmail, $ad_custID)
+	function recievePromoPayment($paymentFor, $cost, $customerEmail, $ad_custID, $name)
 	{
+
 		$inputSanitize = new InputValidator();
 		$paymentFor = $inputSanitize->sanitizeInput($paymentFor, "string");
 		$customerEmail = $inputSanitize->sanitizeInput($customerEmail, "email");
 		$ad_custID = $inputSanitize->sanitizeInput($ad_custID, "string");
 		$promoPlanChoosen = explode("_", $paymentFor);
-		$priceID = "";
-		$rand_token = md5(rand(10000, 10000000000000000));
-		switch ($paymentFor) {
-			case 'business_7':
-				$priceID = "price_1LVpIKJYhkX8M0GIFU2BS1I1";
-				break;
-			case 'business_30':
-				$priceID = "price_1LVpIKJYhkX8M0GIV5Dg38uZ";
-				break;
-			case 'bronze_30':
-				$priceID = "price_1LVpIKJYhkX8M0GIjgLyQ89D";
-				break;
-			case 'bronze_90':
-				$priceID = "price_1LVpIKJYhkX8M0GISuMHONVh";
-				break;
-			case 'silver_150':
-				$priceID = "price_1LVpIKJYhkX8M0GIA9CJN1bV";
-				break;
-			case 'silver_30':
-				$priceID = "price_1LVpIKJYhkX8M0GIqojed4YA";
-				break;
-			case 'silver_360':
-				$priceID = "price_1LVpIKJYhkX8M0GIDAJoGaix";
-				break;
-			case 'gold_360':
-				$priceID = "price_1LVpIKJYhkX8M0GIjE4Y73WQ";
-				break;
-			case 'gold_30':
-				$priceID = "price_1LVpIKJYhkX8M0GINUvarNnX";
-				break;
-			case 'diamond_30':
-				$priceID = "price_1LVpILJYhkX8M0GIYXymACFy";
-				break;
-			case 'diamond_150':
-				$priceID = "price_1LVpILJYhkX8M0GInsH8ENvL";
-				break;
-			case 'diamond_360':
-				$priceID = "price_1LVpILJYhkX8M0GIvF5MlTuL";
-				break;
+		$rand = md5(rand(10, 100));
+		$client_reference_id = $paymentFor . "_" . $ad_custID ."_" . $cost. "_". $customerEmail."_".$rand;
 
-			default:
-				$priceID = "price_1LVpIKJYhkX8M0GIFU2BS1I1";
-				break;
-		}
-		\Stripe\Stripe::setApiKey('sk_test_51LUVcWJYhkX8M0GIFyUI3G8qVEXCpCCBoHgJFcLEtV13pOHSU3Zbz8udYWuDreOQ8n3tDReSk26Fbacl3E30OaxP009wzby1fy');
-		header('Content-Type: application/json');
+		$ch = curl_init();
 
-		$YOUR_DOMAIN = 'http://gaijinmall.com';
+		curl_setopt($ch, CURLOPT_URL, 'https://komoju.com/api/v1/sessions');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "default_locale=ja&email=". $customerEmail ."&metadata[test]=value&amount=".$cost."&currency=JPY&payment_data[external_order_num]=".$client_reference_id."&payment_data[name]=".$name."&return_url=http://localhost/gaijinmall-v3/gaijinmall/views/pay/index.php");
+		curl_setopt($ch, CURLOPT_USERPWD, 'sk_test_2zowjs6bxxmjjl3np1huex10' . ':' . '');
 
-		$checkout_session = \Stripe\Checkout\Session::create([
-			'client_reference_id' => $paymentFor . "_" . $ad_custID,
-			'customer_email' => $customerEmail,
-			'line_items' => [[
-				# Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
-				'price' => $priceID,
-				'quantity' => 1,
-			]],
-			'mode' => 'payment',
-			'success_url' => $YOUR_DOMAIN . "/views/pay/?lk_tok=$rand_token&psi={CHECKOUT_SESSION_ID}&adref=$ad_custID",
-			'cancel_url' => $YOUR_DOMAIN . '/views/pay/cancel.html',
-		]);
+		$headers = array();
+		$headers[] = 'Content-Type: application/x-www-form-urlencoded';
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-		header("HTTP/1.1 303 See Other");
-		header("Location: " . $checkout_session->url);
+		$result = curl_exec($ch);
+		// if (curl_errno($ch)) {
+		//     echo 'Error:' . curl_error($ch);
+		// }
+		curl_close($ch);
+
+		$data = json_decode($result, true);
+		// var_dump($data);
+		$url = $data["session_url"];
+		header("location:".$url);
 	}
+
+	/*-------Main OLD------*/
+
+	// function recievePromoPayment($paymentFor, $customerEmail, $ad_custID)
+	// {
+	// 	$inputSanitize = new InputValidator();
+	// 	$paymentFor = $inputSanitize->sanitizeInput($paymentFor, "string");
+	// 	$customerEmail = $inputSanitize->sanitizeInput($customerEmail, "email");
+	// 	$ad_custID = $inputSanitize->sanitizeInput($ad_custID, "string");
+	// 	$promoPlanChoosen = explode("_", $paymentFor);
+	// 	$priceID = "";
+	// 	$rand_token = md5(rand(10000, 10000000000000000));
+	// 	switch ($paymentFor) {
+	// 		case 'business_7':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIFU2BS1I1";
+	// 			break;
+	// 		case 'business_30':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIV5Dg38uZ";
+	// 			break;
+	// 		case 'bronze_30':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIjgLyQ89D";
+	// 			break;
+	// 		case 'bronze_90':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GISuMHONVh";
+	// 			break;
+	// 		case 'silver_150':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIA9CJN1bV";
+	// 			break;
+	// 		case 'silver_30':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIqojed4YA";
+	// 			break;
+	// 		case 'silver_360':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIDAJoGaix";
+	// 			break;
+	// 		case 'gold_360':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIjE4Y73WQ";
+	// 			break;
+	// 		case 'gold_30':
+	// 			$priceID = "price_1LVpIKJYhkX8M0GINUvarNnX";
+	// 			break;
+	// 		case 'diamond_30':
+	// 			$priceID = "price_1LVpILJYhkX8M0GIYXymACFy";
+	// 			break;
+	// 		case 'diamond_150':
+	// 			$priceID = "price_1LVpILJYhkX8M0GInsH8ENvL";
+	// 			break;
+	// 		case 'diamond_360':
+	// 			$priceID = "price_1LVpILJYhkX8M0GIvF5MlTuL";
+	// 			break;
+
+	// 		default:
+	// 			$priceID = "price_1LVpIKJYhkX8M0GIFU2BS1I1";
+	// 			break;
+	// 	}
+	// 	\Stripe\Stripe::setApiKey('sk_test_51LUVcWJYhkX8M0GIFyUI3G8qVEXCpCCBoHgJFcLEtV13pOHSU3Zbz8udYWuDreOQ8n3tDReSk26Fbacl3E30OaxP009wzby1fy');
+	// 	header('Content-Type: application/json');
+
+	// 	$YOUR_DOMAIN = 'http://gaijinmall.com';
+
+	// 	$checkout_session = \Stripe\Checkout\Session::create([
+	// 		'client_reference_id' => $paymentFor . "_" . $ad_custID,
+	// 		'customer_email' => $customerEmail,
+	// 		'line_items' => [[
+	// 			# Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+	// 			'price' => $priceID,
+	// 			'quantity' => 1,
+	// 		]],
+	// 		'mode' => 'payment',
+	// 		'success_url' => $YOUR_DOMAIN . "/views/pay/?lk_tok=$rand_token&psi={CHECKOUT_SESSION_ID}&adref=$ad_custID",
+	// 		'cancel_url' => $YOUR_DOMAIN . '/views/pay/cancel.html',
+	// 	]);
+
+	// 	header("HTTP/1.1 303 See Other");
+	// 	header("Location: " . $checkout_session->url);
+	// }
 
 	static function verifyPaySession($sessionID)
 	{
-		$stripe = new \Stripe\StripeClient(
-			'sk_test_51JuDniDv8pLIRel5lqSRP3hIRKx7IiMARiaZGOPpoWl0Yrfhsr9j9DaTwmSOE4oDUVt1pKq8HJBfhKACyEqMylCJ00EZPqTWLe'
-		);
-		return $stripe->checkout->sessions->retrieve(
-			$sessionID,
-		);
+		// Generated by curl-to-PHP: http://incarnate.github.io/curl-to-php/
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, 'https://komoju.com/api/v1/sessions/'.$sessionID);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+		curl_setopt($ch, CURLOPT_USERPWD, 'sk_test_2zowjs6bxxmjjl3np1huex10' . ':' . '');
+
+		$result = curl_exec($ch);
+		// if (curl_errno($ch)) {
+		//     echo 'Error:' . curl_error($ch);
+		// }
+		curl_close($ch);
+		$data = json_decode($result, true);
+		// $status = $data["status"];
+		return $data;
 	}
+	/*---------OLD---------------*/
+	// static function verifyPaySession($sessionID)
+	// {
+	// 	$stripe = new \Stripe\StripeClient(
+	// 		'sk_test_51JuDniDv8pLIRel5lqSRP3hIRKx7IiMARiaZGOPpoWl0Yrfhsr9j9DaTwmSOE4oDUVt1pKq8HJBfhKACyEqMylCJ00EZPqTWLe'
+	// 	);
+	// 	return $stripe->checkout->sessions->retrieve(
+	// 		$sessionID,
+	// 	);
+	// }
 	static function getAllPromoList()
 	{
 		$mainClass = new self();
@@ -1758,6 +1816,51 @@ class AdManager
 		$gateReference = $inputSanitize->sanitizeInput($gateReference, "string");
 		//bronze_90_6268416575_508213105619396
 		$usrID = $usrReference[2];
+		$usrEmail = $usrReference[5];
+		$adID = $usrReference[3];
+		$adPromoPaid = $usrReference[3];
+		$adPromoID = $usrReference[0] . "_" . $usrReference[1];
+
+		if (empty($usrID) || empty($adID) || empty($adPromoID)) {
+			$mainClass->message("404", "Fields cannot be empty");
+		} else {
+			$sql = "INSERT INTO malladpromoted (mallUsrID, mallAdID, mallAdPromoID, mallAdPromoPaid, mallAdPromoStart, mallAdPromoEnd,mallAdPromoStatus,mallPromoGateRef) VALUES (?,?,?,?,?,?,?,?)";
+
+
+			// converts the parameter into array before using it in the query
+			$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+
+			$today = time();
+			$getPromoDuration = $usrReference[1];
+			$getPromoDuration = strtotime("+$getPromoDuration day");
+			$values = [$usrID, $adID, $adPromoID, $adPromoPaid, $today, $getPromoDuration, "1", $gateReference];
+			$stmt = $dbHandler->run($sql, $values);
+			if ($stmt->rowCount() > 0) {
+				$mainClass->message("1", "Category Parameters added successfully");
+				//User Ad to be promoted
+				$dbHandler->run("UPDATE mallads SET mallAdPromoID=? WHERE mallAdID=?", [$adPromoID, $adID]);
+			} else {
+				$mainClass->message("0", "Failed to communicate with server");
+			}
+			$msgOb = new MessagingManager();
+			$msgObAd = new MessagingManager();
+         	$msgOb->sendMail("noreply@gaijinmall.com", $usrEmail, "Advert Boost Update", "Hello, We are glad to inform you that your advert has been boosted. Thank you for choosing Gaijinmall. <a href='gaijinmall.com/advert'>Back</a>", "ad_notification");
+         	$msgObAd->sendMail("noreply@gaijinmall.com", "noreply@gaijinmall.com", "Advert Boost Update", "Hello Administrator, We are glad to inform you that someone recently boosted an advert. <a href='gaijinmall.com/advert'>Back</a>", "ad_notification");
+		}
+		
+		
+		return $mainClass->msg;
+
+	}
+	/*---------------main old-----*/
+	/*static function addNewUsrPromoRecord($usrReference, $gateReference)
+	{
+		$mainClass = new self();
+		$inputSanitize = new InputValidator();
+		$usrReference = explode("_", $inputSanitize->sanitizeInput($usrReference, "string"));
+		$gateReference = $inputSanitize->sanitizeInput($gateReference, "string");
+		//bronze_90_6268416575_508213105619396
+		$usrID = $usrReference[2];
 		$adID = $usrReference[3];
 		$adPromoID = $usrReference[0] . "_" . $usrReference[1];
 		if (empty($usrID) || empty($adID) || empty($adPromoID)) {
@@ -1782,7 +1885,7 @@ class AdManager
 			}
 		}
 		return $mainClass->msg;
-	}
+	}*/
 
 	static function delAdNow($adID)
 	{

@@ -45,7 +45,10 @@ $feedback_ob=new feedbackManager();
 $adID = "";
 $pageUsrID__=$_SESSION['gaijinmall_user_'];
 
-$getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__);
+if (!empty($pageUsrID__)) {
+  $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__);
+}
+
 /*
 
 $getCurrentUserInfo=$securityManager_ob->getUserInfoByID($usrID);
