@@ -86,7 +86,7 @@ if(isset($_POST['adIDForDelete_btn'])){
     
 </head>
 <body>
-<?php //include "header-top.php";?>
+<?php include "header-top.php";?>
     <section class="container-fluid m-0 p-0">
         <div class="row m-0 mx-sm-5 mx-md-5 mx-lg-5 mt-2 gx-0 gx-md-5 gx-lg-5 justify-content-between">
         <?php include "sidebar.php";?>
