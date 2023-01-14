@@ -43,6 +43,8 @@ class AdManager
 	{
 		$this->securityManagerOb = new SecurityManager();
         $this->inputValidatorOb = new InputValidator();
+
+        $this->checkAdExpiry();
 	}
 
 	/*
@@ -586,7 +588,7 @@ class AdManager
 		}
 		return $this->msg;
 	}
-	function getSimilarAds($searchString, $adCategID = null)
+	function getSimilarAds($searchString, $adCategID = null, $adID = null)
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
 		$keywords = explode(' ', $searchString);
@@ -595,8 +597,8 @@ class AdManager
 			$searchTermKeywords[] = "mallAdTitle LIKE '%$word%' ";
 		}
 
-		$stmt = "SELECT * FROM mallads WHERE " . implode(' OR ', $searchTermKeywords) . " AND mallCategID=? AND mallAdStatus=?";
-		$stmt = $dbHandler->run($stmt, [$adCategID, "1"]);
+		$stmt = "SELECT * FROM mallads WHERE  mallCategID=? AND mallAdStatus=? AND mallAdID <> ?";
+		$stmt = $dbHandler->run($stmt, [$adCategID, 1, $adID]);
 		$stmtData = $stmt->fetchAll();
 		if ($stmt->rowCount() > 0) {
 			$this->message(1, $stmtData);
@@ -1317,8 +1319,8 @@ class AdManager
 		$inputValidator = new InputValidator();
 		$adID = $inputValidator->sanitizeItem($adID, "string");
 		$promoID = $inputValidator->sanitizeItem($promoID, "string");
-		$stmt = "SELECT * FROM malladpromoted WHERE mallAdID=? AND mallAdPromoID=?";
-		$stmt = $dbHandler->run($stmt, [$adID, $promoID]);
+		$stmt = "SELECT * FROM malladpromoted WHERE mallAdID=? AND mallAdPromoID=? AND mallAdPromoStatus = ?";
+		$stmt = $dbHandler->run($stmt, [$adID, $promoID, 1]);
 		if ($stmt->rowCount() > 0) {
 			$this->message(true, $stmt->fetch()['mallAdPromoID']);
 		} else {
@@ -2312,6 +2314,14 @@ class AdManager
 		}
 		return	$this->msg;
 		
+	}
+
+	public function checkAdExpiry() {
+		$today = time();
+		$sql = "UPDATE malladpromoted SET mallAdPromoStatus= ? WHERE mallAdPromoEnd < ?";
+		$dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
+		$stmt = $dbHandler->run($sql, [2, $today]);		
+		return	$this->msg;
 	}
 
 

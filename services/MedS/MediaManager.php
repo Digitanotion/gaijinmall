@@ -208,6 +208,17 @@ class MediaManager{
                 }
                 return $this->msg;
             }
+
+            public function checkOptimizedImage($file) {
+                if (file_exists($file)) {
+                    $this->message(1, $file);
+                } else {
+                    $this->message(404, "file don't exist");
+                }
+                clearstatcache();
+                return $this->msg;
+            }
+
             function getUsrThumbImage($usrID){
                 $inputValidator = $this->inputValidatorOb;
 

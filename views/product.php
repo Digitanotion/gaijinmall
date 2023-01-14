@@ -125,6 +125,10 @@ if (isset($_POST['saveAd__btn'])) {
   
 }
 
+
+$dir = "../handlers/uploads/optimized/";
+
+
 $productRating=$feedback_ob->getProductTotalRating($adID)['message'];
 //Generate new CSRF TOken
 $newToken = $securityManager_ob->setCSRF();
@@ -184,23 +188,27 @@ $newToken = $securityManager_ob->setCSRF();
 
               <div class="carousel-inner" style="">
                 <?php
-                $imageName = $mediaManager->getAllAdImage($adID);
-                if ($imageName['status'] == 1) {
-                  $imageName = $imageName['message'];
-                  $countSlideTo = 0;
-                  foreach ($imageName as $imageFileName) {
-                ?>
-                    <div class="carousel-item <?php echo ($countSlideTo == 0) ? 'active' : ""; ?>">
-                      <div class="zoom-item" id="zoom-item">
-                        <img src="../handlers/uploads/optimized/<?php echo $imageFileName['mallMediaName'] ?>" class=" w-100 " alt="...">
+                  $imageName = $mediaManager->getAllAdImage($adID);
+                  if ($imageName['status'] == 1) {
+                    $imageName = $imageName['message'];
+                    $countSlideTo = 0;
+                    foreach ($imageName as $imageFileName) {
 
-                      </div>
-                    </div>
-                <?php $countSlideTo++;
+                      
+                      $file = $dir.$imageFileName['mallMediaName'];
+                      $checkImage = $mediaManager->checkOptimizedImage($file);
+                      $img = ($checkImage["status"] == 1) ? $file : $dir."no_image.jpg";
+                      ?>
+                        <div class="carousel-item <?php echo ($countSlideTo == 0) ? 'active' : ""; ?>">
+                          <div class="zoom-item" id="zoom-item">
+                            <img src="<?php echo $img ?>" class=" w-100 " alt="...">
+                          </div>
+                        </div>
+                      <?php }
+                      $countSlideTo++;
+                  } else {
+                    $thumbImageName = "";
                   }
-                } else {
-                  $thumbImageName = "";
-                }
                 ?>
 
 
@@ -386,10 +394,13 @@ $newToken = $securityManager_ob->setCSRF();
       <div class="container">
         <div class="row">
           <div class="col-md-8">
-            <h4 class="m-0 mb-2">Similar Adverts</h4>
+            
             <?php
-            $getSimilarAds = $adManager_ob->getSimilarAds($allAdByID['mallAdTitle'], $allAdByID['mallCategID']);
-            if ($getSimilarAds['status'] == 1) {
+            $getSimilarAds = $adManager_ob->getSimilarAds($allAdByID['mallAdTitle'], $allAdByID['mallCategID'], $allAdByID['mallAdID']);
+
+            if ($getSimilarAds['status'] == 1) { ?>
+              <h4 class="m-0 mb-2">Similar Adverts</h4>
+            <?php 
               foreach ($getSimilarAds['message'] as  $value) {
                 $getImageCount = $adManager_ob->countAdImagesByID($value['mallAdID']);
                 if ($adID!=$value['mallAdID']){
@@ -403,8 +414,16 @@ $newToken = $securityManager_ob->setCSRF();
                   } else {
                     $thumbImageName = "";
                   }
-                  ?>
-                  <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID'];?>" datavalueTitle="<?php echo str_replace(" ", "-",$value['mallAdTitle']);?>" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
+
+                      $imageFile = $dir.$thumbImageName;
+                      $res = $mediaManager->checkOptimizedImage($imageFile);
+                      $img_ = ($res["status"] == 1) ? $imageFile : $dir."no_image.png";
+                    ?>
+                    <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID'];?>" datavalueTitle="<?php echo str_replace(" ", "-",$value['mallAdTitle']);?>" style="background-image: url(<?php echo $img_; ?>);">
+                  
+                  
+                  
+                  
                     <?php
                     if (!empty($value['mallAdCondition'])) {
                       echo '<span class="ha-sim-ad-item__title fs-md text-light text-center fw-bold opacity-50">' . $value['mallAdCondition'] . '</span>';

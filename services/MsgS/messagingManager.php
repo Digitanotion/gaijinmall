@@ -163,7 +163,7 @@ class messagingManager{
         $msgID=$inputValidator->sanitizeItem($usrID, "string");
         $msgID=$inputValidator->validateItem($usrID, "string");
         //Check if conversation was created
-        $sql = "SELECT * FROM mallnotifications WHERE mallNotifyToUserID=? ORDER BY defaultColID DESC";
+        $sql = "SELECT * FROM mallnotifications WHERE mallNotifyToUserID=? ORDER BY defaultColID DESC LIMIT 6";
 		$stmt = $dbHandler->run($sql, [$usrID]);
         if ($stmt->rowCount() > 0) {
             $getMsgs=$stmt->fetchAll();

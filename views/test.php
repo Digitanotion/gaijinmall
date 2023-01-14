@@ -85,6 +85,16 @@ echo "hello, $n";
 			<button type="submit" name="submit">Submit</button>
 		</form>
 	</main>
+
+	<?php 
+
 	
+			// echo date('d/m/Y H:i:s', 1673781452);
+			echo date('d/m/Y H:i:s', 1673176652);
+		
+
+
+	?>
+
 </body>
 </html>
