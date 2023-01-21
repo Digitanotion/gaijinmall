@@ -564,6 +564,28 @@ class AdManager
 		return $this->msg;
 	}
 
+	function getAdBySearch(string $categID, string $searchWord)
+	{
+		$inputValidator = $this->inputValidatorOb;
+		$categID = $inputValidator->sanitizeInput($categID, "string");
+		$searchWord = $inputValidator->sanitizeInput($searchWord, "string");
+		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+		$keywords = explode(' ', $searchWord);
+		$searchTermKeywords = array();
+		foreach ($keywords as $word) {
+			$searchTermKeywords[] = "mallAdTitle LIKE '%$word%' OR mallAdDesc LIKE '%$word%'";
+		}
+		$stmt = "SELECT * FROM mallads WHERE mallCategID = ? AND mallAdStatus=? AND (".implode(' OR ', $searchTermKeywords).") ORDER BY defaultColID DESC";
+		$stmt = $dbHandler->run($stmt, [$categID, "1"]);
+		$stmtData = $stmt->fetchAll();
+		if ($stmt->rowCount() > 0) {
+			$this->message(1, $stmtData);
+		} else {
+			$this->message(404, "Not Found");;
+		}
+		return $this->msg;
+	}
+
 	function searchAds($searchString)
 	{
 		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
@@ -1153,6 +1175,137 @@ class AdManager
 			}
 		} else {
 			$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND mallCategID=" . $categID;
+			$stmt = $dbHandler->run($sql);
+			if ($stmt->rowCount() > 0) {
+				$this->message(1, $stmt->fetchAll());
+			} else {
+				$this->message(0, "Something Went Wrong");
+			}
+		}
+
+
+		return $this->msg;
+	}
+
+	function searchCategFilter(string $type = null, string $getAttributes = null, $categID,$searchWord)
+	{
+		/* 
+			OBJECTIVE:
+				A. The Type variale house the sortBy integer value (0-Recommended, 1=Newest, 2=Lowest, 3=Highest)
+				B. The getAttributes variable house the get url and should be in this format "?filter_attribs=init,mallAdSize_30,mallAdGender_male,sortBy_new" etc.
+					1. Capture and sanitize the getAttributes,
+					2. Seperate and determine the number of category attributes or options if $getAttributes is not null
+					3. clearly seperate the likely fields names gotten from the getAttributes to be appended in the WHERE CLAUSE
+					4. Build the Query
+					5. Execute and Return result rows
+		*/
+		$security_ob = new SecurityManager();
+		$dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+		$type = $security_ob->sanitizeItem($type, "string");
+		//Execute #1
+		$getAttributes = $security_ob->sanitizeItem($getAttributes, "string");
+		$searchWord = $security_ob->sanitizeItem($searchWord, "string");
+		$keywords = explode(' ', $searchWord);
+		$searchTermKeywords = array();
+		foreach ($keywords as $word) {
+			$searchTermKeywords[] = "mallAdTitle LIKE '%$word%' OR mallAdDesc LIKE '%$word%'";
+		}
+		//Execute #2
+		if ($getAttributes != null && $type != null) {
+			$getAttrSeperated = explode(",", $getAttributes);
+			$numOfSepAttrs = count($getAttrSeperated);
+
+			//Execute #3
+			$fieldsFromGet = [];
+			$fieldsValuesFromGet = [];
+			$fieldsParams = [];
+			$sql = "";
+			for ($i = 0; $i < $numOfSepAttrs; $i++) {
+				$sepFieldFromVals = explode("_", $getAttrSeperated[$i]);
+				$fieldsFromGet[$i] = $sepFieldFromVals[0];
+				if ($sepFieldFromVals[0] == "mallAdPrice") {
+					$priceMinMax = explode("-", $sepFieldFromVals[1]);
+					$fieldsParams[$i] = $fieldsFromGet[$i] . " BETWEEN " . $priceMinMax[0] . " AND " . $priceMinMax[1];
+				} else {
+					$fieldsParams[$i] = $fieldsFromGet[$i] . "=?";
+					$fieldsValuesFromGet[$i] = $sepFieldFromVals[1];
+				}
+			}
+			switch ($type) {
+				case "rec":
+				default:
+					$sql = "SELECT * FROM mallads WHERE " . implode(" AND ", $fieldsParams) . " AND mallCategID=" . $categID . " AND mallAdStatus=1 AND (".implode(' OR ', $searchTermKeywords).")";
+					break;
+				case "new":
+					$sql = "SELECT * FROM mallads WHERE " . implode(" AND ", $fieldsParams) . " AND mallCategID=" . $categID . " AND mallAdStatus=1 AND (".implode(' OR ', $searchTermKeywords).") ORDER BY defaultColID DESC";
+					break;
+				case "low":
+					$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND " . implode(" AND ", $fieldsParams) . " AND mallCategID=" . $categID . " AND (".implode(' OR ', $searchTermKeywords).") ORDER BY mallAdPrice ASC";
+					break;
+				case "high":
+					$sql = "SELECT * FROM mallads WHERE " . implode(" AND ", $fieldsParams) . " AND mallCategID=" . $categID . " AND mallAdStatus=1 AND (".implode(' OR ', $searchTermKeywords).") ORDER BY mallAdPrice DESC";
+					break;
+			}
+
+			$values = array_values($fieldsValuesFromGet);
+			$stmt = $dbHandler->run($sql, $values);
+			if ($stmt->rowCount() > 0) {
+				$this->message(1, $stmt->fetchAll());
+			} else {
+				$this->message(0, "Something Went Wrong");
+			}
+		} elseif ($getAttributes != null) {
+			$getAttrSeperated = explode(",", $getAttributes);
+			$numOfSepAttrs = count($getAttrSeperated);
+
+			//Execute #3
+			$fieldsFromGet = [];
+			$fieldsValuesFromGet = [];
+			$fieldsParams = [];
+			for ($i = 0; $i < $numOfSepAttrs; $i++) {
+				$sepFieldFromVals = explode("_", $getAttrSeperated[$i]);
+				$fieldsFromGet[$i] = $sepFieldFromVals[0];
+				if ($sepFieldFromVals[0] == "mallAdPrice") {
+					$priceMinMax = explode("-", $sepFieldFromVals[1]);
+					$fieldsParams[$i] = $fieldsFromGet[$i] . " BETWEEN " . $priceMinMax[0] . " AND " . $priceMinMax[1];
+				} else {
+					$fieldsParams[$i] = $fieldsFromGet[$i] . "=?";
+					$fieldsValuesFromGet[$i] = $sepFieldFromVals[1];
+				}
+			}
+			$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND " . implode(" AND ", $fieldsParams) . " AND mallCategID=" . $categID. " AND (".implode(' OR ', $searchTermKeywords).")";
+			//echo $sql;
+			$values = array_values($fieldsValuesFromGet);
+			$stmt = $dbHandler->run($sql, $values);
+			if ($stmt->rowCount() > 0) {
+				$this->message(1, $stmt->fetchAll());
+			} else {
+				$this->message(0, "Something Went Wrong");
+			}
+		} elseif ($getAttributes == null && $type != null) {
+			switch ($type) {
+				case "rec":
+				default:
+					$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND mallCategID=" . $categID." AND (".implode(' OR ', $searchTermKeywords).")";
+					break;
+				case "new":
+					$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND mallCategID=" . $categID . " AND (".implode(' OR ', $searchTermKeywords).") ORDER BY defaultColID DESC";
+					break;
+				case "low":
+					$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND mallCategID=" . $categID . " AND (".implode(' OR ', $searchTermKeywords).") ORDER BY mallAdPrice ASC";
+					break;
+				case "high":
+					$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND  mallCategID=" . $categID . " AND (".implode(' OR ', $searchTermKeywords).") ORDER BY mallAdPrice DESC";
+					break;
+			}
+			$stmt = $dbHandler->run($sql);
+			if ($stmt->rowCount() > 0) {
+				$this->message(1, $stmt->fetchAll());
+			} else {
+				$this->message(0, "Something Went Wrong");
+			}
+		} else {
+			$sql = "SELECT * FROM mallads WHERE mallAdStatus=1 AND mallCategID=" . $categID." AND (".implode(' OR ', $searchTermKeywords).")";
 			$stmt = $dbHandler->run($sql);
 			if ($stmt->rowCount() > 0) {
 				$this->message(1, $stmt->fetchAll());
@@ -2218,7 +2371,7 @@ class AdManager
 		$serach = $inputValidator->sanitizeItem($serach, "string");
 		$limit = $inputValidator->sanitizeItem($limit, "int");
 		$dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
-        $query = "SELECT * FROM mallads WHERE mallAdTitle like ? OR mallAdDesc like ? ORDER BY mallAdTitle LIMIT $limit";
+        $query = "SELECT * FROM mallads WHERE (mallAdTitle like ? OR mallAdDesc like ?) AND mallAdStatus=1 ORDER BY mallAdTitle LIMIT $limit";
 
         $paramType = "ss";
         $paramValue = array(

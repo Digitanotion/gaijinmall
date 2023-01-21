@@ -3,13 +3,13 @@ ob_start();
 //Confirm if file is local or Public and add the right path
 $url = 'http://' . $_SERVER['SERVER_NAME'];
 if (strpos($url, 'localhost')) {
-    require_once(__DIR__ . "\../vendor/autoload.php");
+  require_once(__DIR__ . "\../vendor/autoload.php");
 } else if (strpos($url, 'gaijinmall')) {
-    require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
+  require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
 } else if (strpos($url, '192.168')) {
-    require_once(__DIR__ . "\../vendor/autoload.php");
+  require_once(__DIR__ . "\../vendor/autoload.php");
 } else {
-    require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
+  require_once($_SERVER['DOCUMENT_ROOT'] . "/vendor/autoload.php");
 }
 
 use services\AdS\AdManager;
@@ -32,7 +32,7 @@ $adManager_ob = new AdManager();
 $mediaManager = new MediaManager();
 $audService_ob = new AuditManager();
 $messaging_ob = new messagingManager();
-$feedback_ob=new feedbackManager();
+$feedback_ob = new feedbackManager();
 
 /* if (!$securityManager_ob->is_user_auth__()){
   header("location: Signin.php");
@@ -52,12 +52,11 @@ else{
 $sys_msg = [];
 $allAdByID = array();
 $getUsrInfo = "";
-$getUsrBizInfo="";
-if (isset($_POST['reportAd__btn'])){
-     $reportAdResponse=$feedback_ob->reportAd($pageUsrID__,$_POST['reportAd__Select'],$_POST['reportAdMsg__txt']);
-    $sys_msg['msg_type'] = $reportAdResponse['status'];
-    $sys_msg['msg'] = $reportAdResponse['message'];
-   
+$getUsrBizInfo = "";
+if (isset($_POST['reportAd__btn'])) {
+  $reportAdResponse = $feedback_ob->reportAd($pageUsrID__, $_POST['reportAd__Select'], $_POST['reportAdMsg__txt']);
+  $sys_msg['msg_type'] = $reportAdResponse['status'];
+  $sys_msg['msg'] = $reportAdResponse['message'];
 }
 if (isset($_GET['adID'])) {
   $adID = $securityManager_ob->sanitizeItem($_GET['adID'], "string");
@@ -73,7 +72,7 @@ if (isset($_GET['adID'])) {
 
 //SET AD VIEW
 $adManager_ob->updateAdView($adID);
-$pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "null";
+//$pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "null";
 if (isset($_POST['makeOffer__btn'])) {
   if ($pageUsrID__ == "null") {
     $sys_msg['msg_type'] = 500;
@@ -89,9 +88,13 @@ if (isset($_POST['sendChat__btn'])) {
     $sys_msg['msg_type'] = 500;
     $sys_msg['msg'] = "Login to chat with seller";
   } else {
-    $sendChat_response = $messaging_ob->sendMsgUsrToUsr($pageUsrID__, $adID, $getUsrInfo['mallUsrID'], $_POST['sendChatMsg__txt'], "usr_to_usr");
-    $sys_msg['msg_type'] = $sendChat_response['status'];
-    $sys_msg['msg'] = $sendChat_response['message'];
+    $getSeller=$getUsrInfo['mallUsrID'];
+    $sendChat_response = $messaging_ob->sendMsgUsrToUsr($pageUsrID__, $adID, $getSeller, $_POST['sendChatMsg__txt'], "usr_to_usr");
+    //$msg_ID=$sendChat_response['message'];
+    if ($sendChat_response['status']==1){
+      header("location: chat_box.php?queue=44bbd22d7ea78581becd56046e305b5e&seller=$getSeller&ad=$adID&user_mob_id__=$pageUsrID__");
+    }
+    //$sys_msg['msg'] = $sendChat_response['message'];
   }
 }
 //Get image for favicon
@@ -108,7 +111,7 @@ if (isset($_POST['saveAd__btn'])) {
   $sys_msg['msg'] = $saveAdResponse['message'];
 }
 
-$productRating=$feedback_ob->getProductTotalRating($adID)['message'];
+$productRating = $feedback_ob->getProductTotalRating($adID)['message'];
 //Generate new CSRF TOken
 $newToken = $securityManager_ob->setCSRF();
 ?>
@@ -126,7 +129,7 @@ $newToken = $securityManager_ob->setCSRF();
   <link rel="stylesheet" href="./assets/fonts/inter/style.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="../dependencies/node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css" />
+  <link rel="stylesheet" href="../dependencies/node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css" />
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/products.css">
   <link rel="stylesheet" href="./assets/css/vertical-menu.css">
@@ -145,7 +148,7 @@ $newToken = $securityManager_ob->setCSRF();
 </head>
 
 <body class="bg-light-blue">
-  
+
 
   <div class="container p-0 p-md-0 mx-auto">
     <!--  <div class="row m-0 justify-content-center">
@@ -280,16 +283,16 @@ $newToken = $securityManager_ob->setCSRF();
             <span class="ha-price_side_text"><?php echo $adManager_ob::CURRENCY . number_format($allAdByID['mallAdPrice']); ?></span>
             <div class="form-group">
               <div class="ha-price_button_offer my-2">
-                <button class="ob-make-offer__btn btn-mobile btn-outline-primary-mobile w-100 make_offer_btn" <?php echo ($pageUsrID__ == "null") ? "" : 'data-bs-toggle="modal" data-bs-target="#makeOffer"'; ?> >Make an offer</button>
+                <button class="ob-make-offer__bt btn-mobile btn-outline-primary-mobile w-100 make_offer_bt" <?php echo ($pageUsrID__ == "null") ? "" : ''; ?> onclick="window.flutter_inappwebview.callHandler('navi_makeoffer', 'navi_makeoffer', '<?php echo $adID; ?>','<?php echo $adManager_ob::CURRENCY; ?>','<?php echo $getUsrInfo['mallUsrID']; ?>')">Make an offer</button>
 
               </div>
 
 
             </div>
             <div class="text-center mt-3 fs-6">
-                <a href="./customer_review.php?adrec=B787Bbb87bsbd8nsd87877fds8f99fs9fdf8df9df&adtok=<?php echo $allAdByID['mallAdID'];?>" class="fs-md mt-2 text-primary"><span class="bg-primary text-white p-1 me-1 mb-3 fs-title-2 rounded" style="line-height: 25px;"><?php echo number_format($productRating,1);?></span> <i class="fa <?php echo ($productRating>0)?"fa-star":"fa-star-o";?> m-0 text-orange"></i><i class="fa <?php echo ($productRating>1)?"fa-star":"fa-star-o";?> m-0 text-orange"></i><i class="fa <?php echo ($productRating>2)?"fa-star":"fa-star-o";?> m-0 text-orange"></i><i class="fa <?php echo ($productRating>3)?"fa-star":"fa-star-o";?> m-0 text-orange"></i><i class="fa <?php echo ($productRating>4)?"fa-star":"fa-star-o";?> m-0 text-orange"></i></a>
-                <!-- <br>
-                <a href="./customer_review.php?adrec=B787Bbb87bsbd8nsd87877fds8f99fs9fdf8df9df&adtok=<?php echo $allAdByID['mallAdID'];?>" class="fs-md mt-2 text-primary">View product reviews</a> -->
+              <a href="./customer_review.php?adrec=B787Bbb87bsbd8nsd87877fds8f99fs9fdf8df9df&adtok=<?php echo $allAdByID['mallAdID']; ?>" class="fs-md mt-2 text-primary"><span class="bg-primary text-white p-1 me-1 mb-3 fs-title-2 rounded" style="line-height: 25px;"><?php echo number_format($productRating, 1); ?></span> <i class="fa <?php echo ($productRating > 0) ? "fa-star" : "fa-star-o"; ?> m-0 text-orange"></i><i class="fa <?php echo ($productRating > 1) ? "fa-star" : "fa-star-o"; ?> m-0 text-orange"></i><i class="fa <?php echo ($productRating > 2) ? "fa-star" : "fa-star-o"; ?> m-0 text-orange"></i><i class="fa <?php echo ($productRating > 3) ? "fa-star" : "fa-star-o"; ?> m-0 text-orange"></i><i class="fa <?php echo ($productRating > 4) ? "fa-star" : "fa-star-o"; ?> m-0 text-orange"></i></a>
+              <!-- <br>
+                <a href="./customer_review.php?adrec=B787Bbb87bsbd8nsd87877fds8f99fs9fdf8df9df&adtok=<?php echo $allAdByID['mallAdID']; ?>" class="fs-md mt-2 text-primary">View product reviews</a> -->
 
             </div>
           </div>
@@ -300,17 +303,18 @@ $newToken = $securityManager_ob->setCSRF();
             <a href="#">
               <div class="ha-seller__avatar__wrapper">
                 <a href="<?php
-                $getUsrBizInfo = (new AccountManager())->getUsrBizInfoByID($getUsrInfo['mallUsrID'])['message']; echo ($getUsrBizInfo['mallBizSlug']=="" || $getUsrBizInfo['mallBizSlug']=="NULL")?"#" : "shop/".$getUsrBizInfo['mallBizSlug']; ?>" class="ha-seller__icon profile-image-init__avatar bg-purple" style="background-image: url('');">
+                          $getUsrBizInfo = (new AccountManager())->getUsrBizInfoByID($getUsrInfo['mallUsrID'])['message'];
+                          echo ($getUsrBizInfo['mallBizSlug'] == "" || $getUsrBizInfo['mallBizSlug'] == "NULL") ? "#" : "shop/" . $getUsrBizInfo['mallBizSlug']; ?>" class="ha-seller__icon profile-image-init__avatar bg-purple" style="background-image: url('');">
                   <div class="ha-seller-status <?php echo ($getUsrInfo['mallUsrOnline'] == 1) ? "bg-success" : "bg-grey"; ?>"></div>
                   <!---->
                   <?php $initialLetter = $getUsrInfo['mallUsrFirstName'];
-                  echo $initialLetter[0]; 
+                  echo $initialLetter[0];
                   ?>
                 </a>
                 <div class="ha-seller__info">
                   <div class="ha-seller__name fs-title-1 ">
-                  <a href="<?php echo ($getUsrBizInfo['mallBizSlug']=="" || $getUsrBizInfo['mallBizSlug']=="NULL")?"#" : "shop/".$getUsrBizInfo['mallBizSlug']; ?>"><?php echo $getUsrInfo['mallUsrFirstName'] . " " . $getUsrInfo['mallUsrLastName']; ?></a>
-                    
+                    <a href="<?php echo ($getUsrBizInfo['mallBizSlug'] == "" || $getUsrBizInfo['mallBizSlug'] == "NULL") ? "#" : "shop/" . $getUsrBizInfo['mallBizSlug']; ?>"><?php echo $getUsrInfo['mallUsrFirstName'] . " " . $getUsrInfo['mallUsrLastName']; ?></a>
+
                   </div>
                   <span class="badge bg-light text-dark fs-sm"><i class="fa fa-clock-o m-0"></i>&nbsp;<span class="badge bg-dark text-light"><?php echo $audService_ob->time_ago($getUsrInfo['mallUsrRegTime']); ?></span> in Gaijinmall</span>
                 </div>
@@ -322,9 +326,13 @@ $newToken = $securityManager_ob->setCSRF();
                 <a class="ob-make-offer__btn btn-mobile btn-primary-mobile w-100" href="tel:<?php echo $getUsrInfo['mallUsrPhoneNo']; ?>">Call Seller</a>
               </div>
               <div class="form-group">
-                <div class="ha-price_button_offer my-2">
-                  <button <?php echo ($pageUsrID__ == "null") ? "" : 'data-bs-toggle="modal" data-bs-target="#sendDM"'; ?> class="ob-make-offer__btn btn-mobile btn-outline-primary-mobile w-100 fw-bolder sendDM" ><i class="fa fa-comments fs-5"></i>Send a Message</button>
+                <form method="POST" action="">
+                  <input type="hidden" class="form-control" name="sendChatMsg__txt" id="sendChatMsg__txt" >
+                  <div class="ha-price_button_offer my-2">
+                  <button type="submit" name="sendChat__btn" class="ob-make-offer__btn btn-mobile btn-outline-primary-mobile w-100 fw-bolder sendDM"><i class="fa fa-comments fs-5"></i>Send a Message</button>
                 </div>
+                </form>
+                
               </div>
             </div>
           </div>
@@ -334,23 +342,23 @@ $newToken = $securityManager_ob->setCSRF();
           <div class="card-body py-2 m-0">
             <span class="ha-price_side_text">Be Safe</span>
             <p>
-            <span class="b-advert-safety-lis">
-              <li>
-                Don't pay in advance, even for delivery
-              </li>
-              <li>
-                Meet with the seller at a safe public place
-              </li>
-              <li>
-                Inspect the item and ensure it's exactly what you want
-              </li>
-              <li>
-                Make sure that the packed item is the one you've inspected
-              </li>
-              <li>
-                Only pay if you're satisfied
-              </li>
-            </span>
+              <span class="b-advert-safety-lis">
+                <li>
+                  Don't pay in advance, even for delivery
+                </li>
+                <li>
+                  Meet with the seller at a safe public place
+                </li>
+                <li>
+                  Inspect the item and ensure it's exactly what you want
+                </li>
+                <li>
+                  Make sure that the packed item is the one you've inspected
+                </li>
+                <li>
+                  Only pay if you're satisfied
+                </li>
+              </span>
             </p>
             <div class="form-group ">
               <div class="ha-price_button_offer my-2">
@@ -364,55 +372,56 @@ $newToken = $securityManager_ob->setCSRF();
       <div class="container">
         <div class="row my-3 ms-1">
           <div class="col-md-8">
-            
+
             <?php
             $getSimilarAds = $adManager_ob->getSimilarAds($allAdByID['mallAdTitle'], $allAdByID['mallCategID']);
-            if ($getSimilarAds['status'] == 1 && count($getSimilarAds['message']) >1) {
+            if ($getSimilarAds['status'] == 1 && count($getSimilarAds['message']) > 1) {
               echo '<h6 class="m-0 mb-2 ">Similar Adverts</h6>';
               foreach ($getSimilarAds['message'] as  $value) {
                 $getImageCount = $adManager_ob->countAdImagesByID($value['mallAdID']);
-                if ($adID!=$value['mallAdID']){
-                //$childCategory=$adManager_ob->getCategChildByID($value['mallCategID']);
+                if ($adID != $value['mallAdID']) {
+                  //$childCategory=$adManager_ob->getCategChildByID($value['mallCategID']);
             ?>
-                <div class="row ha-sim-ad-pic__wrapper p-3">
-                  <?php
-                  $thumbImageName = $mediaManager->getThumbImage($value['mallAdID']);
-                  if ($thumbImageName['status'] == 1) {
-                    $thumbImageName = $thumbImageName['message']['mallMediaName'];
-                  } else {
-                    $thumbImageName = "";
-                  }
-                  ?>
-                  <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID'];?>" datavalueTitle="<?php echo str_replace(" ", "-",$value['mallAdTitle']);?>" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
+                  <div class="row ha-sim-ad-pic__wrapper p-3">
                     <?php
-                    if (!empty($value['mallAdCondition'])) {
-                      echo '<span class="ha-sim-ad-item__title fs-md text-light text-center fw-bold opacity-50">' . $value['mallAdCondition'] . '</span>';
+                    $thumbImageName = $mediaManager->getThumbImage($value['mallAdID']);
+                    if ($thumbImageName['status'] == 1) {
+                      $thumbImageName = $thumbImageName['message']['mallMediaName'];
+                    } else {
+                      $thumbImageName = "";
                     }
                     ?>
-                    <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
-                    <?php $adManager_ob::displayPromoted($value['mallAdID'], $value['mallAdPromoID']); ?>
-                  </div>
-                  <div class="col-8 rounded-end bg-white">
-                    <div class="">
-                      <a href="product.php?adID=<?php echo $value['mallAdID']; ?>" class="text-dark">
-                        <div class="my-2 ">
-                          <span class="fs-title-1 fw-bolder"><?php echo $value['mallAdTitle'] ?></span>
-                        </div>
-                        <div class="">
-                          <span class="ha-sim-ad-item__desc fs-md-1"><?php echo $value['mallAdDesc'] ?></span>
-                        </div>
-                        <div class="mt-2 py-auto">
-                          <span class="badge bg-dark fs-6"><?php echo $adManager_ob::CURRENCY . number_format($value['mallAdPrice']); ?> </span><br>
-                          <span class="badge bg-info"><i class="fa fa-map-marker"></i> <?php $adPosterLoc = explode(".", $value['mallAdLoc']);
-                                                                                        echo ucfirst($adPosterLoc[0]) . ", " . ucfirst($adPosterLoc[1]); ?>, Japan</span>
-                        </div>
-                      </a>
+                    <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $value['mallAdTitle']); ?>" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
+                      <?php
+                      if (!empty($value['mallAdCondition'])) {
+                        echo '<span class="ha-sim-ad-item__title fs-md text-light text-center fw-bold opacity-50">' . $value['mallAdCondition'] . '</span>';
+                      }
+                      ?>
+                      <span class="ha-card__counter"><span id="ha-counter__js"><?php echo $getImageCount['message']; ?></span><i class="fa fa-camera ms-1"></i></span>
+                      <?php $adManager_ob::displayPromoted($value['mallAdID'], $value['mallAdPromoID']); ?>
+                    </div>
+                    <div class="col-8 rounded-end bg-white">
+                      <div class="">
+                        <a href="product.php?adID=<?php echo $value['mallAdID']; ?>" class="text-dark">
+                          <div class="my-2 ">
+                            <span class="fs-title-1 fw-bolder"><?php echo $value['mallAdTitle'] ?></span>
+                          </div>
+                          <div class="">
+                            <span class="ha-sim-ad-item__desc fs-md-1"><?php echo $value['mallAdDesc'] ?></span>
+                          </div>
+                          <div class="mt-2 py-auto">
+                            <span class="badge bg-dark fs-6"><?php echo $adManager_ob::CURRENCY . number_format($value['mallAdPrice']); ?> </span><br>
+                            <span class="badge bg-info"><i class="fa fa-map-marker"></i> <?php $adPosterLoc = explode(".", $value['mallAdLoc']);
+                                                                                          echo ucfirst($adPosterLoc[0]) . ", " . ucfirst($adPosterLoc[1]); ?>, Japan</span>
+                          </div>
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
             <?php
-              }}
-            } 
+                }
+              }
+            }
             ?>
           </div>
         </div>
@@ -429,7 +438,7 @@ $newToken = $securityManager_ob->setCSRF();
         <form method="POST" action="">
           <div class="modal-body">
             <div class="input-group mb-3">
-              <span class="input-group-text"><?php echo $adManager_ob::CURRENCY;?></span>
+              <span class="input-group-text"><?php echo $adManager_ob::CURRENCY; ?></span>
               <input type="hidden" name="makeOfferReceiverID" value="<?php echo $getUsrInfo['mallUsrID'] ?>">
               <input type="text" class="form-control text-left" name="makeOfferPrice__txt" placeholder="Enter price" aria-label="Amount" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 0, 'digitsOptional': false, 'prefix': '', 'placeholder': ''">
             </div>
@@ -476,18 +485,18 @@ $newToken = $securityManager_ob->setCSRF();
         <form method="POST" action="">
           <div class="modal-body">
             <div class="form-floating mb-3">
-            <select class="form-select select2" style="text-align: left;" name="reportAd__Select" id="reportAd__Select" >
-                                <option value="null"></option>
-                                <option value="Illegal/Fraudulent">Illegal/Fraudulent</option>
-                                <option value="Wrong price">Wrong price</option>
-                                <option value="Category is wrong">Category is wrong</option>
-                                <option value="Ad is spam">Ad is spam</option>
-                                <option value="Seller is scam">Seller is scam</option>
-                                <option value="Product Sold">Product Sold</option>
-                                <option value="I can't reach seller">I can't reach seller</option>
-                                <option>Other</option>
-                            </select>
-                            <label for="reportAd__Select">Why do you report this Ad?</label>
+              <select class="form-select select2" style="text-align: left;" name="reportAd__Select" id="reportAd__Select">
+                <option value="null"></option>
+                <option value="Illegal/Fraudulent">Illegal/Fraudulent</option>
+                <option value="Wrong price">Wrong price</option>
+                <option value="Category is wrong">Category is wrong</option>
+                <option value="Ad is spam">Ad is spam</option>
+                <option value="Seller is scam">Seller is scam</option>
+                <option value="Product Sold">Product Sold</option>
+                <option value="I can't reach seller">I can't reach seller</option>
+                <option>Other</option>
+              </select>
+              <label for="reportAd__Select">Why do you report this Ad?</label>
             </div>
             <div class="form-floating">
               <textarea class="form-control" name="reportAdMsg__txt" id="reportAdMsg__txt" placeholder="Leave a comment here"></textarea>
@@ -495,7 +504,7 @@ $newToken = $securityManager_ob->setCSRF();
             </div>
           </div>
           <div class="modal-footer">
-          <input type="hidden" required value="<?php echo $newToken; ?>" name="form_token__input">
+            <input type="hidden" required value="<?php echo $newToken; ?>" name="form_token__input">
             <button type="submit" name="reportAd__btn" class="btn btn-primary w-100">Report Now</button>
           </div>
         </form>
@@ -503,7 +512,8 @@ $newToken = $securityManager_ob->setCSRF();
       </div>
     </div>
   </div>
-  <!-- <?php //include "footer.php"; ?> -->
+  <!-- <?php //include "footer.php"; 
+        ?> -->
   <script src="../dependencies/node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../dependencies/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./assets/js/jquery.inputmask.min.js"></script>
@@ -538,20 +548,20 @@ $newToken = $securityManager_ob->setCSRF();
         //   "hideMethod": "fadeOut" 08101371375
       }
       <?php
-       if (isset($sys_msg) && !empty($sys_msg)) {
+      if (isset($sys_msg) && !empty($sys_msg)) {
         switch ($sys_msg['msg_type']) {
-            
-            case '1':
-              $sys_msg['msg'] = "Your message has been sent";
-                echo '
+
+          case '1':
+            $sys_msg['msg'] = "Your message has been sent";
+            echo '
                 cuteAlert({
                     type: "success",
                     title: "Operation Successful",
                     message: "' . $sys_msg['msg'] . '",
                     buttonText: "Ok",
                   })';
-                break;
-            default:
+            break;
+          default:
             $sys_msg['msg'] = "Oops! Please, Try again";
             echo '
             cuteAlert({
@@ -560,17 +570,19 @@ $newToken = $securityManager_ob->setCSRF();
               message: "' . $sys_msg['msg'] . '",
               buttonText: "Ok",
             })';
-                break;
+            break;
         }
-    }
+      }
       ?>
     });
 
     $(".select2").select2({
-            theme: "bootstrap-5",
-        })
+      theme: "bootstrap-5",
+    })
+
+    // Navigate to make offer view in mobile
   </script>
-  
+
 </body>
 
 </html>

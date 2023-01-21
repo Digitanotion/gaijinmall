@@ -14,21 +14,35 @@
 
 <body>
     <!-- <input type="text" onkeyup="search_products_mobile(this.value)"> -->
+    <?php /* $message="I like google oooo, but i dont like others";
+    $size=0;
+    $word="oth"; 
+    
+    echo preg_replace('/^.*?(.{0,'.$size.'})(\b\S*'.$word.'\S*\b)(.{0,'.$size.'}).*?$/i',
+            '$1<strong>$2</strong>$3',$message); */?>
+    <?php 
+    
+    //$message="I like google oooo, but i dont like others";
+    //echo preg_replace('/\b\S*'.$GET['s'].'\S*\b/i', '<strong>$0</strong>', $message);
+    ?>
     <section class="container-fluid">
-        <div class="row" id="suggesstion-box"></div>
+        <div class="row" id="suggesstion-box">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100px;">Type what you are looking for, let's help you get it</div>
+            
+        </div>
     </section>
     <script src="../dependencies/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../dependencies/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function search_products_mobile(keyword_from_app) {
+        function search_products_mobile(keyword_from_app,user_id) {
             $.ajax({
                 type: "POST",
                 url: "../mobile_controls/getSearchResult.php",
-                data: 'keyword=' + keyword_from_app,
+                data: 'keyword=' + keyword_from_app +'&user_mob_id__='+user_id,
                 success: function (data) {
                     //$("#suggesstion-box").show();
                     $("#suggesstion-box").html(data);
-                    search(keyword_from_app)
+                    //search(keyword_from_app)
                     //$("#search-box").css("background", "#FFF");
 
                 }
@@ -44,7 +58,10 @@
                 document.getElementById("suggesstion-box").innerHTML = newText;
             }
         }
-        search_products_mobile("Phone");
+        function searchAd(datIt, user_id){
+        search_products_mobile(datIt,user_id);
+}
+        
     </script>
 </body>
 

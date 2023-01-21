@@ -21,7 +21,7 @@
         
         function sendPageTitle() {
    //header.innerText = 'Hello';
-   var getDomTitle=document.getElementsByTagName("title").textContent;
+   var getDomTitle = document.title;
       sendToApp.postMessage("title:"+getDomTitle+", icon:icon1232");
 }
 //This function will be triggered by the APP

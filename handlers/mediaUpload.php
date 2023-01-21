@@ -28,6 +28,7 @@ if (isset($_POST['adImgFile'])){
     $removeSpaceInFileName=$removeSpaceInFileName.mt_rand(1000,100000000);
     $imageResponse=$mediA->uploadOptiImage($_FILES["imageFile"],$removeSpaceInFileName,"uploads",$adImgUsrID,$adImgAdID);
     echo "<input type='hidden' id='json_images' class='json_images' value='".json_encode($imageResponse['message'])."'>";
+    
     for ($i=0; $i < count($imageResponse['status']); $i++) { 
        if ($imageResponse['status'][$i]==1){
         echo '<div class="ha-imgUpload-each m-1" id="'.$imageResponse['mediaID'][$i].'" style="background: url(../handlers/uploads/thumbs/'.$imageResponse['message'][$i].');">

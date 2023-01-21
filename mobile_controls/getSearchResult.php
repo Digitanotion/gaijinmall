@@ -18,9 +18,9 @@ use services\AdS\AdManager;
 $security_ob = new SecurityManager();
 $accManager_ob = new AccountManager();
 $adManager_ob = new AdManager();
-
+$pageUserID=$_POST['user_mob_id__'];
 if (!empty($_POST["keyword"])) {
-    $keyword=$_POST["keyword"];
+    $keyword = $_POST["keyword"];
     $limit = 8;
     $serach = "%" . $_POST['keyword'] . "%";
 
@@ -39,13 +39,23 @@ if (!empty($_POST["keyword"])) {
 
         <?php
         foreach ($productResult['message'] as $value) {
-            $getCategoryName=$adManager_ob->getCategInfoByID($value['mallCategID'])['message']['mallCategName'];
+            $getCategoryName = $adManager_ob->getCategInfoByID($value['mallCategID'])['message']['mallCategName'];
+            $message_title = $value['mallAdTitle'];
+            $message_desc = $value['mallAdDesc'];
+            $size =0;
+            $word = $keyword;
+            $words_res=ucfirst(preg_replace(
+                '/^.*?(.{0,' . $size . '})(\b\S*' . $word . '\S*\b)(.{0,' . $size . '}).*?$/i',
+                '$1$2$3',
+                $message_title." ". $message_desc
+            ));
         ?>
             <div class="col-12 py-2 search_each__containter">
-                <a href="#" class="d-flex justify-content-between align-items-center">
+                <a href="category_search.php?adcategory=<?php echo $value['mallCategID'];?>&adSearchWord=<?php echo $words_res;?>&user_mob_id__=<?php echo $pageUserID;?> " class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <div class="search_img__placeholder" style="background-image: url(../handlers/uploads/thumbs/abc_097497260153805_129263_30117001.png);"></div>
-                        <div class="search_title fs-md-1"><?php echo (strlen($value['mallAdTitle'])>=30)?substr($value['mallAdTitle'],0,30)."...":substr($value['mallAdTitle'],0,30).""; echo " <span class='text-primary fw-bold'>in $getCategoryName</span>"?> </div>
+                        <div class="search_title fs-md-1"><?php echo (strlen($words_res) >= 30) ? $words_res . "..." : $words_res . " ";
+                                                            echo " <span class='text-primary fw-bold'>in $getCategoryName</span>" ?> </div>
                     </div>
                     <div class="search_arrow_right"><img src="assets/images/arrow_right.svg"></div>
                 </a>

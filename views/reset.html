@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,53 +11,59 @@
     <link rel="stylesheet" href="views/assets/css/login.css">
     <link rel="stylesheet" href="views/assets/css/reset.css">
 </head>
-<body >
+
+<body>
     <div class="container-fluid">
         <div class="row">
-                <!--Gaiijin column-->
+            <!--Gaiijin column-->
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 gaiijincolumn gaiijincolumn__reset">
-                    <!--Elipse circle images-->
+                <!--Elipse circle images-->
                 <div class="gaiijincolumn__elipse">
                     <img src="views/assets/images/elipse.png" alt="elipse" class="img-fluid elipse_class">
                     <img src="views/assets/images/elipse(1).png" alt="elipse" class="img-fluid elipse_class--1">
                     <img src="views/assets/images/elipse-2.png" alt="elipse" class="img-fluid elipse_class--2">
                 </div>
-                    <!--Gaiijin Image-->
-                <img src="views/assets/images/Untitled_design__4_-removebg-preview 1.png" alt="Logo" class="img-fluid gaiijincolumn__logopic">
-                
-               <div class="gaiijincolumn__text">
+                <!--Gaiijin Image-->
+                <img src="views/assets/images/Untitled_design__4_-removebg-preview 1.png" alt="Logo"
+                    class="img-fluid gaiijincolumn__logopic">
+
+                <div class="gaiijincolumn__text">
                     <h3>I see you're the first <br> time here.</h3>
                     <p class="p-tag">Maybe some text here will help me see it better. <br>
-                        Oh God. Ok. Let’s do it then. 
+                        Oh God. Ok. Let’s do it then.
                     </p>
                 </div>
             </div>
-                <!--Reset password column-->
+            <!--Reset password column-->
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 <div class="form-control resetpassword">
                     <h3>Reset Password</h3>
                     <p>Create your new password for Gaijinmall <br>
                         and type new password twice
                     </p>
-                        <!-- Nested columns -->
+                    <!-- Nested columns -->
                     <div class="row">
                         <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                             <form class="mb-3 top--space">
-                                <label for="newPasswordField"><h6>New Password</h6></label>
-                                <input type="text" class="form-control" id="emailField" 
+                                <label for="newPasswordField">
+                                    <h6>New Password</h6>
+                                </label>
+                                <input type="text" class="form-control" id="emailField"
                                     placeholder="Enter your new password">
                             </form>
                         </div>
-                   
+
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <form class="mb-3 top--space">
-                                <label for="confirmpasswordFeild"><h6>Confirm New Password</h6></label>
-                                <input type="text" class="form-control" id="confirmpasswordField" 
+                                <label for="confirmpasswordFeild">
+                                    <h6>Confirm New Password</h6>
+                                </label>
+                                <input type="text" class="form-control" id="confirmpasswordField"
                                     placeholder="************">
                             </form>
                         </div>
                     </div>
-                        <!--Reset button-->
+                    <!--Reset button-->
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <button type="button" class="btn-primary btn-resetpassword ">Reset password</button>
@@ -69,8 +76,21 @@
 
 
 
+    <script type="text/javascript">
+        //This function will send page title to APP
 
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+        function sendPageTitle() {
+            //header.innerText = 'Hello';
+            var getDomTitle = document.title;
+            alert (getDomTitle);
+            sendToApp.postMessage("title:" + getDomTitle + ", icon:icon1232");
+        }
+        //This function will be triggered by the APP
+        function callFromApp(datIt) {
+            document.getElementById("container").value = datIt;
+        }
+        sendPageTitle();
+    </script>
 </body>
+
 </html>

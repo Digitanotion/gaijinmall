@@ -220,5 +220,19 @@
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script src="./assets/js/form.js"></script>
     <script src="../bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        //This function will send page title to APP
+        
+        function sendPageTitle() {
+   //header.innerText = 'Hello';
+   var getDomTitle=document.getElementsByTagName("title").textContent;
+      sendToApp.postMessage("title:"+getDomTitle+", icon:icon1232");
+}
+//This function will be triggered by the APP
+function callFromApp(datIt){
+    document.getElementById("container").value=datIt;
+}
+sendPageTitle();
+    </script>
 </body>
 </html>

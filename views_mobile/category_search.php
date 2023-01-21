@@ -32,8 +32,8 @@ $audService_ob = new AuditManager();
   header("location: Signin.php");
 } */
 $adID = "";
+$usrID=$_GET['user_mob_id__'];
 /*
-$usrID=$_SESSION['gaijinmall_user_'];
 $getCurrentUserInfo=$securityManager_ob->getUserInfoByID($usrID);
 $getUsrInfo="";
 if ($getUsrInfo['status']!=1){
@@ -48,8 +48,9 @@ $categID = "";
 $categName = "";
 $getUsrInfo = "";
 if (isset($_GET['adcategory'])) {
+    $searchWord=$_GET['adSearchWord'];
   $categID = $securityManager_ob->sanitizeItem($_GET['adcategory'], "int");
-  $allAdCategByID = $adManager_ob->getAdByCategID($categID);
+  $allAdCategByID = $adManager_ob->getAdBySearch($categID, $searchWord);
   $allAdCategOptions = $adManager_ob->getCategOptionsByID($categID);
   $categInfo = $adManager_ob->getCategInfoByID($categID);
   if ($categInfo['status'] == 1) {
@@ -123,6 +124,8 @@ if (isset($_GET['adcategory'])) {
 
           </div>
           <input type="hidden" value="<?php echo $_GET["adcategory"]; ?>" id="ha-categID" name="ha-categID">
+          <input type="hidden" value="<?php echo $_GET["adSearchWord"]; ?>" id="ha-searchWord" name="ha-searchWord">
+          
           <!-- <p class="ha-categ-content__sidebar ">
                         
                         <ul class="fs-md ha-subcategories__list m-0 p-0 px-3 font-inter">
@@ -191,7 +194,7 @@ if (isset($_GET['adcategory'])) {
                     </span>
                   <?php } ?>
                 </div>
-                <a href="product.php?adID=<?php echo $fields['mallAdID']; ?>" class="col-8 rounded-end bg-light-blue text-dark">
+                <a href="product.php?user_mob_id__=<?php echo $usrID;?>&adID=<?php echo $fields['mallAdID']; ?>" class="col-8 rounded-end bg-light-blue text-dark">
                   <div class="">
                     <div class="my-2 ">
                       <span class="fs-md fw-bolder"><?php echo $fields['mallAdTitle'] ?></span>
@@ -526,7 +529,8 @@ if (isset($_GET['adcategory'])) {
 
     function buildURL() {
       categID = $("#ha-categID").val();
-      var currentURL = "?adcategory=" + categID + "&";
+      searchWord=$("#ha-searchWord").val();
+      var currentURL = "?adcategory=" + categID + "&adSearchWord=" + searchWord + "&";
       if (sortBy != "") {
         currentURL += "sortBy=" + sortBy;
       }
@@ -536,7 +540,7 @@ if (isset($_GET['adcategory'])) {
         currentURL += "&filter_attribs=" + filter_attribs.join(",");
       }
       ChangeUrl("", currentURL);
-      filterList(currentURL, categID);
+      filterList(currentURL, categID, searchWord);
     }
 
     function ChangeUrl(page, url) {
@@ -551,14 +555,14 @@ if (isset($_GET['adcategory'])) {
       }
     }
 
-    function filterList(urlValues, categID) {
+    function filterList(urlValues, categID,searchWord) {
       var filterFormData = new FormData();
       var getUrl = urlValues.split("?");
       var filterListWrapper = $(".ha-category-items__container");
       $.ajax({
         url: '../handlers/filterlist.php',
         type: 'GET',
-        data: getUrl[1] + "&adcategory=" + categID+"&maincateg=true",
+        data: getUrl[1] + "&adcategory=" + categID + "&adSearchWord=" + searchWord,
         cache: false,
         contentType: false,
         processData: false,

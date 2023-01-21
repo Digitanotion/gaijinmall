@@ -21,11 +21,13 @@ $securityManager_ob = new SecurityManager();
 $adManager = new AdManager();
 $usrAccManager_ob = new AccountManager();
 $feedback_ob = new feedbackManager();
-if (!isset($_SESSION["gaijinmall_user_"])) {
+/* if (!isset($_SESSION["gaijinmall_user_"])) {
     header("location: Signin.php");
-}
+} */
 //$mallPrefetchForms=array();
 $sys_msg = [];
+$sys_msg['msg_type'] = 1;
+$sys_msg['msg'] = "Thank message received";
 $usrIDData = $_GET['user_mob_id__'];
 $pageUsrID__ = $_GET['user_mob_id__'];
 $adManagerVal = $adManager->getAllMallParentCategory();
@@ -110,10 +112,12 @@ $newToken = $securityManager_ob->setCSRF();
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link href="./assets/css/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="assets/css/cute-alert.css">
-    <title>New Advert</title>
+    <title>New Advert WOW!</title>
+   
 </head>
 
-<body>
+<body class="bg-light-blue">
+
     <div class="container-fluid">
 
         <div class="mx-1 mx-md-5 mx-lg-5">
@@ -128,6 +132,20 @@ $newToken = $securityManager_ob->setCSRF();
                     <button class="nav-link w-100 rounded-end  text-start text-white py-3 fw-normal fs-md-2 ps-4" id="pills-ad-detail-tab" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fa fa-info-circle mx-2"></i>Advert detail</button>
                 </li>
             </ul>
+
+            <p>
+            <a href="https://digitanotion.com.ng">
+        Go to Digitanotion
+    </a>
+    <a href="New_Ad.php?user_mob_id__=6268416575">
+        Same Page
+    </a>
+    <a href="mailto:divineezelibe@gmail.com">Got to google</a>
+    <a href="tel:08066330897">Call Now</a>
+    <a href="sms:08066330897">Share via SMS, Now</a>
+
+    
+            </p>
             <form method="post" class="" id="createAdForm" enctype="multipart/form-data">
                 <div class="first">
                     <!-- categories multiselect -->
@@ -200,11 +218,11 @@ $newToken = $securityManager_ob->setCSRF();
                     <div class="row align-items-center  mt-3">
                         <div class="col-md-6 button-container w-100">
                             <div class="d-flex align-items-center justify-content-center svg">
-                                <div class="large-button button_click">
+                                <div class="large-button button_click ">
                                     <div class="d-flex">
                                         <i class="fas fa-plus icon-plus fs-3 fw-bolder"></i>
                                     </div>
-                                    <input type="file" name="imageFile[]" id="imageFile" accept="image/*" multiple onchange="">
+                                    <input type="file" name="imageFile[]" id="imageFile" accept="image/*;capture=camera" multiple onchange="">
 
                                 </div>
                                 <!-- <div class="fs-md ms-2">
@@ -383,6 +401,30 @@ $newToken = $securityManager_ob->setCSRF();
     <script src="assets/js/cute-alert.js"></script>
     <script src="assets/js/jquery-maxlength.min.js"></script>
     <script>
+        var pageTitle=document.title;
+            window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                window.flutter_inappwebview.callHandler('getPageTitles', 1, true, pageTitle)
+            });
+        </script>
+    <script>
+       /*   window.onload = function() { // can also use window.addEventListener('load', (event) => {
+            var pageTitle=document.title;
+        window.flutter_inappwebview.callHandler("getPageTitle", pageTitle);
+  };
+ */
+//   if (document.readyState == 'loading') {
+//   // still loading, wait for the event
+//   var pageTitle=document.title;
+//   alert("Workingjjjk");
+  
+  
+// } else {
+//   // DOM is ready!
+//   //work();
+//   alert("Working")
+// }
+
+
         $(".resetForm").on("click", function(e) {
             $('.form-select option:first').prop('selected', true).trigger("change");
             document.getElementById('createAdForm').reset();
@@ -402,6 +444,8 @@ $newToken = $securityManager_ob->setCSRF();
         });
 
         $(document).ready(function onDocumentReady() {
+            
+            
             toastr.options = {
                 //   "closeButton": true,
                 "newestOnTop": true,
@@ -424,41 +468,23 @@ $newToken = $securityManager_ob->setCSRF();
 
                     case '1':
                         echo '
-                        cuteAlert({
-                            type: "success",
-                            title: "Advert in Review",
-                            message: "Good job, your advert is submitted and under review.",
-                            buttonText: "Ok",
-                          }).then((e)=>{
-                            console.log(e);
-                            if ( e == ("ok")){
-                              window.location = "./adverts";
-                            }
-                          });';
+                        window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                            window.flutter_inappwebview.callHandler("getPageAlert", "success", "Advert in Review", "Good job, your advert is submitted and under review.")
+                        });
+                        ';
                         break;
                     case '4':
                         echo '
-                        cuteAlert({
-                            type: "error",
-                            title: "Phone Unverified",
-                            message: "' . $sys_msg['msg'] . '",
-                            buttonText: "Ok",
-                          }).then((e)=>{
-                            console.log(e);
-                            if ( e == ("ok")){
-                              window.location = "./user_phone_update";
-                            }
-                          });
+                        window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                            window.flutter_inappwebview.callHandler("getPageAlert", "error", "Phone Unverified", "' . $sys_msg['msg'] . '")
+                        });
                           ';
                         break;
                     default:
                         echo '
-                    cuteAlert({
-                        type: "error",
-                        message: "",
-                        title: "' . $sys_msg['msg'] . '",
-                        buttonText: "Ok",
-                      })';
+                        window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                            window.flutter_inappwebview.callHandler("getPageAlert", "error", "Something is wrong", "' . $sys_msg['msg'] . '")
+                        });';
                         break;
                 }
             }
