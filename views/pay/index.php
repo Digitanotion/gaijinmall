@@ -12,9 +12,12 @@ else{
 USE services\SecS\SecurityManager;
 USE services\AdS\AdManager;
 USE services\AccS\AccountManager;
+USE services\MsgS\messagingManager;
+
 $securityManager_ob=new SecurityManager();
 $adsManager_ob=new AdManager();
 $usrAccManager_ob=new AccountManager();
+$msg_Ob = new messagingManager();
 /* 
 PHP2Toast Send system message to toast listener
 $sys_msg['msg_type']=1;
@@ -33,19 +36,35 @@ if (isset($_GET['logout'])&&$_GET['logout']==1){
         $sys_msg['msg']="Could not log out";
     }
 } 
-if (isset($_GET['psi'])&&isset($_GET['lk_tok'])&&$_GET['psi']!=""){
-  $verifyPromoPay=$adsManager_ob->verifyPaySession($_GET['psi']); 
-  if ($verifyPromoPay->payment_status=="paid"){
-    $addNewUsrPromo=$adsManager_ob->addNewUsrPromoRecord($verifyPromoPay->client_reference_id,$_GET['psi']);
+if (isset($_GET['session_id'])){
+
+  $verifyPromoPay=$adsManager_ob->verifyPaySession($_GET['session_id']); 
+  if (!empty($verifyPromoPay["status"])){
     echo '<script>setTimeout(function (e) {
       window.location="./../adverts.php"
   },10000);
   </script>';
-  }
-  else{
-    header("location: ./../");
-  }
+
+  } 
+  // else{
+  //   header("location: ./../");
+  // }
+
 }
+/*---------------------OLD-----------------*/
+// if (isset($_GET['psi'])&&isset($_GET['lk_tok'])&&$_GET['psi']!=""){
+//   $verifyPromoPay=$adsManager_ob->verifyPaySession($_GET['psi']); 
+//   if ($verifyPromoPay->payment_status=="paid"){
+//     $addNewUsrPromo=$adsManager_ob->addNewUsrPromoRecord($verifyPromoPay->client_reference_id,$_GET['psi']);
+//     echo '<script>setTimeout(function (e) {
+//       window.location="./../adverts.php"
+//   },10000);
+//   </script>';
+//   }
+//   else{
+//     header("location: ./../");
+//   }
+// }
 else{
   header("location: ./../");
 }
@@ -74,15 +93,55 @@ else{
   <section class="container">
     <div class="row" style="margin-left:auto;margin-right:auto;margin-top: 40vh;">
       <div class="col">
-      <div class="alert bg-light-blue text-center text-white " style="background-color:rgba(0,181,226, 0.9)">
-        <div class="fs-6"><i class="fa fa-check-circle fs-3"></i></div>
-        <div class="fs-6">
-        Congratulations! Transaction is successful, we will redirect you back to your profile. <br> Have any question?
-          <a href="mailto:sales@gaijinmall.com">sales@gaijinmall.com</a>.
-        </div>
-     
-      </div>
-      </div>
+        <?php 
+
+            if ($verifyPromoPay["status"]  == "completed") {
+                    $addNewUsrPromo=$adsManager_ob->addNewUsrPromoRecord($verifyPromoPay["payment"]["external_order_num"], $verifyPromoPay["payment"]["id"]);
+                ?>
+                <div class="alert bg-light-blue text-center text-white " style="background-color:rgba(0,181,226, 0.9)">
+                    <div class="fs-6"><i class="fa fa-check-circle fs-3"></i></div>
+                        <div class="fs-6">
+                            Congratulations! Transaction is successful, we will redirect you back to your profile. <br> Have any question?
+                          <a href="mailto:sales@gaijinmall.com">sales@gaijinmall.com</a>.
+                        </div>
+                    </div>
+                </div>
+            <?php } elseif ($verifyPromoPay["status"]  == 'cancelled') {?>
+                <div class="alert bg-light-danger text-center text-white " style="background-color:rgba(0,181,226, 0.9)">
+                    <div class="fs-6"><i class="fa fa-check-times fs-3"></i></div>
+                        <div class="fs-6">
+                            Your Transaction was cancelled, we will redirect you back to your profile. <br> Have any question?
+                          <a href="mailto:sales@gaijinmall.com">sales@gaijinmall.com</a>.
+                        </div>
+                    </div>
+                </div>
+            <?php }  elseif ($verifyPromoPay["status"]  == 'pending') {?>
+                <div class="alert bg-light-danger text-center text-white " style="background-color:rgba(0,181,226, 0.9)">
+                    <div class="fs-6"><i class="fa fa-check-circle fs-3"></i></div>
+                        <div class="fs-6">
+                            Your Transaction is pending, we will redirect you back to your profile. <br> Have any question?
+                          <a href="mailto:sales@gaijinmall.com">sales@gaijinmall.com</a>.
+                        </div>
+                    </div>
+                </div>
+            <?php }
+            else { ?>
+                <div class="alert bg-light-red text-center text-white " style="background-color:rgba(181,12,26, 0.9)">
+                    <div class="fs-6"><i class="fa fa-times-circle fs-3"></i></div>
+                        <div class="fs-6">
+                            Transaction ID is invalid. You will be redirected shortly.
+                            <script>setTimeout(function (e) {
+                                  window.location="./../adverts.php"
+                              },5000);
+                            </script>
+                          <a href="mailto:sales@gaijinmall.com" class="text-info">sales@gaijinmall.com</a>.
+                        </div>
+                    </div>
+                </div>
+           <?php  } ?>
+
+        
+      
       
     </div>
     <p>

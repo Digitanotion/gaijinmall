@@ -47,6 +47,9 @@ if (isset($_GET['verify_token'])) {
     </script>';
     }
 }
+
+$dir = "../handlers/uploads/optimized/";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -241,8 +244,11 @@ if (isset($_GET['verify_token'])) {
                                     } else {
                                         $thumbImageName = "";
                                     }
+                                    $imageFile = $dir.$thumbImageName;
+                                    $res = $mediaManager->checkOptimizedImage($imageFile);
+                                    $img_ = ($res["status"] == 1) ? $imageFile : $dir."no_image.jpg"; 
                                     ?>
-                                    <div class="card-block d-table-row align-middle bg-primary ha-card-media ha-item-each__card ha-item-each__cardimg" datavalue="<?php echo $adsItems['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $adsItems['mallAdTitle']); ?>" style="background-image: url('../handlers/uploads/thumbs/<?php echo $thumbImageName ?>');">
+                                    <div class="card-block d-table-row align-middle bg-primary ha-card-media ha-item-each__card ha-item-each__cardimg" datavalue="<?php echo $adsItems['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $adsItems['mallAdTitle']); ?>" style="background-image: url(<?php echo $img_; ?>);">
                                         <div class="ha-card--h100p">
                                             <span class="ha-card__counter"><?php echo $getImageCount['message']; ?> <i class="fa fa-camera m-0"></i></span>
                                             <!-- <a class="ha-card-content-icon fw-bolder shadow-sm d-flex justify-content-center align-items-center" href="#">

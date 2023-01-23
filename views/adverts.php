@@ -1,4 +1,5 @@
 <?php
+
 /* ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL); */
@@ -49,8 +50,11 @@ else{
     $getUsrBizInfo=$usrAccManager_ob->getUsrBizInfoByID($pageUsrID__)['message'];
 }
 if (isset($_POST['promoteAd_btn']) && isset($_POST['mallAdPromoID'])){
-    $promoteAdEndP=$adsManager_ob->recievePromoPayment($_POST['mallAdPromoID'],$_POST['promoteAd_CustEmail'],$_POST['promoteAd_AdCustID']);
+    $promoteAdEndP=$adsManager_ob->recievePromoPayment($_POST['mallAdPromoID'], $_POST["price"],$_POST['promoteAd_CustEmail'],$_POST['promoteAd_AdCustID'], $_POST["mallUsrName"]);
+
 }
+
+
 
 if(isset($_POST['adIDForDelete_btn'])){
     $adIDForDelete=$_POST['adIDForDelete'];
@@ -138,6 +142,7 @@ if(isset($_POST['adIDForDelete_btn'])){
                                                     foreach ($getAllPromoListByName["message"] as $otherValues) {
                                                     ?>
                                                 <input type="radio" class="btn-check " promocost="<?php echo $otherValues['mallAdPromoCost'] ?>" promotype="<?php echo $promoLists['mallAdPromoType']?>" promooldcost="<?php echo $otherValues['mallAdPromoOldCost'] ?>" name="mallAdPromoID" id="<?php echo $otherValues['mallAdPromoType']?>" autocomplete="off" value="<?php echo $otherValues['mallAdPromoType']?>"><label class="btn btn-outline-primary fs-md" for="<?php echo $otherValues['mallAdPromoType']?>"><?php echo $otherValues['mallAdPromoDuration']?> days</label>
+                                                
                                                 <?php }
                                                 }
                                                 ?>
@@ -163,6 +168,8 @@ if(isset($_POST['adIDForDelete_btn'])){
         <button type="button" class="btn btn-grey" data-bs-dismiss="modal">Close</button>
         <input type="hidden" name="promoteAd_CustEmail" value="<?php echo $getUsrInfo['mallUsrEmail']?>">
         <input type="hidden" name="promoteAd_AdCustID" id="promoteAd_AdCustID" value="<?php echo $getUsrInfo['mallUsrID']?>">
+        <input type="hidden" name="price" id="planPrice" >
+        <input type="hidden" name="mallUsrName" id="" value="<?php echo $getUsrInfo['mallUsrFirstName'] . " ". $getUsrInfo['mallUsrLastName'];?> ">
         <button type="submit" class="btn btn-primary" name="promoteAd_btn" disabled id="promoteAd_btn">Proceed to Pay</button>
       </div>
     </form>
@@ -227,6 +234,13 @@ if(isset($_POST['adIDForDelete_btn'])){
             ?>
         });
         myActv();
+        </script>
+
+        <script type="text/javascript">
+            $("input[type='radio']").change(function(){
+               var cost = $(this).attr('promocost');
+                $("#planPrice").val(cost);
+            })
         </script>
 </body>
 </html>

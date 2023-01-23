@@ -37,7 +37,7 @@ class InputValidator
     public function __construct($validations=array(), $mandatories = array(), $sanatations = array())
     {
         $this->validations = $validations;
-        $this->sanitations = $sanatations;
+        $this->sanatations = $sanatations;
         $this->mandatories = $mandatories;
         $this->errors = array();
         $this->corrects = array();
@@ -107,7 +107,7 @@ class InputValidator
     {
         foreach($items as $key=>$val)
         {
-            if(array_search($key, $this->sanitations) === false && !array_key_exists($key, $this->sanitations)) continue;
+            if(array_search($key, $this->sanatations) === false && !array_key_exists($key, $this->sanitations)) continue;
             $items[$key] = self::sanitizeItem($val, $this->validations[$key]);
         }
         return($items);
