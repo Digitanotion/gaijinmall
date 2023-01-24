@@ -98,7 +98,9 @@ if (isset($_POST['sendChat__btn'])) {
   if ($pageUsrID__ == "null") {
     $sys_msg['msg_type'] = 401;
     $sys_msg['msg'] = "Login to chat with seller";
-  } else {
+  } 
+   else {
+
     $sendChat_response = $messaging_ob->sendMsgUsrToUsr($pageUsrID__, $adID, $getUsrInfo['mallUsrID'], $_POST['sendChatMsg__txt'], "usr_to_usr");
     $sys_msg['msg_type'] = $sendChat_response['status'];
     $sys_msg['msg'] = $sendChat_response['message'];
@@ -126,7 +128,8 @@ if (isset($_POST['saveAd__btn'])) {
 }
 
 
-$dir = "../handlers/uploads/optimized/";
+$dirFound = "../handlers/uploads/optimized/";
+$dirNotFound = "assets/images/";
 
 
 $productRating=$feedback_ob->getProductTotalRating($adID)['message'];
@@ -195,9 +198,9 @@ $newToken = $securityManager_ob->setCSRF();
                     foreach ($imageName as $imageFileName) {
 
                       
-                      $file = $dir.$imageFileName['mallMediaName'];
+                      $file = $dirFound.$imageFileName['mallMediaName'];
                       $checkImage = $mediaManager->checkOptimizedImage($file);
-                      $img = ($checkImage["status"] == 1) ? $file : $dir."no_image.jpg";
+                      $img = ($checkImage["status"] == 1) ? $file : $dirNotFound."no_image.jpg";
                       ?>
                         <div class="carousel-item <?php echo ($countSlideTo == 0) ? 'active' : ""; ?>">
                           <div class="zoom-item" id="zoom-item">
@@ -609,6 +612,15 @@ $newToken = $securityManager_ob->setCSRF();
                   })';
                 break;
               case '402':
+                echo '
+                cuteAlert({
+                    type: "error",
+                    title: "Operation Failed",
+                    message: "' . $sys_msg['msg'] . '",
+                    buttonText: "Ok",
+                  })';
+                break;
+              case '500':
                 echo '
                 cuteAlert({
                     type: "error",

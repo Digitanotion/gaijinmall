@@ -729,7 +729,8 @@ class AccountManager
         return $this->system_message;
     }
 
-    /*----------OLD----------*/
+   
+    /*----------OLD 2----------*/
 
      function updateUsrIDByID($usrID, $docBizID, $dob, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone, $usrEmail)
     {
@@ -760,11 +761,13 @@ class AccountManager
             $uploader   =   new Uploader();
             $uploader_id   =   new Uploader();
             $uploader->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
-            $uploader->setExtensions(array('pdf'));  //allowed extensions list//
+            $uploader->setExtensions(array('jpg', 'png', 'jpg'));  //allowed extensions list//
+            $ext1 = $uploader->getExtension($docBizID["name"][0]);
             $uploader->setMaxSize(.7);
 
             $uploader_id->setDir($this->paramsOb::MEDIA_STORE . "/idFiles/uploads/");
-            $uploader_id->setExtensions(array('pdf'));  //allowed extensions list//
+            $uploader_id->setExtensions(array('jpg', 'png', 'jpeg'));  //allowed extensions list//
+            $ext2 = $uploader_id->getExtension($docFile["name"][0]);  //allowed extensions list//
             $uploader_id->setMaxSize(.7);                          //set max file size to be allowed in MB//
 
             if($uploader->uploadFile($docBizID, $removeSpaceInFileName) ) {   //txtFile is the filebrowse element name //   
@@ -788,8 +791,8 @@ class AccountManager
             // Insert into DB
 
             if ($check === 1) {
-                $removeSpaceInFileName = $removeSpaceInFileName.".pdf";
-                $removeSpaceInFileName_ = $removeSpaceInFileName_.".pdf";
+                $removeSpaceInFileName = $removeSpaceInFileName.".".$ext1;
+                $removeSpaceInFileName_ = $removeSpaceInFileName_.".".$ext2;
                 $sql2 = "INSERT INTO mallusridrec (mallUsrID,mallIDDocType,mallIDDOB,mallIDDocFile,mallIDFirstname,mallIDLastname,mallIDRequiredBy,mallIDPhone,mallIDEmail,mallIDToken) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 $stmt2 = $dbHandler->run($sql2, [$usrID, $removeSpaceInFileName, $dob,  $removeSpaceInFileName_, $docFirstname, $docLastname, $docRequiredBy, $docPhone, $usrEmail, $idToken]);
                 $check_status2 = $stmt2->rowCount();
@@ -1487,7 +1490,32 @@ class AccountManager
         $stmtCheck = $dbHandler->run($sqlCheck, [$mallUsrID]);
         $row = $stmtCheck->fetch();
         if ($stmtCheck->rowCount() > 0) {
-            $this->message(1, $row);
+            if ($row["mallUsrChats"] === 0) {
+                $this->message(500, "disabled");
+            } else {
+                $this->message(1, "enabled");
+            }
+        } else {
+            $this->message(0, "");
+        }
+        return $this->system_message;
+    } 
+
+    function getUsrOptionsFeedStatus($mallUsrID)
+    {
+        $dbHandler = $this->dbHandler;
+        $inputValidator = $this->inputValidatorOb;
+        $mallUsrID = $inputValidator->sanitizeItem($mallUsrID, "string");
+        //check for existing status
+        $sqlCheck = "SELECT * FROM mallusroptions WHERE mallUsrID=?";
+        $stmtCheck = $dbHandler->run($sqlCheck, [$mallUsrID]);
+        $row = $stmtCheck->fetch();
+        if ($stmtCheck->rowCount() > 0) {
+            if ($row["mallUsrFeedbacks"] === 0) {
+                $this->message(500, "disabled");
+            } else {
+                $this->message(1, "enabled");
+            }
         } else {
             $this->message(0, "");
         }

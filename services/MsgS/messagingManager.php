@@ -234,6 +234,9 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $security_ob=new SecurityManager();
+
+        $account_ob = new AccountManager();
+
 		$msgTime=time();
         $msgInitID=md5($msgTime);
         $usrID=$inputValidator->sanitizeItem($usrID, "int");
@@ -242,27 +245,35 @@ class messagingManager{
         $msgType=$inputValidator->sanitizeItem($msgType, "string");
         $msg_id=$this->initMessageSender($usrID,$adID,$recieverUsrID);
         $msg_id_main=$msg_id['message'];
-        //Check if conversation was created
-        if ($msg_id['status']==1){
-            if (!empty($msgID)){
-                $msg_id=$msgID;
+
+        // it's chat disabled
+        $chat = $account_ob->getUsrOptionsStatus($recieverUsrID);
+
+        if ($chat["status"] === 500) {
+            $this->message(500, "This user can't receive messages");
+        } else {
+            //Check if conversation was created
+            if ($msg_id['status']==1){
+                if (!empty($msgID)){
+                    $msg_id=$msgID;
+                }
+                if ($msg_id_main==""){
+                    $msg_id_main=$msgID;
+                }
+                
+                //Add message to queue
+                $sql1 = "INSERT INTO mallmsgs (mallMsgID,mallMsgSenderID,mallMsgReceiverID,mallMsgTime,mallMsgValue,mallMsgSendStatus,mallMsgType,mallMsgInitUsr) VALUES (?,?,?,?,?,?,?,?)";
+                $stmt1 = $dbHandler->run($sql1, [$msg_id_main, $usrID, $recieverUsrID, $msgTime, $UsrMsg, "1",$msgType,$msgInitID]);
+                //$stmtData=$stmt->fetch();
+                if ($stmt1->rowCount() > 0) {
+                    $this->message(1, $msgInitID);
+                } else {
+                    $this->message(500, "Message not sent");
+                }
             }
-            if ($msg_id_main==""){
-                $msg_id_main=$msgID;
+            else{
+                $this->message(500, $msg_id['message']);
             }
-            
-            //Add message to queue
-            $sql1 = "INSERT INTO mallmsgs (mallMsgID,mallMsgSenderID,mallMsgReceiverID,mallMsgTime,mallMsgValue,mallMsgSendStatus,mallMsgType,mallMsgInitUsr) VALUES (?,?,?,?,?,?,?,?)";
-            $stmt1 = $dbHandler->run($sql1, [$msg_id_main, $usrID, $recieverUsrID, $msgTime, $UsrMsg, "1",$msgType,$msgInitID]);
-            //$stmtData=$stmt->fetch();
-            if ($stmt1->rowCount() > 0) {
-                $this->message(1, $msgInitID);
-            } else {
-                $this->message(500, "Message not sent");
-            }
-        }
-        else{
-            $this->message(500, $msg_id['message']);
         }
         return $this->system_message;
 
@@ -272,6 +283,7 @@ class messagingManager{
         $dbHandler=new InitDB(DB_OPTIONS[2], DB_OPTIONS[0],DB_OPTIONS[1],DB_OPTIONS[3]);
 		$inputValidator=new InputValidator();
         $security_ob=new SecurityManager();
+
 		$msgTime=time();
         $usrID=$inputValidator->sanitizeItem($usrID, "int");
         $usrID=$inputValidator->validateItem($usrID, "int");
@@ -282,6 +294,8 @@ class messagingManager{
         $msgType=$inputValidator->sanitizeItem($msgType, "string");
         $msgType=$inputValidator->validateItem($msgType, "string");
         $msg_id=$this->initMessageSender($usrID,$adID,"1029384756");
+
+
         //Check if conversation was created
         if ($msg_id['status']==1){
             $msg_id=$msg_id['message'];

@@ -19,6 +19,7 @@ else if (strpos($url,'192.168')){
 use services\AdS\AdManager as AdSAdManager;
 use services\InitDB; // Import DB Settings
 use services\MsgS\messagingManager;
+use services\AccS\AccountManager;
 use services\SecS\InputValidator;
 use services\SecS\SecurityManager;
 use services\SecS\GetUserIP;
@@ -1752,15 +1753,28 @@ class AdManager
 	{
 		$messaging_ob = new messagingManager();
 		$inputValidator = new InputValidator();
+
+		$account_ob = new AccountManager();
+
 		$usrID = $inputValidator->sanitizeItem($usrID, "int");
 		$usrAmt = $inputValidator->sanitizeItem($usrAmt, "int");
 		$recieverUsrID = $inputValidator->sanitizeItem($recieverUsrID, "int");
+
+		$feed = $account_ob->getUsrOptionsFeedStatus($recieverUsrID);
+
 		$makeOffer_Response = $messaging_ob->sendMsgUsrToUsr($usrID, $adID, $recieverUsrID, "Hey, I am interested, i would buy " . self::CURRENCY . "" . number_format($usrAmt), "usr_to_usr");
-		if ($makeOffer_Response['status'] == 1) {
-			$this->message(1, "Offer sent to seller");
-		} else {
-			$this->message(0, "Offer not sent");
-		}
+
+
+		if ($feed["status"] === 500) {
+			$this->message(500, "This user can't receive offer at the moment");
+		} else{
+
+			if ($makeOffer_Response['status'] == 1) {
+				$this->message(1, "Offer sent to seller");
+			} else {
+				$this->message(500, "Offer not sent");
+			}
+		}	
 		return $this->msg;
 	}
 	function getAllAdsCountByUsrID(string $UsrID, $status)

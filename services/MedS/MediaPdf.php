@@ -80,9 +80,12 @@
                 $this->setMessage("Destination is not writable !");
             }else if(empty($name)){
                 $this->setMessage("File not selected ");
-            }else if($size>$this->maxSize){
-                $this->setMessage("Too large file !");
-            }else if($this->allowAll || (!$this->allowAll && in_array($ext,$this->extensions))){
+            }
+            /*---this waas commented fofr testing----*/
+            // else if($size>$this->maxSize){
+            //     $this->setMessage("Too large file !");
+            // }
+            else if($this->allowAll || (!$this->allowAll && in_array($ext,$this->extensions))){
 
         if($this->sameName==false){
                     $this->uploadName   =  $this->imageSeq.$fileName.".".$ext;

@@ -115,7 +115,7 @@ if (isset($_GET['p_source']) && $_GET['p_source'] != "") {
             <?php     }
         } else {
             echo '<div class="ha-none__display w-50 text-center m-5 mx-auto">
-            <img class="img-fluid mx-auto" src="./assets/images/notfound3.svg" id="adverts1">
+            <img class="img-fluid mx-auto" src="./assets/images/no_image.jpg" id="adverts1">
             <div class="fs-title-4 fw-bolder" id="adverts2">No active Ad found</div>
             <div class="fs-md" id="adverts3">No content availiable</div>
         </div>'; //<button type="button" class="btn-md btn-secondary p-1 mt-3 w-75 buttns0" onclick="myLnked()" id="copd0" >Copy my link</button>

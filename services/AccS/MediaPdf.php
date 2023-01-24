@@ -81,9 +81,11 @@ namespace services\AccS;
                 $this->message(0, "Destination is not writable !");
             }else if(empty($name)){
                 $this->message(0, "File not selected ");
-            }else if($size>$this->maxSize){
+            }
+            else if($size>$this->maxSize){
                 $this->message(0, "Too large file !");
-            }else if($this->allowAll || (!$this->allowAll && in_array($ext,$this->extensions))){
+            }
+            else if($this->allowAll || (!$this->allowAll && in_array($ext,$this->extensions))){
 
         if($this->sameName==false){
                     $this->uploadName   =  $this->imageSeq.$fileName.".".$ext;

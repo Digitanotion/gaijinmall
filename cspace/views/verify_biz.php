@@ -54,6 +54,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
 }
 
 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -694,7 +695,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                         <p class='text-center'>Identification</p>  
 
                         <div class="embed-responsive embed-responsive-1by1">
-                          <iframe class="embed-responsive-item" src="<?php  echo $frontSrc ?>"></iframe> 
+                          <img class="img-fluid img-respnsive" src="<?php  echo $frontSrc ?>" /> 
                         </div>
 
                         <div class='text-center mt-2'>
@@ -708,7 +709,7 @@ if (isset($_GET['delCategOpt'])&&$_GET['delCategOpt']==="true"&&isset($_GET['pus
                         <p class='text-center'>Business Proof</p>  
 
                         <div class="embed-responsive embed-responsive-1by1">
-                          <iframe class="embed-responsive-item" src="<?php  echo $backSrc ?>"></iframe> 
+                          <img class="img-fluid img-respnsive" src="<?php  echo $backSrc ?>" />  
                         </div>
 
                         <div class='text-center mt-2'>

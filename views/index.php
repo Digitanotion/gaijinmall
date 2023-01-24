@@ -48,7 +48,8 @@ if (isset($_GET['verify_token'])) {
     }
 }
 
-$dir = "../handlers/uploads/optimized/";
+$dirFound = "../handlers/uploads/optimized/";
+$dirNotFound = "assets/images/";
 
 ?>
 <!DOCTYPE html>
@@ -244,9 +245,9 @@ $dir = "../handlers/uploads/optimized/";
                                     } else {
                                         $thumbImageName = "";
                                     }
-                                    $imageFile = $dir.$thumbImageName;
+                                    $imageFile = $dirFound.$thumbImageName;
                                     $res = $mediaManager->checkOptimizedImage($imageFile);
-                                    $img_ = ($res["status"] == 1) ? $imageFile : $dir."no_image.jpg"; 
+                                    $img_ = ($res["status"] == 1) ? $imageFile : $dirNotFound."no_image.jpg"; 
                                     ?>
                                     <div class="card-block d-table-row align-middle bg-primary ha-card-media ha-item-each__card ha-item-each__cardimg" datavalue="<?php echo $adsItems['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $adsItems['mallAdTitle']); ?>" style="background-image: url(<?php echo $img_; ?>);">
                                         <div class="ha-card--h100p">

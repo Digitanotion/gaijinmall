@@ -102,6 +102,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
 
                 <form class="row m-2 mt-4" action="" method="POST" enctype="multipart/form-data">
                     <div class="col-lg-12 col-md-12 col-sm-12 text-start" id="info0">
+
                        <!--  <select id="usrIDType__select" class="form-select mb-4" name="usrIDType__select">
                             <option value="passport">Passport</option>
                             <option value="drivers">Drivers Licence</option>
@@ -111,12 +112,14 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                         <span>
                             <input type="text" name="usrIDNo__txt" id="usrIDNo__txt" placeholder="ID Number" class="form-control btn-outline-secondary bg-white my-4 text-dark">
                         </span> -->
+                        <p class="fs-sm text-info">Only Jpg, Jpeg and Png are required</p>
                         <span class="d-flex">
                             <a href="javascript:void" onclick="updateSelectFile()" id="addNewfile__phoneupdate"><i id="addNewfileIconB__phoneupdate" class="fa fa-plus fs-title-4 m-1 me-4 text-primary bg-light-blue p-3 add_0" ></i></a>
                             <span>
                                 <p class="fs-title-1 fw-bold m-1" onclick="updateSelectFile()">Attach proof of business</p>
-                                <p class="fs-md m-1" onclick="updateSelectFile()">Click or Touch to select</p>
-                                <p class="fs-sm text-danger">Only PDF file is required</p>   
+                                <p class="fs-md m-1" onclick="updateSelectFile()">
+                                    Click or Touch to select
+                                </p>   
                             </span>
                         </span>
                         <span>
@@ -135,9 +138,8 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
                         <span class="d-flex">
                             <a href="javascript:void" onclick="phoneUpdateSelectFile()" id="addNewfile__phoneupdate"><i id="addNewfileIcon__phoneupdate" class="fa fa-plus fs-title-4 m-1 me-4 text-primary bg-light-blue p-3 add_0" ></i></a>
                             <span>
-                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach a copy of your ID</p>
-                                <p class="fs-md m-1" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>
-                                <p class="fs-sm text-danger">Only PDF file is required</p>   
+                                <p class="fs-title-1 fw-bold m-1" onclick="phoneUpdateSelectFile()">Attach any other copy</p>
+                                <p class="fs-md m-1" onclick="phoneUpdateSelectFile()">Click or Touch to select</p>   
                             </span>
                         </span>
                         <span>

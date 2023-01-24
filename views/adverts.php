@@ -63,6 +63,9 @@ if(isset($_POST['adIDForDelete_btn'])){
         $sys_msg['msg']="Ad Deleted Successfully";
 }
 
+$dirFound = "../handlers/uploads/optimized/";
+$dirNotFound = "assets/images/";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
