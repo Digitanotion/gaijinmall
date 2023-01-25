@@ -416,7 +416,7 @@ $newToken = $securityManager_ob->setCSRF();
                   <?php
                   $thumbImageName = $mediaManager->getThumbImage($value['mallAdID']);
                   if ($thumbImageName['status'] == 1) {
-                    $thumbImageName = $thumbImageName['message']['mallMediaName']; ?>
+                    $thumbImageName = $thumbImageName['message']['mallMediaName'];
 
                     $imageFile = $dir.$thumbImageName;
                       $res = $mediaManager->checkOptimizedImage($imageFile);
