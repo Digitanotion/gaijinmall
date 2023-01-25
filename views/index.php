@@ -49,7 +49,7 @@ if (isset($_GET['verify_token'])) {
 }
 
 $dirFound = "../handlers/uploads/optimized/";
-$dirNotFound = "assets/images/";
+$dirNotFound = "assets/images/no_image.jpg";
 
 ?>
 <!DOCTYPE html>
@@ -247,10 +247,11 @@ $dirNotFound = "assets/images/";
                                     }
                                     $imageFile = $dirFound.$thumbImageName;
                                     $res = $mediaManager->checkOptimizedImage($imageFile);
-                                    $img_ = ($res["status"] == 1) ? $imageFile : $dirNotFound."no_image.jpg"; 
+                                    $img_ = ($res["status"] == 1) ? $imageFile : $dirNotFound; 
                                     ?>
-                                    <div class="card-block d-table-row align-middle bg-primary ha-card-media ha-item-each__card ha-item-each__cardimg" datavalue="<?php echo $adsItems['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $adsItems['mallAdTitle']); ?>" style="background-image: url(<?php echo $img_; ?>);">
+                                    <div class="card-block d-table-row align-middle bg-primary ha-card-media ha-item-each__card ha-item-each__cardimg" datavalue="<?php echo $adsItems['mallAdID']; ?>" datavalueTitle="<?php echo str_replace(" ", "-", $adsItems['mallAdTitle']); ?>" style="background-image: url(<?php echo empty($thumbImageName) ? $dirNotFound : $img_; ?>);">
                                         <div class="ha-card--h100p">
+
                                             <span class="ha-card__counter"><?php echo $getImageCount['message']; ?> <i class="fa fa-camera m-0"></i></span>
                                             <!-- <a class="ha-card-content-icon fw-bolder shadow-sm d-flex justify-content-center align-items-center" href="#">
                                                             <i class="fa fa-bookmark mx-auto fa-bounce"></i>

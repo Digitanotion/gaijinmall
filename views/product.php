@@ -39,11 +39,11 @@ $feedback_ob=new feedbackManager();
 
 
 
-if (!$securityManager_ob->is_user_auth__()){
+/* if (!$securityManager_ob->is_user_auth__()){
   header("location: Signin.php");
-}
+} */
 $adID = "";
-$pageUsrID__ = (isset($_SESSION['gaijinmall_user_'])) ? $_SESSION['gaijinmall_user_'] : "none";
+$pageUsrID__=$_SESSION['gaijinmall_user_'];
 
 if (!empty($pageUsrID__)) {
   $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__);
@@ -98,9 +98,7 @@ if (isset($_POST['sendChat__btn'])) {
   if ($pageUsrID__ == "null") {
     $sys_msg['msg_type'] = 401;
     $sys_msg['msg'] = "Login to chat with seller";
-  } 
-   else {
-
+  } else {
     $sendChat_response = $messaging_ob->sendMsgUsrToUsr($pageUsrID__, $adID, $getUsrInfo['mallUsrID'], $_POST['sendChatMsg__txt'], "usr_to_usr");
     $sys_msg['msg_type'] = $sendChat_response['status'];
     $sys_msg['msg'] = $sendChat_response['message'];
@@ -128,8 +126,8 @@ if (isset($_POST['saveAd__btn'])) {
 }
 
 
-$dirFound = "../handlers/uploads/optimized/";
-$dirNotFound = "assets/images/";
+$dir = "../handlers/uploads/optimized/";
+$dirNotFound = "assets/images/no_image.jpg";
 
 
 $productRating=$feedback_ob->getProductTotalRating($adID)['message'];
@@ -198,20 +196,25 @@ $newToken = $securityManager_ob->setCSRF();
                     foreach ($imageName as $imageFileName) {
 
                       
-                      $file = $dirFound.$imageFileName['mallMediaName'];
+                      $file = $dir.$imageFileName['mallMediaName'];
                       $checkImage = $mediaManager->checkOptimizedImage($file);
-                      $img = ($checkImage["status"] == 1) ? $file : $dirNotFound."no_image.jpg";
+                      $img = ($checkImage["status"] == 1) ? $file : $dirNotFound;
                       ?>
                         <div class="carousel-item <?php echo ($countSlideTo == 0) ? 'active' : ""; ?>">
                           <div class="zoom-item" id="zoom-item">
+
                             <img src="<?php echo $img ?>" class=" w-100 " alt="...">
                           </div>
                         </div>
                       <?php }
                       $countSlideTo++;
-                  } else {
-                    $thumbImageName = "";
-                  }
+                  } else {?>
+                        <div class="carousel-item <?php echo ($countSlideTo == 0) ? 'active' : ""; ?>">
+                          <div class="zoom-item" id="zoom-item">
+                            <img src="<?php echo $dirNotFound ?>" class=" w-100 " alt="...">
+                          </div>
+                        </div>
+                  <?php }
                 ?>
 
 
@@ -413,21 +416,18 @@ $newToken = $securityManager_ob->setCSRF();
                   <?php
                   $thumbImageName = $mediaManager->getThumbImage($value['mallAdID']);
                   if ($thumbImageName['status'] == 1) {
-                    $thumbImageName = $thumbImageName['message']['mallMediaName'];
-                  } else {
-                    $thumbImageName = "";
-                  }
+                    $thumbImageName = $thumbImageName['message']['mallMediaName']; ?>
 
-                      $imageFile = $dir.$thumbImageName;
+                    $imageFile = $dir.$thumbImageName;
                       $res = $mediaManager->checkOptimizedImage($imageFile);
-                      $img_ = ($res["status"] == 1) ? $imageFile : $dir."no_image.png";
+                      $img_ = ($res["status"] == 1) ? $imageFile : $dirNotFound;
                     ?>
                     <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID'];?>" datavalueTitle="<?php echo str_replace(" ", "-",$value['mallAdTitle']);?>" style="background-image: url(<?php echo $img_; ?>);">
-                  
-                  
-                  
-                  
-                    <?php
+
+                  <?php } else {?>
+                    <div class="col-4 bg-warning rounded-start ha-sim-ad-img__item ha-item-each__cardimg" datavalue="<?php echo $value['mallAdID'];?>" datavalueTitle="<?php echo str_replace(" ", "-",$value['mallAdTitle']);?>" style="background-image: url(<?php echo $dirNotFound; ?>);">
+                 <?php  }
+
                     if (!empty($value['mallAdCondition'])) {
                       echo '<span class="ha-sim-ad-item__title fs-md text-light text-center fw-bold opacity-50">' . $value['mallAdCondition'] . '</span>';
                     }
@@ -612,15 +612,6 @@ $newToken = $securityManager_ob->setCSRF();
                   })';
                 break;
               case '402':
-                echo '
-                cuteAlert({
-                    type: "error",
-                    title: "Operation Failed",
-                    message: "' . $sys_msg['msg'] . '",
-                    buttonText: "Ok",
-                  })';
-                break;
-              case '500':
                 echo '
                 cuteAlert({
                     type: "error",
