@@ -31,7 +31,7 @@ if (isset($_GET['logout'])&&$_GET['logout']==1){
         <a href="adverts.php" class="text-dark">
             <div class="px-3 my-1 bg-white">
                 <div class="ha-profile-menu__items">
-                    <span class="fs-md"><i class="fa fa-list fs-title-2"></i> My Adverts</span>
+                    <span class="fs-md"><i class="fa fa-bullhorn fs-title-2"></i> My Adverts</span>
                     <!-- <span class="badge bg-info">1</span> -->
                 </div>
             </div>
@@ -62,7 +62,7 @@ if (isset($_GET['logout'])&&$_GET['logout']==1){
         <a href="saved.php" class="text-dark">
             <div class="px-3 my-1 bg-white">
                 <div class="ha-profile-menu__items">
-                    <span class="fs-md"><i class="fa fa-bar-chart  fs-title-2 fw-bold"></i> My saved Ads</span>
+                    <span class="fs-md"><i class="fa fa-suitcase  fs-title-2 fw-bold"></i> My saved Ads</span>
                 </div>
             </div>
         </a>
