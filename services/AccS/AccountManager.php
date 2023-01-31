@@ -730,7 +730,7 @@ class AccountManager
     }
 
    
-    /*----------OLD 2----------*/
+    
 
      function updateUsrIDByID($usrID, $docBizID, $dob, $docFile, $docFirstname, $docLastname, $docRequiredBy = null, $docPhone, $usrEmail)
     {
@@ -798,6 +798,9 @@ class AccountManager
                 $check_status2 = $stmt2->rowCount();
 
                 if ($check_status2 > 0) {
+                    $sq = "UPDATE mallusrbiz SET mallBizStatus = ? WHERE mallUsrID = ?";
+                    $st = $dbHandler->run($sq, [2,$usrID]);
+                    
                     $this->message(1, "Thanks, We'll review your request and revert as soon as possible");
                     $msgOb = new MessagingManager();
                     $msgOb->sendMail("noreply@gaijinmall.com","noreply@gaijinmall.com", "Business Verification Request", "Hello Administrator, There is a business verication request waiting for you. <a href='gaijinmall.com/cspace/views/business_verifications.php'>View here</a>");

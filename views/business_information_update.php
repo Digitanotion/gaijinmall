@@ -102,7 +102,13 @@ $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__)['message'];
                                 <div class="alert bg-warning fs-6 text-light">
                                     <i class="fa fa-exclamation-circle"></i>Not verified <a href="verify_business.php" class="text-primary text-underline">verify now</a>
                                 </div>
-                            <?php  } else { ?>
+                            <?php  }
+                            elseif ($getUsrBizInfo['mallBizStatus'] == 2) { ?>
+                                <div class="alert bg-info fs-6 text-light">
+                                    Pending <i class="fa fa-exclamation-triangle"></i>
+                                </div>
+                            <?php }
+                             else { ?>
                                 <div class="alert bg-success fs-6 text-light">
                                     Verified <i class="fa fa-check-circle"></i>
                                 </div>
