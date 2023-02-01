@@ -176,7 +176,7 @@ class SecurityManager extends InputValidator
         }
     }
 
-    public function generateVerifyToken($user_email)
+    public function generateVerifyToken($user_email, $new_email=null)
     {
         $account_manager = new AccountManager();
         $inputValidatorOb = new InputValidator();
@@ -191,23 +191,34 @@ class SecurityManager extends InputValidator
             $usrID = $user_info_details['mallUsrID'];
             $usrEmail = $user_info_details['mallUsrEmail'];
             $usrFirstName = $user_info_details['mallUsrFirstName'];
-            $this->removeUsedVerifyToken($usrID); //Remove user tokens
-            $sql = "INSERT INTO malltokens (  mallUsrID,
-                                                       mallTokenType,
-                                                       mallToken,
-                                                       mallVerifyCode,
-                                                       mallTokenGenTime)  VALUES(?,?,?,?,?)";
-            $stmt = $dbHandler->run($sql, [$usrID, "verify", $newToken, $newVerifyCode, $tokenGenTime]);
-            $check_status = $stmt->rowCount();
-            if ($check_status > 0) {
-                $mailHandlerOb->sendMail("noreply@gaijinmall.com", $usrEmail, "Gaijinmall Email Verification", $newVerifyCode, "verify", null, $usrFirstName, null, $newToken);
-                $this->message(11, "We've sent a verification link to your email"); //success
-            } else {
-                $this->message(500, "Verification failed");
+
+            $res = $account_manager->checkEmailExist($new_email);
+
+            if ($res === 1) {
+                 $this->message(500, "Email already in use");
+            } 
+            else {
+
+                $this->removeUsedVerifyToken($usrID); //Remove user tokens
+                $sql = "INSERT INTO malltokens (  mallUsrID,
+                                                           mallTokenType,
+                                                           mallToken,
+                                                           mallVerifyCode,
+                                                           mallTokenGenTime)  VALUES(?,?,?,?,?)";
+                $stmt = $dbHandler->run($sql, [$usrID, "verify", $newToken, $newVerifyCode, $tokenGenTime]);
+                $check_status = $stmt->rowCount();
+                if ($check_status > 0) {
+                    //this next line of code is basically for email update. $usrEmail will be converted to what the user inputs
+                    $usrEmail = is_null($new_email) ? $usrEmail : $new_email;
+                    $mailHandlerOb->sendMail("noreply@gaijinmall.com", $usrEmail, "Gaijinmall Email Verification", $newVerifyCode, "verify", null, $usrFirstName, null, $newToken);
+                    $this->message(1, "We've sent a verification link to your email"); //success
+                } else {
+                    $this->message(500, "Verification failed");
+                }
             }
         } elseif ($user_info__['status'] == "404") {
             //$this->message(500, "Registration was not really successful"); //User phone or email does not exist
-            $this->message(1, "We've sent a verification link to your email ");
+            $this->message(1, "User does not exist");
         }
         return $this->system_message;
     }

@@ -551,6 +551,16 @@ class AccountManager
         return $sys_message;
     }
 
+
+    public function checkEmailExist($email) {
+        $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+        $sql = "SELECT mallUsrEmail FROM mallusrs WHERE mallUsrEmail = ?";
+        $stmt = $dbHandler->run($sql, [$email]);
+        $num = $stmt->rowCount();
+        return $num;
+    }
+
+
     function updateUsrPersonaInfoByID(string $usrID, $firstname, $lastname, $location, $birthday, $sex, $address, $postalAddress, $connectFacebook = null, $connectTwitter = null)
     {
         $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
@@ -800,7 +810,7 @@ class AccountManager
                 if ($check_status2 > 0) {
                     $sq = "UPDATE mallusrbiz SET mallBizStatus = ? WHERE mallUsrID = ?";
                     $st = $dbHandler->run($sq, [2,$usrID]);
-                    
+
                     $this->message(1, "Thanks, We'll review your request and revert as soon as possible");
                     $msgOb = new MessagingManager();
                     $msgOb->sendMail("noreply@gaijinmall.com","noreply@gaijinmall.com", "Business Verification Request", "Hello Administrator, There is a business verication request waiting for you. <a href='gaijinmall.com/cspace/views/business_verifications.php'>View here</a>");

@@ -39,8 +39,11 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 $pageUsrID__ = $_SESSION['gaijinmall_user_'];
 $isUsrIDUploaded = $usrAccManager_ob->usrIDUploadedStatusByID($pageUsrID__);
 
+$getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; //
+
+
 if (isset($_POST['edit_email__btn'])){
-    $editEmailResponse=$securityManager_ob->generateVerifyToken($_POST['edit_email__txt']);
+    $editEmailResponse=$securityManager_ob->generateVerifyToken($getUsrInfo['mallUsrEmail'], $_POST['edit_email__txt']);
     $sys_msg['msg_type'] = $editEmailResponse['status'];
     $sys_msg['msg'] = $editEmailResponse['message'];
     if ($editEmailResponse==1){
@@ -51,7 +54,6 @@ if (isset($_POST['edit_email__btn'])){
             </script>';
     }
 }
-$getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; //
 ?>
 <!DOCTYPE html>
 <html lang="en">

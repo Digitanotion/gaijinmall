@@ -44,7 +44,7 @@ class messagingManager{
             $mail->Host       = 'server.uxh.gxw.mybluehost.me';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $mail->Username   = 'smtp_sen__@gaijinmall.com';                     //SMTP username
-            $mail->Password   = 'w00o#@8A35?-';                               //SMTP password
+            $mail->Password   = 'd1-0MpRs@a~%';                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
