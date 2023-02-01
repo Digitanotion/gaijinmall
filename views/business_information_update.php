@@ -104,8 +104,8 @@ $getUsrBizInfo = $usrAccManager_ob->getUsrBizInfoByID($pageUsrID__)['message'];
                                 </div>
                             <?php  }
                             elseif ($getUsrBizInfo['mallBizStatus'] == 2) { ?>
-                                <div class="alert bg-info fs-6 text-light">
-                                    Pending <i class="fa fa-exclamation-triangle"></i>
+                                <div class="alert bg-primary fs-6 text-light">
+                                    In Review <i class="fa fa-eye"></i>
                                 </div>
                             <?php }
                              else { ?>
