@@ -61,10 +61,10 @@ if (isset($_SESSION['gaijinmall_user_'])){
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="<?php echo ($getUsrBizInfo['mallBizSlug']=="" || $getUsrBizInfo['mallBizSlug']=="NULL")?"#" : "shop/".$getUsrBizInfo['mallBizSlug']; ?>">My Page</a></li>
-                            <li><a class="dropdown-item" href="feedback.php" >Feedback</a></li>
+                            <li><a class="dropdown-item" href="feedback" >Feedback</a></li>
                             <hr class="my-1">
-                            <li><a class="dropdown-item" href="messages.php">My messages</a></li>
-                            <li><a class="dropdown-item" href="personal_details_update.php">Settings</a></li>
+                            <li><a class="dropdown-item" href="messages">My messages</a></li>
+                            <li><a class="dropdown-item" href="personal_details_update">Settings</a></li>
                             <hr class="my-1">
                             <li><a class="dropdown-item fw-bolder" href="?logout=1">Log out</a></li>
 

@@ -560,6 +560,15 @@ class AccountManager
         return $num;
     }
 
+    public function updateEmail($email, $usrID) {
+        $dbHandler = new InitDB(DB_OPTIONS[2], DB_OPTIONS[0], DB_OPTIONS[1], DB_OPTIONS[3]);
+        $sql = "UPDATE mallusrs SET mallusremail  = ? , mallusremailstatus = ? WHERE mallusrid = ?";
+        $stmt = $dbHandler->run($sql, [$email, 0, $usrID]);
+        $num = $stmt->rowCount();
+        return $num;
+    }
+
+
 
     function updateUsrPersonaInfoByID(string $usrID, $firstname, $lastname, $location, $birthday, $sex, $address, $postalAddress, $connectFacebook = null, $connectTwitter = null)
     {

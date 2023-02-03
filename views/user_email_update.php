@@ -43,7 +43,7 @@ $getUsrInfo = $usrAccManager_ob->getUsrBasicInfoByID($pageUsrID__)['message']; /
 
 
 if (isset($_POST['edit_email__btn'])){
-    $editEmailResponse=$securityManager_ob->generateVerifyToken($getUsrInfo['mallUsrEmail'], $_POST['edit_email__txt']);
+    $editEmailResponse=$securityManager_ob->generateEmailUpdateVerifyToken($getUsrInfo['mallUsrID'], $_POST['edit_email__txt']);
     $sys_msg['msg_type'] = $editEmailResponse['status'];
     $sys_msg['msg'] = $editEmailResponse['message'];
     if ($editEmailResponse==1){
@@ -234,6 +234,8 @@ if (isset($_POST['edit_email__btn'])){
                             title: "Email Verification",
                             message: "'.$sys_msg['msg'].'",
                             buttonText: "Thank you"
+                          }).then(()=>{
+                                window.location.href = "";
                           })';
                         break;
                     default:
